@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RCM.Mobile.Views.LoginPage"
+             xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             Padding="20"
+             Title="{Binding Title}">
+    
+    <ContentPage.Content>
+        <ContentView>
+            <ContentView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/Style/LoginStyle.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ContentView.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout Margin="10,0">
+                    <Label Text="RCM"
+                   Style="{StaticResource TitleLabelStyle}" />
+
+                    <telerikInput:RadEntry Text="{Binding UserName, Mode=TwoWay}"
+                                   WatermarkText="UserNamee"
+                                   Style="{StaticResource LoginEntryStyle}" />
+
+                    <telerikInput:RadEntry Text="{Binding Password, Mode=TwoWay}"
+                                   IsPassword="True"
+                                   WatermarkText="Password"
+                                   Style="{StaticResource LoginEntryStyle}" />
+
+                    <telerikInput:RadButton Text="LOGIN"
+                                    Command="{Binding Login}"
+                                    Style="{StaticResource ActionButtonStyle}" />
+                    <!--<telerikInput:RadButton Text="GET"
+                                    Command="{Binding GetCommand}"
+                                    Style="{StaticResource ActionButtonStyle}" />-->
+                    <!--CommandParameter="{x:Static local:LoginType.Normal}"-->
+
+                </StackLayout>
+            </Grid>
+           
+        </ContentView>
+      
+    </ContentPage.Content>
+</ContentPage>
