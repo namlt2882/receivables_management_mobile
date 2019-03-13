@@ -17,7 +17,9 @@ namespace RCM.Mobile.Services
         Task<ObservableCollection<Notification>> GetNotificationsAsync(string token);
         Task<Notification> GetNotificationByIdAsync(int id, string token);
         Task<bool> ToggleSeen(int id, string token);
+        Task<bool> DeleteAsync(int id, string token);
     }
+
     public class NotificationService : INotificationService
     {
         private const string ApiUrlBase = "/Notification";
@@ -26,6 +28,22 @@ namespace RCM.Mobile.Services
         public NotificationService(IRequestProvider requestProvider)
         {
             _requestProvider = requestProvider;
+        }
+
+        public async Task<bool> DeleteAsync(int id, string token)
+        {
+            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase + $"?id={id}");
+            try
+            {
+                await _requestProvider.DeleteAsync(uri, token);
+            }
+            //If the status of the notification we will get
+            //a BadRequest HttpStatus
+            catch (HttpRequestExceptionEx ex) when (ex.HttpCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                return false;
+            }
+            return true;
         }
 
         public async Task<Notification> GetNotificationByIdAsync(int id, string token)
@@ -42,10 +60,10 @@ namespace RCM.Mobile.Services
 
         public async Task<bool> ToggleSeen(int id, string token)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase+ $"ToggleSeen/{id}");
+            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase + $"/ToggleSeen/{id}");
             try
             {
-                await _requestProvider.PutAsync(uri, token);
+                await _requestProvider.PutAsync(uri, data: "", token: token);
             }
             //If the status of the notification we will get
             //a BadRequest HttpStatus

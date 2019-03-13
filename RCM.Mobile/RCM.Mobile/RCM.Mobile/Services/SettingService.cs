@@ -15,6 +15,7 @@ namespace RCM.Mobile.Services
         private const string IdBase = "url_base";
         //private const string IdIdentityBase = "url_base";
         private const string AuthAccessTokenExpirationDate = "expires_in";
+        private const string FirebaseTokenIndevice = "firebase_token";
         //private const string IdGatewayMarketingBase = "url_marketing";
         //private const string IdGatewayShoppingBase = "url_shopping";
         //private const string IdUseFakeLocation = "use_fake_location";
@@ -58,7 +59,11 @@ namespace RCM.Mobile.Services
         {
             get => DateTime.UtcNow.CompareTo(AccessTokenExpirationDate) > 0;
         }
-
+        public string FirebaseToken
+        {
+            get => GetValueOrDefault(FirebaseTokenIndevice, "");
+            set => AddOrUpdateValue(FirebaseTokenIndevice, value);
+        }
         //public bool UseMocks
         //{
         //    get => GetValueOrDefault(IdUseMocks, UseMocksDefault);
@@ -184,6 +189,7 @@ namespace RCM.Mobile.Services
         //string GatewayMarketingEndpointBase { get; set; }
         //bool UseFakeLocation { get; set; }
         string Latitude { get; set; }
+        string FirebaseToken { get; set; }
         string Longitude { get; set; }
         bool AllowGpsLocation { get; set; }
 

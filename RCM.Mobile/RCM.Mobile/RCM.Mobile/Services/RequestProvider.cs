@@ -51,7 +51,8 @@ namespace RCM.Mobile.Services
         Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "");
         Task<JObject> PostAsyncStringResultAsync<TResult>(string uri, TResult data, string token = "", string header = "");
         Task<TResult> PutAsync<TResult>(string uri, TResult data, string token = "", string header = "");
-
+        Task<string> PostFirebaseToken(string uri, string firebaseToken, string token = "", string header = "");
+        Task PutFirebaseToken(string uri, string firebaseToken, string token = "", string header = "");
         Task DeleteAsync(string uri, string token = "");
     }
 
@@ -106,6 +107,43 @@ namespace RCM.Mobile.Services
             return result;
         }
 
+        //FirebaseToken
+        public async Task<string> PostFirebaseToken(string uri, string firebaseToken, string token = "", string header = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddHeaderParameter(httpClient, header);
+            }
+
+            var content = new StringContent(JsonConvert.SerializeObject(""));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync($"{uri}?firebaseToken=" + firebaseToken
+            , content);
+            await HandleResponse(response);
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            string result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<string>(serialized, _serializerSettings));
+            return result;
+        }
+        public async Task PutFirebaseToken(string uri, string firebaseToken, string token = "", string header = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddHeaderParameter(httpClient, header);
+            }
+
+            var content = new StringContent(JsonConvert.SerializeObject(""));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PutAsync($"{uri}?firebaseToken=" + firebaseToken
+            , content);
+            await HandleResponse(response);
+
+        }
 
         public async Task<TResult> PutAsync<TResult>(string uri, TResult data, string token = "", string header = "")
         {
@@ -186,11 +224,13 @@ namespace RCM.Mobile.Services
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync(uri, content);
 
-            await HandleResponse(response);
+            //await HandleResponse(response);
             //return await response.Content.ReadAsStringAsync(); ;
             var result = response.Content.ReadAsStringAsync().Result;
             JObject jwtDynamic = JsonConvert.DeserializeObject<dynamic>(result);
             return jwtDynamic;
         }
+
+
     }
 }

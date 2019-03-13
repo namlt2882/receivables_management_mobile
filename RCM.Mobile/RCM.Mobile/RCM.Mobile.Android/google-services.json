@@ -1,58 +1,27 @@
 {
   "project_info": {
-    "project_number": "478295983443",
-    "firebase_url": "https://rcm-mobile-notification.firebaseio.com",
-    "project_id": "rcm-mobile-notification",
-    "storage_bucket": "rcm-mobile-notification.appspot.com"
+    "project_number": "849485605521",
+    "firebase_url": "https://rcm-notification.firebaseio.com",
+    "project_id": "rcm-notification",
+    "storage_bucket": "rcm-notification.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:478295983443:android:3704565467fbd132",
-        "android_client_info": {
-          "package_name": "com.capstone.rcm"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "478295983443-u7agpto4dt8bmefoaqnlevialnui2dbk.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAecO3nrMW7AVzanbxnAs9Ls5GHVlRNGcU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:478295983443:android:bacf25d26c9bc8fd",
+        "mobilesdk_app_id": "1:849485605521:android:090e1e244b8ff71a",
         "android_client_info": {
           "package_name": "com.companyname.RCM.Mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "478295983443-u7agpto4dt8bmefoaqnlevialnui2dbk.apps.googleusercontent.com",
+          "client_id": "849485605521-j8h3r83qoluvrr6rdnlijlot8jka9b6s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAecO3nrMW7AVzanbxnAs9Ls5GHVlRNGcU"
+          "current_key": "AIzaSyCExqaAt9BEbdl8wDdMwsqpfwwZwJiTtog"
         }
       ],
       "services": {

@@ -1,5 +1,8 @@
-﻿using Prism.Navigation;
+﻿using Plugin.Connectivity;
+using Plugin.FirebasePushNotification;
+using Prism.Navigation;
 using Prism.Services;
+using RCM.Mobile.Helpers;
 using RCM.Mobile.Models;
 using RCM.Mobile.Services;
 using RCM.Mobile.Views;
@@ -18,16 +21,18 @@ namespace RCM.Mobile.ViewModels
         private readonly IAuthService _authService;
         private readonly ISettingsService _settingsService;
         private IPageDialogService _dialogService;
-
-        public LoginPageViewModel(INavigationService navigationService, 
-            IAuthService authService, 
-            ISettingsService settingsService, 
-            IPageDialogService dialogService)
+        private IFirebaseTokenService _firebaseTokenService;
+        public LoginPageViewModel(INavigationService navigationService,
+            IAuthService authService,
+            ISettingsService settingsService,
+            IPageDialogService dialogService,
+            IFirebaseTokenService firebaseTokenService)
             : base(navigationService)
         {
             _authService = authService;
             _settingsService = settingsService;
             _dialogService = dialogService;
+            _firebaseTokenService = firebaseTokenService;
             //Title = "Login Page";
         }
         public string UserName
@@ -59,44 +64,70 @@ namespace RCM.Mobile.ViewModels
                 RaisePropertyChanged();
             }
         }
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+        }
         public Command Login
         {
             get
             {
                 return new Command(async () =>
                 {
-
-                    var jwtDynamic = await _authService.Login(new AuthModel { UserName = UserName, Password = Password });
-                    if (jwtDynamic.HasValues)
+                    if (CrossConnectivity.Current.IsConnected)
                     {
-                        _settingsService.AuthAccessToken = jwtDynamic.Value<string>("access_token");
-                        _settingsService.AuthUserName = jwtDynamic.Value<string>("username");
-                        _settingsService.AccessTokenExpirationDate = DateTime.UtcNow.AddMinutes(95);
 
-                        var mainPage = Application.Current.MainPage as NavigationPage;
-                        if (mainPage != null)
+                        var jwtDynamic = await _authService.Login(new AuthModel { UserName = UserName, Password = Password });
+                        //Count > 1 =>Login Success!
+                        if (jwtDynamic.Count > 1)
                         {
-                            //mainPage = new NavigationPage(new MainPage());
-                            //if (mainPage.Navigation.NavigationStack.Count == 1)
-                            //{
-                            //    mainPage.Navigation.RemovePage(
-                            //    mainPage.Navigation.NavigationStack[mainPage.Navigation.NavigationStack.Count - 1]);
-                            //}
-                            await NavigationService.GoBackToRootAsync();
-                            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+                            _settingsService.AuthAccessToken = jwtDynamic.Value<string>("access_token");
+                            _settingsService.AuthUserName = jwtDynamic.Value<string>("username");
+                            _settingsService.AccessTokenExpirationDate = DateTime.Now.AddDays(99);
+                            var a = await _firebaseTokenService.AddFirebaseToken(_settingsService.AuthAccessToken, CrossFirebasePushNotification.Current.Token);
+                            var mainPage = Application.Current.MainPage;
+                            if (mainPage != null)
+                            {
+
+                                //CrossFirebasePushNotification.Current.Subscribe(_settingsService.AuthUserName);
+
+                                await NavigationService.NavigateAsync("RCM.Mobile:///MainPage");
+
+                                //await NavigationService.NavigateAsync("myapp:///NavigationPage/MainPage");
+                                /////////////// PROBLEM NEED TO SOLVE
+                                //NavigationPage.SetHasNavigationBar(mainPage, false);
+                                ////mainPage = new NavigationPage(new MainPage());
+                                ////if (mainPage.Navigation.NavigationStack.Count == 1)
+                                ////{
+                                ////    mainPage.Navigation.RemovePage(
+                                ////    mainPage.Navigation.NavigationStack[mainPage.Navigation.NavigationStack.Count - 1]);
+                                ////}
+                                ////await NavigationService.GoBackToRootAsync();
+                                //var navigationParams = new NavigationParameters();
+                                //navigationParams.Add("PreviousPage", Constant.Login);
+
+                                //await NavigationService.NavigateAsync("NavigationPage/MainPage", navigationParams);
+                                //mainPage.Navigation.RemovePage(
+                                //    mainPage.Navigation.NavigationStack[0]);
+                            }
                         }
+                        else
+                        {
+                            await _dialogService.DisplayAlertAsync("Login fail", "Invalid username or password", "OK");
+                        }
+                        //_settingsService.AccessTokenExpirationDate = DateTime.UtcNow.AddMinutes(double.Parse(jwtDynamic.Value<string>("expires_in")));
+                        //var mainPage = Application.Current.MainPage as MainPage;
+                        //if (mainPage != null)
+                        //{
+                        //    mainPage.Navigation.RemovePage(
+                        //        mainPage.Navigation.NavigationStack[mainPage.Navigation.NavigationStack.Count - 2]);
+                        //}
                     }
                     else
                     {
-                        await _dialogService.DisplayAlertAsync("Login fail", "Invalid username or password", "OK");
+                        await _dialogService.DisplayAlertAsync("No internet", "Please check your network connection!", "OK");
                     }
-                    //_settingsService.AccessTokenExpirationDate = DateTime.UtcNow.AddMinutes(double.Parse(jwtDynamic.Value<string>("expires_in")));
-                    //var mainPage = Application.Current.MainPage as MainPage;
-                    //if (mainPage != null)
-                    //{
-                    //    mainPage.Navigation.RemovePage(
-                    //        mainPage.Navigation.NavigationStack[mainPage.Navigation.NavigationStack.Count - 2]);
-                    //}
+
                 });
             }
         }

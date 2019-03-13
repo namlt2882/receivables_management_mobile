@@ -6,9 +6,39 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              Padding="20"
-             Title="{Binding Title}">
-    
-    <ContentPage.Content>
+             BackgroundColor="#127ac7">
+    <StackLayout VerticalOptions="Center" Spacing="20" >
+        <StackLayout.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/Style/LoginStyle.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </StackLayout.Resources>
+        <Label 
+			Text="Ứng dụng quản lý thu hồi nợ"
+			TextColor="White"
+			FontSize="Medium" 
+			FontAttributes="Bold"  
+			HorizontalOptions="Center" />
+        <telerikInput:RadEntry Text="{Binding UserName, Mode=TwoWay}"
+                                   WatermarkText="UserName"
+                                   Style="{StaticResource LoginEntryStyle}" />
+
+        <telerikInput:RadEntry Text="{Binding Password, Mode=TwoWay}"
+                                   IsPassword="True"
+                                   WatermarkText="Password"
+                                   Style="{StaticResource LoginEntryStyle}" />
+        <Button 
+			Text="Login" 
+			TextColor="White"
+            Command="{Binding Login}"
+			BackgroundColor="#1dabf0" />
+        
+    </StackLayout>
+
+
+    <!--<ContentPage.Content>
         <ContentView>
             <ContentView.Resources>
                 <ResourceDictionary>
@@ -28,7 +58,7 @@
                    Style="{StaticResource TitleLabelStyle}" />
 
                     <telerikInput:RadEntry Text="{Binding UserName, Mode=TwoWay}"
-                                   WatermarkText="UserNamee"
+                                   WatermarkText="UserName"
                                    Style="{StaticResource LoginEntryStyle}" />
 
                     <telerikInput:RadEntry Text="{Binding Password, Mode=TwoWay}"
@@ -39,15 +69,17 @@
                     <telerikInput:RadButton Text="LOGIN"
                                     Command="{Binding Login}"
                                     Style="{StaticResource ActionButtonStyle}" />
-                    <!--<telerikInput:RadButton Text="GET"
+                    -->
+    <!--<telerikInput:RadButton Text="GET"
                                     Command="{Binding GetCommand}"
                                     Style="{StaticResource ActionButtonStyle}" />-->
-                    <!--CommandParameter="{x:Static local:LoginType.Normal}"-->
+    <!--CommandParameter="{x:Static local:LoginType.Normal}"-->
+    <!--
 
                 </StackLayout>
             </Grid>
            
         </ContentView>
       
-    </ContentPage.Content>
+    </ContentPage.Content>-->
 </ContentPage>

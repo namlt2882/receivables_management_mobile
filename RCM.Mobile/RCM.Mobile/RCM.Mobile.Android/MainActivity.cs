@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Plugin.FirebasePushNotification;
 
 namespace RCM.Mobile.Droid
 {
@@ -20,6 +21,14 @@ namespace RCM.Mobile.Droid
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+
+            FirebasePushNotificationManager.ProcessIntent(this, Intent);
+//#if DEBUG
+//            FirebasePushNotificationManager.Initialize(this, new PushNotificationHandler(), true);
+//#else
+//                  FirebasePushNotificationManager.Initialize(this,new CustomPushHandler(),false);
+//#endif
+            
         }
     }
 }
