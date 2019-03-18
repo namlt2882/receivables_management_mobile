@@ -33,7 +33,9 @@ namespace RCM.Mobile
         protected override void OnInitialized()
         {
             Xamarin.Forms.Internals.Log.Listeners.Add(new DelegateLogListener((arg1, arg2) => Debug.WriteLine(arg2)));
-
+#if DEBUG
+            HotReloader.Current.Start(this);
+#endif
             ////////////////Hockey App
             //AppCenter.Start("android=1b825fb4-d069-4218-9adf-a7197b4513a3;"
             //         //+ "uwp={Your UWP App secret here};" +
@@ -139,6 +141,7 @@ namespace RCM.Mobile
             containerRegistry.RegisterForNavigation<NotificationPage>("NotificationPage");
             //Receivable
             containerRegistry.RegisterForNavigation<ReceivableListPage>("ReceivableListPage");
+            containerRegistry.RegisterForNavigation<ReceivableDetailPage>("ReceivableDetailPage");
 
             //Service
             containerRegistry.Register<IAuthService, AuthService>();
@@ -154,7 +157,8 @@ namespace RCM.Mobile
             containerRegistry.RegisterForNavigation<NotificationListPage, NotificationListPageViewModel>();
             containerRegistry.RegisterForNavigation<NotificationPage, NotificationPageViewModel>();
             containerRegistry.RegisterForNavigation<ReceivableListPage, ReceivableListPageViewModel>();
-
+            containerRegistry.RegisterForNavigation<ReceivableDetailPage, ReceivableDetailPageViewModel>();
+            
         }
     }
 

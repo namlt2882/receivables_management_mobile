@@ -6,8 +6,8 @@ namespace RCM.Mobile
 {
     class GlobalSetting
     {
-        //public const string DefaultUri = "http://192.168.1.9:36902";
-        //public const string DefaultEndpoint = "http://192.168.1.9:36902/api";
+        //public const string DefaultUri = "http://10.82.135.132:36902";
+        //public const string DefaultEndpoint = "http://10.82.135.132:36902/api";
         public const string DefaultUri = "http://202.78.227.91:6868";
         public const string DefaultEndpoint = "http://202.78.227.91:6868/api";
         // i.e.: "http://YOUR_IP" or "http://YOUR_DNS_NAME"

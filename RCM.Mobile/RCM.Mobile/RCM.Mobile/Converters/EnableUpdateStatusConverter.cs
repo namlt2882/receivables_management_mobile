@@ -1,27 +1,21 @@
-﻿using RCM.Mobile.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using Xamarin.Forms;
 
 namespace RCM.Mobile.Converters
 {
-    public class NotificationBackgroundConverter : IValueConverter
+    class EnableUpdateStatusConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
-
-            var notification = value as Notification;
-
-            if (notification.IsSeen)
-            {
-                return Color.White;
-            }
-            return Color.Gray;
+            if (value == null) return true;
+            var status = (int)value;
+            return status == 1 ? true : false;
         }
+
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

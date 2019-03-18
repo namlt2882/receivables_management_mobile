@@ -21,55 +21,8 @@
         </Grid.Resources>
         <Grid Grid.RowSpacing="0">
             <Grid.RowDefinitions>
-                <!--<RowDefinition>
-                    <RowDefinition.Height>
-                        <OnPlatform x:TypeArguments="GridLength">
-                            -->
-                <!--<On Platform="iOS">44</On>-->
-                <!--
-                            <On Platform="Android,UWP">56</On>
-                        </OnPlatform>
-                    </RowDefinition.Height>
-                </RowDefinition>-->
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <!--<Grid BackgroundColor="#F3C7B9">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label x:Name="exampleLabel"
-                       Grid.Column="1"
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center"
-                       TextColor="#362F2D"
-                       AutomationId="exampleLabel">
-                    <Label.Text>
-                        <OnPlatform x:TypeArguments="x:String">
-                            -->
-            <!--<On Platform="iOS">To Do List</On>-->
-            <!--
-                            <On Platform="Android,UWP">TO DO LIST</On>
-                        </OnPlatform>
-                    </Label.Text>
-                    <Label.FontSize>
-                        <OnPlatform x:TypeArguments="x:Double">
-                            -->
-            <!--<On Platform="iOS,UWP">14</On>-->
-            <!--
-                            <On Platform="Android">16</On>
-                        </OnPlatform>
-                    </Label.FontSize>
-                    <Label.FontFamily>
-                        <OnPlatform x:TypeArguments="x:String">
-                            -->
-            <!--<On Platform="iOS">Helvetica-Bold</On>-->
-            <!--
-                            <On Platform="Android">sans-serif-medium</On>
-                        </OnPlatform>
-                    </Label.FontFamily>
-                </Label>
-            </Grid>-->
             <telerikDataControls:RadListView x:Name="list"
                                              ItemsSource="{Binding Notifications}"
                                              Grid.Row="1"
@@ -86,25 +39,6 @@
                     <telerikListView:ListViewLinearLayout Orientation="Vertical"
                                                           HorizontalItemSpacing="0"/>
                 </telerikDataControls:RadListView.LayoutDefinition>
-                <!--<telerikDataControls:RadListView.ItemStyle>
-                    <telerikListView:ListViewItemStyle BackgroundColor="{Binding IsSeen ,Converter={StaticResource notificationBackgroundConverter}}"
-                                                       BorderWidth="1"
-                                                       BorderColor="Black"
-                                                       BorderLocation="Bottom"/>
-                </telerikDataControls:RadListView.ItemStyle>
-                <telerikDataControls:RadListView.SelectedItemStyle>
-                    <telerikListView:ListViewItemStyle BackgroundColor="{Binding IsSeen ,Converter={StaticResource notificationBackgroundConverter}}"
-                                                       BorderWidth="1"
-                                                       BorderColor="Black"
-                                                       BorderLocation="Bottom"/>
-                </telerikDataControls:RadListView.SelectedItemStyle>
-                <telerikDataControls:RadListView.PressedItemStyle>
-                    <telerikListView:ListViewItemStyle BackgroundColor="{Binding IsSeen ,Converter={StaticResource notificationBackgroundConverter}}"
-                                                       BorderWidth="1"
-                                                       BorderColor="Black"
-                                                       BorderLocation="Bottom"/>
-                </telerikDataControls:RadListView.PressedItemStyle>-->
-                
                 <telerikDataControls:RadListView.ItemTemplate>
                     
                     <DataTemplate>
@@ -122,49 +56,19 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label Text="{Binding Title}" TextColor="#694A00" FontSize="Large"/>
+                                            <Label Text="{Binding Title}" TextColor="#694A00" FontSize="Medium"/>
                                             <!--<Image Source="{Binding IsSeen, Converter={StaticResource notificationImageConverter}}" Grid.Column="1"/>-->
                                         </Grid>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label TextColor="#806015" FontAttributes="Italic" FontSize="Medium"/>
-                                            <Label TextColor="#806015" Text="{Binding Body}" FontSize="Medium"/>
+                                            <Label TextColor="#806015" FontAttributes="Italic" FontSize="Small"/>
+                                            <Label TextColor="#806015" Text="{Binding Body}" FontSize="Small"/>
                                         </StackLayout>
                                     </StackLayout>
                                 </Grid>
                             </telerikListView:ListViewTemplateCell.View>
                         </telerikListView:ListViewTemplateCell>
-                        <!--<telerikListView:ListViewTextCell Text="{Binding Title}"
-                                               Detail="{Binding Body}"
-                                               TextColor="Black"
-                                               DetailColor="Gray"  Tapped="ListViewTextCell_Tapped">
-                        </telerikListView:ListViewTextCell>-->
-                        <!--<telerikListView:ListViewTemplateCell>
-                            <telerikListView:ListViewTemplateCell.View>
-                                <Grid Padding="16">
-
-                                    <Label Text="{Binding Body}"
-                                           TextColor="#362F2D"
-                                           effects:StrikeThroughEffect.IsStrikeThrough="{Binding IsDone}">
-                                        <Label.FontSize>
-                                            <OnPlatform x:TypeArguments="x:Double">
-                                                <On Platform="iOS,UWP">14</On
-                                                <On Platform="Android"> 16
-                                                </On>
-                                            </OnPlatform>
-                                        </Label.FontSize>
-                                        <Label.FontFamily>
-                                            <OnPlatform x:TypeArguments="x:String">
-                                                <On Platform="iOS">Helvetica-Medium</On>
-                                                <On Platform="Android">sans-serif-light</On>
-                                            </OnPlatform>
-                                        </Label.FontFamily>
-                                    </Label>
-                                </Grid>
-                            </telerikListView:ListViewTemplateCell.View>
-                        </telerikListView:ListViewTemplateCell>-->
                     </DataTemplate>
                 </telerikDataControls:RadListView.ItemTemplate>
-                
                 <telerikDataControls:RadListView.ItemSwipeContentTemplate>
                     <DataTemplate>
                         <Grid>
@@ -222,143 +126,4 @@
             </telerikDataControls:RadListView>
         </Grid>
     </Grid>
-    <!--<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <telerikDataControls:RadListView x:Name="listView" ItemsSource="{Binding Notifications}">
-            <telerikDataControls:RadListView.ItemTemplate>
-                <DataTemplate>
-                    <telerikListView:ListViewTextCell Text="{Binding Title}"
-                                               Detail="{Binding Body}"
-                                               TextColor="Black"
-                                               DetailColor="Gray" />
-                </DataTemplate>
-            </telerikDataControls:RadListView.ItemTemplate>
-            <telerikDataControls:RadListView.LayoutDefinition>
-                <telerikListView:ListViewLinearLayout ItemLength="70" />
-            </telerikDataControls:RadListView.LayoutDefinition>
-        </telerikDataControls:RadListView>
-    </Grid>-->
-
-    <!--<ListView ItemsSource="{Binding Notifications}">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell x:Name="viewCell">
-                    <ContentView Padding="0,0,0,5" 
-                                     HeightRequest="50">
-                        <Frame  Padding="8">
-                            <StackLayout Orientation="Horizontal" >
-                                <Image x:Name="checkedImage"
-                                         HeightRequest="30"
-                                         WidthRequest="30"
-                                         />
-                                <Label Text="{Binding Title}" 
-                                         Margin="20,0,0,0"
-                                         VerticalTextAlignment="Center" 
-                                         HorizontalOptions="FillAndExpand"/>
-                            </StackLayout>
-                        </Frame>
-                    </ContentView>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>-->
-
-    <!--<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        -->
-    <!--<telerikInput:RadAutoComplete Grid.Row="0" 
-                                      x:Name="AutoComplete" 
-                                      ItemsSource="{Binding Notifications}" 
-                                      TextSearchPath="Name" 
-                                      CompletionMode="Contains" 
-                                      ShowSuggestionView="False" />-->
-    <!--
-
-        <telerikDataControls:RadListView Grid.Row="1" 
-                                         ItemsSource="{Binding Notifications}">
-            -->
-    <!--, Source={x:Reference AutoComplete}-->
-    <!--
-            <telerikDataControls:RadListView.LayoutDefinition>
-                <telerikListView:ListViewLinearLayout ItemLength="110" />
-            </telerikDataControls:RadListView.LayoutDefinition>
-            <telerikDataControls:RadListView.ItemTemplate>
-                <DataTemplate>
-                    <telerikListView:ListViewTemplateCell>
-                        <telerikListView:ListViewTemplateCell.View>
-                            <Grid HeightRequest="105">
-                                <Grid>
-                                    <Grid.Margin>
-                                        <OnPlatform x:TypeArguments="Thickness">
-                                            <On Platform="Android" Value="16"/>
-                                            -->
-    <!--<On Platform="iOS" Value="15"/>
-                                            <On Platform="UWP" Value="16"/>-->
-    <!--
-                                        </OnPlatform>
-                                    </Grid.Margin>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.RowSpan="2" WidthRequest="80" VerticalOptions="Start">
-                                        <Image.Margin>
-                                            <OnPlatform x:TypeArguments="Thickness">
-                                                <On Platform="Android" Value="0,0,16,0"/>
-                                                -->
-    <!--<On Platform="iOS" Value="0,0,15,0"/>
-                                                <On Platform="UWP" Value="0,0,16,0"/>-->
-    <!--
-                                            </OnPlatform>
-                                        </Image.Margin>
-                                    </Image>
-                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Title}">
-                                        <Label.FontSize>
-                                            <OnPlatform x:TypeArguments="x:Double">
-                                                <On Platform="Android" Value="16"/>
-                                                -->
-    <!--<On Platform="iOS" Value="15"/>
-                                                <On Platform="UWP" Value="15"/>-->
-    <!--
-                                            </OnPlatform>
-                                        </Label.FontSize>
-                                        <Label.FontFamily>
-                                            <OnPlatform x:TypeArguments="x:String">
-                                                -->
-    <!--<On Platform="UWP" Value="Segoe UI Semibold"/>-->
-    <!--
-                                            </OnPlatform>
-                                        </Label.FontFamily>
-                                    </Label>
-                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding Body}" Opacity="0.5">
-                                        <Label.FontSize>
-                                            <OnPlatform x:TypeArguments="x:Double" Android="14" iOS="14" />
-                                        </Label.FontSize>
-                                        <Label.FontFamily>
-                                            <OnPlatform x:TypeArguments="x:String">
-                                                -->
-    <!--<On Platform="UWP" Value="Segoe UI Semibold"/>-->
-    <!--
-                                            </OnPlatform>
-                                        </Label.FontFamily>
-                                    </Label>
-                                </Grid>
-                            </Grid>
-                        </telerikListView:ListViewTemplateCell.View>
-                    </telerikListView:ListViewTemplateCell>
-                </DataTemplate>
-            </telerikDataControls:RadListView.ItemTemplate>
-        </telerikDataControls:RadListView>
-    </Grid>-->
 </ContentPage>

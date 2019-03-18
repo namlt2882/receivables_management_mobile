@@ -1,26 +1,17 @@
-﻿using RCM.Mobile.Models;
+﻿using RCM.Mobile.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using Xamarin.Forms;
+using System.Globalization;
 
 namespace RCM.Mobile.Converters
 {
-    public class NotificationBackgroundConverter : IValueConverter
+    public class IntToDateValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
-
-            var notification = value as Notification;
-
-            if (notification.IsSeen)
-            {
-                return Color.White;
-            }
-            return Color.Gray;
+            return value != null ? Utility.ConvertIntToDateStringForView((int)value) : "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

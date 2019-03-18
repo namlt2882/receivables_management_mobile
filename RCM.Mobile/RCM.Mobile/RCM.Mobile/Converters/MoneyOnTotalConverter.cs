@@ -7,20 +7,17 @@ using Xamarin.Forms;
 
 namespace RCM.Mobile.Converters
 {
-    public class NotificationBackgroundConverter : IValueConverter
+    public class MoneyOnTotalConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
+            //if (value == null)
+            //    return null;
 
-            var notification = value as Notification;
+            //var receivable = value as Receivable;
+            //return receivable.PrepaidAmount + "/" + receivable.DebtAmount;
+            throw new NotImplementedException();
 
-            if (notification.IsSeen)
-            {
-                return Color.White;
-            }
-            return Color.Gray;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

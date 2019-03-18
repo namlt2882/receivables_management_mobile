@@ -10,6 +10,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CSharp;
+using RCM.Mobile.Models;
+using System.Collections.ObjectModel;
+
 namespace RCM.Mobile.Services
 {
     public class ServiceAuthenticationException : Exception
@@ -47,6 +50,7 @@ namespace RCM.Mobile.Services
     public interface IRequestProvider
     {
         Task<TResult> GetAsync<TResult>(string uri, string token = "");
+        Task<ObservableCollection<Receivable>> ReceivableListPostAsync(string uri, List<int> receivableIdList, string token = "");
 
         Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "");
         Task<JObject> PostAsyncStringResultAsync<TResult>(string uri, TResult data, string token = "", string header = "");
@@ -231,6 +235,21 @@ namespace RCM.Mobile.Services
             return jwtDynamic;
         }
 
+        public async Task<ObservableCollection<Receivable>> ReceivableListPostAsync(string uri, List<int> receivableIdList, string token = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
 
+            var content = new StringContent(JsonConvert.SerializeObject(receivableIdList));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync(uri, content);
+
+            await HandleResponse(response);
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            ObservableCollection<Receivable> result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<ObservableCollection<Receivable>>(serialized, _serializerSettings));
+
+            return result;
+        }
     }
 }

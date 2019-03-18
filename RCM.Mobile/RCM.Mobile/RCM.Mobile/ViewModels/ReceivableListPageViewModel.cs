@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using Telerik.XamarinForms.DataControls.ListView.Commands;
+using Xamarin.Forms;
 
 namespace RCM.Mobile.ViewModels
 {
-  
+
     public class ReceivableListPageViewModel : BaseAuthenticatedViewModel
     {
         private IReceivableService _receivableService;
@@ -23,7 +25,7 @@ namespace RCM.Mobile.ViewModels
             ) : base(settingsService, dialogService, navigationService)
         {
             _receivableService = receivableService;
-            Title = "Receivables";
+            Title = "Your receivable";
 
         }
 
@@ -36,19 +38,37 @@ namespace RCM.Mobile.ViewModels
         //public ObservableCollection<Receivable> Receivables { get; set; }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatedTo(parameters);
-            await InitAsync();
-        }
-        private async System.Threading.Tasks.Task InitAsync()
-        {
-            //Task.FromResult(await _receivableService.GetReceivablesAsync(_settingsService.AuthAccessToken));
-            var collection = await _receivableService.GetAssignedReceivableAsync(_settingsService.AuthAccessToken);
+            var collection  = new ObservableCollection<Receivable>();
+            if (parameters.Count > 0)
+            {
+                var receivableIdList = parameters.GetValue<List<int>>("receivableIdList");
+                collection = await _receivableService.GetAssignedReceivablesAsync(_settingsService.AuthAccessToken, receivableIdList);
+            }
+            else
+            {
+                collection = await _receivableService.GetAssignedReceivablesAsync(_settingsService.AuthAccessToken, new List<int>());
+            }
             Receivables = new ObservableCollection<Receivable>();
             foreach (var item in collection)
             {
                 Receivables.Add(item);
             }
+            base.OnNavigatedTo(parameters);
         }
 
+        public Command TapReceivable
+        {
+            get
+            {
+                return new Command<ItemTapCommandContext>(async (_) =>
+                {
+                    var item = _.Item as Receivable;
+                    var receivable = Receivables[Receivables.IndexOf(item)];
+                    var navigationParams = new NavigationParameters();
+                    navigationParams.Add("receivableId", receivable.Id);
+                    await NavigationService.NavigateAsync("ReceivableDetailPage", navigationParams);
+                });
+            }
+        }
     }
 }

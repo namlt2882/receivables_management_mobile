@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             x:Class="RCM.Mobile.Views.ReceivableDetailPage"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:converters="clr-namespace:RCM.Mobile.Converters"
+             Title="{Binding Title}"
+             xmlns:controls="clr-namespace:RCM.Mobile.Components" 
+             x:Name="this"
+             Padding="5">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ReceivableStatusConverter x:Key="receivableStatusConverter"/>
+            <converters:EnableUpdateStatusConverter x:Key="enableUpdateStatusConverter"/>
+            <converters:ConfirmImageConverter x:Key="confirmImageConverter"/>
+          
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <controls:HideableToolbarItem Name="Edit" Text="Update Status" Clicked="ShowPopup" IsVisible="{Binding Receivable.CollectionProgressStatus, Converter={StaticResource enableUpdateStatusConverter}}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" Padding="10,0,0,0">
+                    <!--<Label Text="Status" TextColor="Black"/>-->
+                    <Frame CornerRadius="5" WidthRequest="100" Padding="2" VerticalOptions="Center" BorderColor="Black" HorizontalOptions="Center" >
+                        <Label x:Name="CollectionProgressStatus" 
+                               Text="{Binding Receivable.CollectionProgressStatus, Converter={StaticResource receivableStatusConverter}}" 
+                               VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium"
+                               FontAttributes="Bold" TextColor="White">
+                        </Label>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Collecting">
+                                <Setter Property="Style" Value="{StaticResource Collecting}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Not Comfirmed">
+                                <Setter Property="Style" Value="{StaticResource NotComfirmed}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Closed">
+                                <Setter Property="Style" Value="{StaticResource Closed}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Cancel">
+                                <Setter Property="Style" Value="{StaticResource Cancel}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Image Source="{Binding Receivable.IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
+                </StackLayout>
+
+                <telerikInput:RadDataForm x:Name="dataForm" Source="{Binding Receivable}">
+                </telerikInput:RadDataForm>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+                    <telerikPrimitives:RadPopup.Popup>
+                        <telerikPrimitives:RadPopup x:Name="popup"
+                                                    IsModal="True"
+                                                    OutsideBackgroundColor="#6F000000"
+                                                    Placement="Center"
+                                                    VerticalOffset="-250"
+                                                    >
+                            <telerikPrimitives:RadBorder CornerRadius="8" 
+                                         BackgroundColor="WhiteSmoke">
+                                <Grid Padding="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="20" />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           Text="Update Reivable Status"
+                                           VerticalTextAlignment="Center" />
+                                    <Button Grid.Row="1"
+                                            Padding="2"
+                                            HorizontalOptions="CenterAndExpand" 
+                                            Text="Finish"
+                                            Clicked="FinishPopup"
+                                            BackgroundColor="#2196f3" 
+                                            Command="{Binding UpdateReceivableStatus}" 
+                                            CommandParameter="true"/>
+                                    <Button Grid.Row="1"
+                                            Grid.Column="1"                                        
+                                            Padding="2"
+                                            HorizontalOptions="CenterAndExpand" 
+                                            Text="Stop"
+                                            Clicked="ClosePopup"
+                                            BackgroundColor="#f44336"
+                                            Command="{Binding UpdateReceivableStatus}" 
+                                            CommandParameter="false"/>
+                                    <Button Grid.Row="2"             
+                                            Grid.ColumnSpan="2"
+                                            HorizontalOptions="CenterAndExpand" 
+                                            CornerRadius="5"
+                                            Padding="2"
+                                            Text="Close"
+                                            BackgroundColor="White"
+                                            Clicked="Close"
+                                            />
+                                </Grid>
+                            </telerikPrimitives:RadBorder>
+                        </telerikPrimitives:RadPopup>
+                    </telerikPrimitives:RadPopup.Popup>
+                </StackLayout>
+
+            </StackLayout>
+
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

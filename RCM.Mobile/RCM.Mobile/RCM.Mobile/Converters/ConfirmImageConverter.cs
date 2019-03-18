@@ -1,5 +1,4 @@
-﻿using RCM.Mobile.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -7,20 +6,16 @@ using Xamarin.Forms;
 
 namespace RCM.Mobile.Converters
 {
-    public class NotificationBackgroundConverter : IValueConverter
+
+    public class ConfirmImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
-
-            var notification = value as Notification;
-
-            if (notification.IsSeen)
+            if ((bool)value)
             {
-                return Color.White;
+                return "Confirm.png";
             }
-            return Color.Gray;
+            return "Transparency500.png";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -28,4 +23,5 @@ namespace RCM.Mobile.Converters
             throw new NotImplementedException();
         }
     }
+
 }

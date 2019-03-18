@@ -5,10 +5,178 @@
              xmlns:telerikDataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
              xmlns:telerikListView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:telerikListViewCommands="clr-namespace:Telerik.XamarinForms.DataControls.ListView.Commands;assembly=Telerik.XamarinForms.DataControls"
              prism:ViewModelLocator.AutowireViewModel="True"
-             Title="{Binding Title}"
-             >
-    <Grid>
+             xmlns:converters ="clr-namespace:RCM.Mobile.Converters"
+             Title="{Binding Title}">
+    <Grid Grid.ColumnSpacing="0"
+          Grid.RowSpacing="0">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <SearchBar Placeholder="Search by something fun..."/>
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <converters:MoneyValueConverter x:Key="MoneyValueConverter"/>
+                    <converters:ReceivableStatusConverter x:Key="receivableStatusConverter"/>
+                    <converters:IntToDateValueConverter x:Key="IntToDateValueConverter"/>
+                    <converters:ConfirmImageConverter x:Key="confirmImageConverter"/>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <telerikDataControls:RadListView x:Name="list"
+                                             BackgroundColor="White"
+                                             SelectionMode="None"
+                                             ItemsSource="{Binding Receivables}"
+                                             AutomationId="listView">
+                <telerikDataControls:RadListView.Commands>
+                    <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapReceivable}" />
+                </telerikDataControls:RadListView.Commands>
+                <telerikDataControls:RadListView.GroupDescriptors>
+                    <telerikListView:PropertyGroupDescriptor PropertyName="CustomerName"
+                                                             SortOrder="Descending" />
+                </telerikDataControls:RadListView.GroupDescriptors>
+                <telerikDataControls:RadListView.ItemStyle>
+                    <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
+                                                       BorderWidth="1"
+                                                       BorderLocation="All"
+                                                       BorderColor="#D2C7C3" />
+                </telerikDataControls:RadListView.ItemStyle>
+                <telerikDataControls:RadListView.SelectedItemStyle>
+                    <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
+                                                       BorderWidth="1"
+                                                       BorderLocation="All"
+                                                       BorderColor="#D2C7C3" />
+                </telerikDataControls:RadListView.SelectedItemStyle>
+                <telerikDataControls:RadListView.PressedItemStyle>
+                    <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
+                                                       BorderWidth="1"
+                                                       BorderLocation="All"
+                                                       BorderColor="#D2C7C3" />
+                </telerikDataControls:RadListView.PressedItemStyle>
+                <telerikDataControls:RadListView.LayoutDefinition>
+                    <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
+                                                          GroupHeaderLength="35">
+                        <telerikListView:ListViewLinearLayout.ItemLength>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <!--<On Platform="iOS">190</On>-->
+                                <On Platform="Android">120</On>
+                            </OnPlatform>
+                        </telerikListView:ListViewLinearLayout.ItemLength>
+                    </telerikListView:ListViewLinearLayout>
+                </telerikDataControls:RadListView.LayoutDefinition>
+                <telerikDataControls:RadListView.ItemTemplate>
+                    <DataTemplate>
+                        <telerikListView:ListViewTemplateCell>
+                            <telerikListView:ListViewTemplateCell.View>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0"
+                                        StackLayout.Spacing="14"
+                                        BackgroundColor="Transparent">
+                                        <StackLayout.Padding>
+                                            <OnPlatform x:TypeArguments="Thickness">
+                                                <!--<On Platform="iOS">16, 20, 20, 20</On>-->
+                                                <On Platform="Android">16, 10, 16, 0</On>
+                                            </OnPlatform>
+                                        </StackLayout.Padding>
+                                        <StackLayout Orientation="Vertical">
+                                            <StackLayout.HeightRequest>
+                                                <OnPlatform x:TypeArguments="x:Double">
+                                                    <!--<On Platform="iOS">14</On>-->
+                                                    <On Platform="Android">20</On>
+                                                </OnPlatform>
+                                            </StackLayout.HeightRequest>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="identification.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
+                                                <Label LineBreakMode="WordWrap">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Id}" FontAttributes="Italic" FontSize="Small"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Frame CornerRadius="5" WidthRequest="100" Padding="0" BorderColor="Black" HorizontalOptions="Center" >
+                                                <Label x:Name="CollectionProgressStatus" 
+                               Text="{Binding CollectionProgressStatus, Converter={StaticResource receivableStatusConverter}}" 
+                               VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium"
+                               FontAttributes="Bold" TextColor="White">
+                                                </Label>
+                                                <Frame.Triggers>
+                                                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Collecting">
+                                                        <Setter Property="Style" Value="{StaticResource Collecting}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Not Comfirmed">
+                                                        <Setter Property="Style" Value="{StaticResource NotComfirmed}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Closed">
+                                                        <Setter Property="Style" Value="{StaticResource Closed}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Cancel">
+                                                        <Setter Property="Style" Value="{StaticResource Cancel}"/>
+                                                    </DataTrigger>
+                                                </Frame.Triggers>
+                                            </Frame>
+                                                <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="money.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
+                                                <Label LineBreakMode="WordWrap">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding PrepaidAmount, Converter={StaticResource MoneyValueConverter}}" FontAttributes="Bold,Italic" FontSize="Small"/>
+                                                            <Span Text="/"/>
+                                                            <Span Text="{Binding DebtAmount, Converter={StaticResource MoneyValueConverter}}" TextColor="Red" FontAttributes="Bold,Italic" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
+
+                                            <!--<Label LineBreakMode="WordWrap">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Customer: "/>
+                                                    <Span Text="{Binding CustomerName}" FontAttributes="Italic" FontSize="Small"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
+                                                <Label LineBreakMode="WordWrap">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding DebtorName}" FontAttributes="Italic" FontSize="Small"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="calendar.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
+                                                <Label LineBreakMode="WordWrap">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Small"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Grid>
+                                
+                            </telerikListView:ListViewTemplateCell.View>
+                        </telerikListView:ListViewTemplateCell>
+                    </DataTemplate>
+                </telerikDataControls:RadListView.ItemTemplate>
+            </telerikDataControls:RadListView>
+        </Grid>
+    </Grid>
+    <!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -27,5 +195,5 @@
                 <telerikListView:ListViewLinearLayout ItemLength="70" />
             </telerikDataControls:RadListView.LayoutDefinition>
         </telerikDataControls:RadListView>
-    </Grid>
+    </Grid>-->
 </ContentPage>

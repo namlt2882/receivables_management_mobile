@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Prism.Navigation;
 using Prism.Services;
 using RCM.Mobile.Helpers;
@@ -60,16 +61,22 @@ namespace RCM.Mobile.ViewModels
         {
             get
             {
-                return new Command<ItemTapCommandContext>(async (item) =>
+                return new Command<ItemTapCommandContext>(async (_) =>
                 {
-                    var noti = item.Item as Notification;
-                    var notification = Notifications[Notifications.IndexOf(noti)];
-                    notification.IsSeen = !notification.IsSeen;
-                    await _notificationService.ToggleSeen(noti.Id, _settingsService.AuthAccessToken);
+                    var item = _.Item as Notification;
+                    var notification = Notifications[Notifications.IndexOf(item)];
+                    if (!notification.IsSeen)
+                    {
+                        notification.IsSeen = !notification.IsSeen;
+                        await _notificationService.ToggleSeen(item.Id, _settingsService.AuthAccessToken);
+                    }
                     switch (notification.Type)
                     {
                         case Constant.NOTIFICATION_TYPE_NEW_RECEIVABLE_CODE:
-
+                            List<int> receivableIdList = JsonConvert.DeserializeObject<List<int>>(notification.NData);
+                            var navigationParams = new NavigationParameters();
+                            navigationParams.Add("receivableIdList", receivableIdList);
+                            await NavigationService.NavigateAsync("ReceivableListPage", navigationParams);
                             break;
                     }
                     //await NavigationService.NavigateAsync("NavigationPage/NotificationListPage");

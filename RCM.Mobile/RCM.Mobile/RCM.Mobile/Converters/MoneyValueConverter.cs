@@ -1,26 +1,15 @@
-﻿using RCM.Mobile.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using Xamarin.Forms;
-
+using System.Globalization;
 namespace RCM.Mobile.Converters
 {
-    public class NotificationBackgroundConverter : IValueConverter
+    public class MoneyValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
-
-            var notification = value as Notification;
-
-            if (notification.IsSeen)
-            {
-                return Color.White;
-            }
-            return Color.Gray;
+            return String.Format("{0:n0}", (decimal)value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

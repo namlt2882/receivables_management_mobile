@@ -27,6 +27,18 @@
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BarTextColor" Value="White" />
             </Style>
+            <Style x:Key="Collecting" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#21ba45" />
+            </Style>
+            <Style x:Key="Closed" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#767676" />
+            </Style>
+            <Style x:Key="Cancel" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#767676" />
+            </Style>
+            <Style x:Key="NotComfirmed" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#db2828" />
+            </Style>
         </ResourceDictionary>
 
     </Application.Resources>
