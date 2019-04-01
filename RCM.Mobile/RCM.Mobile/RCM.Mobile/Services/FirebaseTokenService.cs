@@ -17,28 +17,30 @@ namespace RCM.Mobile.Services
     {
         private const string ApiUrlBase = "/FirebaseToken";
         private readonly IRequestProvider _requestProvider;
+        private readonly ISettingsService _settingsService;
 
-        public FirebaseTokenService(IRequestProvider requestProvider)
+        public FirebaseTokenService(IRequestProvider requestProvider, ISettingsService settingsService)
         {
             _requestProvider = requestProvider;
+            _settingsService = settingsService;
         }
 
-      
+
         public async Task<string> AddFirebaseToken(string userToken, string firebaseToken)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase);
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase);
             return await _requestProvider.PostFirebaseToken(uri,firebaseToken,userToken);
         }
 
         public async Task DeleteFirebaseToken(string userToken)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase);
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase);
             await _requestProvider.DeleteAsync(uri, userToken);
         }
 
         public async Task UpdateFirebaseToken(string userToken, string firebaseToken)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase);
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase);
              await _requestProvider.PutFirebaseToken(uri, firebaseToken, userToken);
         }
     }

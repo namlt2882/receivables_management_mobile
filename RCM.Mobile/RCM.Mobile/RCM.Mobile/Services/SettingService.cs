@@ -10,9 +10,12 @@ namespace RCM.Mobile.Services
     {
         #region Setting Constants
         private const string AccessToken = "access_token";
+        private const string IP = "ip";
         private const string UserName = "username";
+        private const string Receivable = "receivableId";
         //private const string IdUseMocks = "use_mocks";
         private const string IdBase = "url_base";
+        private const string ServerTime = "server_day";
         //private const string IdIdentityBase = "url_base";
         private const string AuthAccessTokenExpirationDate = "expires_in";
         private const string FirebaseTokenIndevice = "firebase_token";
@@ -29,15 +32,28 @@ namespace RCM.Mobile.Services
         private readonly bool AllowGpsLocationDefault = false;
         //private readonly double FakeLatitudeDefault = 47.604610d;
         //private readonly double FakeLongitudeDefault = -122.315752d;
-        private readonly string UrlDefault = GlobalSetting.DefaultEndpoint;
+        
         //private readonly string UrlIdentityDefault = GlobalSetting.Instance.BaseIdentityEndpoint;
         //private readonly string UrlGatewayMarketingDefault = GlobalSetting.Instance.BaseGatewayMarketingEndpoint;
         //private readonly string UrlGatewayShoppingDefault = GlobalSetting.Instance.BaseGatewayShoppingEndpoint;
         #endregion
 
         #region Settings Properties
+        public string Url()
+        {
+            return $"http://{IPAddress}";
+        }
+        public string EndPoint()
+        {
+            return $"{Url()}/api";
+        }
+        public string IPAddress
+        {
+            get => GetValueOrDefault(IP, "202.78.227.91:6868");
+            set => AddOrUpdateValue(IP, value);
+        }
 
-        public string AuthAccessToken
+        public string  AuthAccessToken
         {
             get => GetValueOrDefault(AccessToken, AccessTokenDefault);
             set => AddOrUpdateValue(AccessToken, value);
@@ -49,6 +65,17 @@ namespace RCM.Mobile.Services
             set => AddOrUpdateValue(UserName, value);
         }
 
+        public int ReceivableId
+        {
+            get => GetValueOrDefault(Receivable, 0);
+            set => AddOrUpdateValue(Receivable, value);
+        }
+
+        public string ServerDay
+        {
+            get => GetValueOrDefault(ServerTime, "");
+            set => AddOrUpdateValue(ServerTime, value);
+        }
 
         public DateTime AccessTokenExpirationDate
         {
@@ -70,11 +97,6 @@ namespace RCM.Mobile.Services
         //    set => AddOrUpdateValue(IdUseMocks, value);
         //}
 
-        public string IdentityEndpointBase
-        {
-            get => GetValueOrDefault(IdBase, UrlDefault);
-            set => AddOrUpdateValue(IdBase, value);
-        }
         //public string IdentityEndpointBase
         //{
         //    get => GetValueOrDefault(IdIdentityBase, UrlIdentityDefault);
@@ -122,9 +144,11 @@ namespace RCM.Mobile.Services
         #region Public Methods
 
         public Task AddOrUpdateValue(string key, bool value) => AddOrUpdateValueInternal(key, value);
+        public Task AddOrUpdateValue(string key, int value) => AddOrUpdateValueInternal(key, value);
         public Task AddOrUpdateValue(string key, string value) => AddOrUpdateValueInternal(key, value);
         public Task AddOrUpdateValue(string key, DateTime value) => AddOrUpdateValueInternal(key, value);
         public bool GetValueOrDefault(string key, bool defaultValue) => GetValueOrDefaultInternal(key, defaultValue);
+        public int GetValueOrDefault(string key, int defaultValue) => GetValueOrDefaultInternal(key, defaultValue);
         public string GetValueOrDefault(string key, string defaultValue) => GetValueOrDefaultInternal(key, defaultValue);
         public DateTime GetValueOrDefault(string key, DateTime defaultValue) => GetValueOrDefaultInternal(key, defaultValue);
 
@@ -181,10 +205,12 @@ namespace RCM.Mobile.Services
     public interface ISettingsService
     {
         string AuthAccessToken { get; set; }
+        string IPAddress { get; set; }
         string AuthUserName { get; set; }
+        int ReceivableId { get; set; }
+        string ServerDay { get; set; }
         DateTime AccessTokenExpirationDate { get; set; }
         //bool UseMocks { get; set; }
-        string IdentityEndpointBase { get; set; }
         //string GatewayShoppingEndpointBase { get; set; }
         //string GatewayMarketingEndpointBase { get; set; }
         //bool UseFakeLocation { get; set; }
@@ -192,7 +218,8 @@ namespace RCM.Mobile.Services
         string FirebaseToken { get; set; }
         string Longitude { get; set; }
         bool AllowGpsLocation { get; set; }
-
+        string Url();
+        string EndPoint();
         bool TokenIsExpired { get; }
         bool GetValueOrDefault(string key, bool defaultValue);
         string GetValueOrDefault(string key, string defaultValue);

@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
-        xmlns="http://xamarin.com/schemas/2014/forms"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        x:Class="RCM.Mobile.Views.MainPage"
-        xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
-xmlns:telerikDataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
-xmlns:telerikListView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
-xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
-        prism:ViewModelLocator.AutowireViewModel="True"
-        Title="{Binding Title}">
+<ContentPage         
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="RCM.Mobile.Views.MainPage"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+    xmlns:telerikDataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+    xmlns:telerikListView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    xmlns:converter="clr-namespace:RCM.Mobile.Converters"
+    Title="{Binding Title}">
     <ContentPage.Content>
-        
         <Grid>
             <Grid.Resources>
                 <ResourceDictionary>
@@ -70,7 +69,7 @@ xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.Xa
                             </Grid>
                             <Label Grid.Column="1"
                                    Grid.ColumnSpan="4"
-                               Text="Màn hình chính"
+                               Text="Nhiệm vụ"
                                TextColor="#ffffff"
                                VerticalOptions="Center"
                                HorizontalOptions="Start">
@@ -90,97 +89,12 @@ xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.Xa
                                 </Grid.GestureRecognizers>
                                 <Image HorizontalOptions="FillAndExpand"
                                    VerticalOptions="Center"
-                                   AutomationId="OpenMenu" Source="HasNotification">
-                                    <!--<Image.Source>
-                                        <OnPlatform x:TypeArguments="ImageSource">
-                                            <On Platform="Android">HasNotification</On>
-                                        </OnPlatform>
-                                    </Image.Source>-->
-                                </Image>
+                                   AutomationId="OpenMenu" Source="HasNotification" IsVisible="{Binding HasNewNotification}" IsEnabled="{Binding HasNewNotification}"/>
+                                <Image HorizontalOptions="FillAndExpand"
+                                   VerticalOptions="Center"
+                                   AutomationId="OpenMenu" Source="NotHasNotification" IsVisible="{Binding NotHasNewNotification}" IsEnabled="{Binding NotHasNewNotification}"/>
                             </Grid>
-                            <!--<Grid Grid.Column="2" Grid.ColumnSpacing="0"
-                              Grid.RowSpacing="0"
-                              HeightRequest="48"
-                              WidthRequest="48">
-                                <Grid.Padding>
-                                    <OnPlatform x:TypeArguments="Thickness">
-                                        --><!--<On Platform="iOS">16, 0, 8, 0</On>--><!--
-                                        <On Platform="Android">16, 0, 16, 0</On>
-                                    </OnPlatform>
-                                </Grid.Padding>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnMenuTapped" />
-                                </Grid.GestureRecognizers>
-                                <Image HorizontalOptions="Start"
-                                   VerticalOptions="End"
-                                   AutomationId="OpenMenu">
-                                    <Image.Source>
-                                        <OnPlatform x:TypeArguments="ImageSource">
-                                            <On Platform="Android">HasNotification</On>
-                                        </OnPlatform>
-                                    </Image.Source>
-                                </Image>
-                            </Grid>-->
                         </Grid>
-                        <!--<telerikDataControls:RadListView Grid.Row="1"
-                                                     HorizontalOptions="Fill"
-                                                     ItemsSource="{Binding Recipes}">
-                            <telerikDataControls:RadListView.LayoutDefinition>
-                                <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0">
-                                    <telerikListView:ListViewLinearLayout.ItemLength>
-                                        <OnPlatform x:TypeArguments="x:Double">
-                                            <On Platform="Android">160</On>
-                                        </OnPlatform>
-                                    </telerikListView:ListViewLinearLayout.ItemLength>
-                                </telerikListView:ListViewLinearLayout>
-                            </telerikDataControls:RadListView.LayoutDefinition>
-                            <telerikDataControls:RadListView.ItemStyle>
-                                <telerikListView:ListViewItemStyle BackgroundColor="Transparent"
-                                                               BorderWidth="0"/>
-                            </telerikDataControls:RadListView.ItemStyle>
-                            <telerikDataControls:RadListView.SelectedItemStyle>
-                                <telerikListView:ListViewItemStyle BackgroundColor="Transparent"
-                                                               BorderWidth="0"/>
-                            </telerikDataControls:RadListView.SelectedItemStyle>
-                            <telerikDataControls:RadListView.PressedItemStyle>
-                                <telerikListView:ListViewItemStyle BackgroundColor="Transparent"
-                                                               BorderWidth="0"/>
-                            </telerikDataControls:RadListView.PressedItemStyle>
-                            <telerikDataControls:RadListView.ItemTemplate>
-                                <DataTemplate>
-                                    <telerikListView:ListViewTemplateCell>
-                                        <telerikListView:ListViewTemplateCell.View>
-                                            <Grid Grid.ColumnSpacing="0"
-                                              Grid.RowSpacing="0">
-                                                --><!--<Image Source="{Binding Image, Converter={StaticResource ImageSourceConverter}}"
-                                                   Aspect="AspectFill" />--><!--
-                                                <Grid Grid.ColumnSpacing="0"
-                                                  Grid.RowSpacing="0"
-                                                  HeightRequest="60"
-                                                  HorizontalOptions="FillAndExpand"
-                                                  VerticalOptions="End"
-                                                  BackgroundColor="White"
-                                                  Opacity="0.5"/>
-                                                <Grid Grid.ColumnSpacing="0"
-                                                  Grid.RowSpacing="0"
-                                                  Padding="16,8,0,8">
-                                                    <StackLayout HorizontalOptions="Start"
-                                                             VerticalOptions="End">
-                                                        --><!--<Label Text="{Binding Title}"
-                                                           TextColor="#362F2D"
-                                                           FontAttributes="Italic"
-                                                           FontSize="16" />
-                                                        <Label Text="{Binding Author}"
-                                                           TextColor="#534741"
-                                                           FontSize="12" />--><!--
-                                                    </StackLayout>
-                                                </Grid>
-                                            </Grid>
-                                        </telerikListView:ListViewTemplateCell.View>
-                                    </telerikListView:ListViewTemplateCell>
-                                </DataTemplate>
-                            </telerikDataControls:RadListView.ItemTemplate>
-                        </telerikDataControls:RadListView>-->
                     </Grid>
                 </telerikPrimitives:RadSideDrawer.MainContent>
                 <telerikPrimitives:RadSideDrawer.DrawerContent>
@@ -277,40 +191,8 @@ xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.Xa
                             </telerikDataControls:RadListView>
                         </Grid>
                     </Grid>
-
-                    <!--<StackLayout>
-                        <telerikInput:RadButton Text="Receivable" Command="{Binding Receivable}"/>
-                        <telerikInput:RadButton Text="Tasks" />
-                        <telerikInput:RadButton Text="Notification" Command="{Binding Notification}" />
-                        <telerikInput:RadButton Text="People" />
-                    </StackLayout>-->
                 </telerikPrimitives:RadSideDrawer.DrawerContent>
-
             </telerikPrimitives:RadSideDrawer>
-
-            <!--<telerikPrimitives:RadSideDrawer x:Name="drawer" DrawerLength="200">
-                <telerikPrimitives:RadSideDrawer.MainContent>
-                    <Label Text="Main content" />
-                </telerikPrimitives:RadSideDrawer.MainContent>
-                <telerikPrimitives:RadSideDrawer.DrawerContent>
-                    <StackLayout>
-                        <telerikInput:RadButton Text="Receivable" Command="{Binding Receivable}"/>
-                        <telerikInput:RadButton Text="Tasks" />
-                        <telerikInput:RadButton Text="Notification" Command="{Binding Notification}" />
-                        <Button Text="People" />
-                    </StackLayout>
-                </telerikPrimitives:RadSideDrawer.DrawerContent>
-            </telerikPrimitives:RadSideDrawer>-->
         </Grid>
-
-
-        <!--<StackLayout>
-            <Label Text="Welcome to Xamarin.Forms! Main Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <telerikInput:RadButton Text="NotiList"
-                                    Command="{Binding Noti}"
-                                    />
-        </StackLayout>-->
     </ContentPage.Content>
 </ContentPage>

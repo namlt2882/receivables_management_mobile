@@ -2,116 +2,316 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
-             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+            xmlns:telerikDataForm="clr-namespace:Telerik.XamarinForms.Input.DataForm;assembly=Telerik.XamarinForms.Input"
+
+            xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              x:Class="RCM.Mobile.Views.ReceivableDetailPage"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:telerikDataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:telerikListView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
              xmlns:converters="clr-namespace:RCM.Mobile.Converters"
+             xmlns:dataForms="clr-namespace:RCM.Mobile.Components.DataForms"
              Title="{Binding Title}"
              xmlns:controls="clr-namespace:RCM.Mobile.Components" 
              x:Name="this"
              Padding="5">
+
+
+    <telerikPrimitives:RadPopup.Popup>
+        <telerikPrimitives:RadPopup x:Name="popup"
+                                    IsModal="True"
+                                    OutsideBackgroundColor="#6F000000"
+                                    Placement="Center">
+            <telerikPrimitives:RadBorder CornerRadius="8" 
+                                         BackgroundColor="WhiteSmoke">
+                <Grid Padding="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           HorizontalTextAlignment="Center"
+                           FontSize="Medium"
+                           Text="Update Status"
+                           VerticalTextAlignment="Center" />
+                    <Button Grid.Row="1"
+                            Padding="2"
+                            HorizontalOptions="CenterAndExpand" 
+                            Text="Finish"
+                            Clicked="FinishPopup"
+                            BackgroundColor="#2196f3" 
+                            Command="{Binding UpdateReceivableStatus}" 
+                            CommandParameter="true"/>
+                    <Button Grid.Row="1"
+                            Grid.Column="1"
+                            Padding="2"
+                            HorizontalOptions="CenterAndExpand" 
+                            Text="Stop"
+                            Clicked="ClosePopup"
+                            BackgroundColor="#f44336"
+                            Command="{Binding UpdateReceivableStatus}"
+                            CommandParameter="false"/>
+                    <Button Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            HorizontalOptions="CenterAndExpand"
+                            CornerRadius="5"
+                            Padding="2"
+                            Text="Close"
+                            BackgroundColor="{StaticResource LSecondaryPrimary}"
+                            Clicked="Close"/>
+                </Grid>
+            </telerikPrimitives:RadBorder>
+        </telerikPrimitives:RadPopup>
+    </telerikPrimitives:RadPopup.Popup>
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:ReceivableStatusConverter x:Key="receivableStatusConverter"/>
             <converters:EnableUpdateStatusConverter x:Key="enableUpdateStatusConverter"/>
             <converters:ConfirmImageConverter x:Key="confirmImageConverter"/>
-          
+            <converters:IntToDateValueConverter x:Key="IntToDateValueConverter"/>
+            <Style x:Key="BaseButtonStyle" TargetType="{x:Type telerikInput:RadButton}">
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="Padding" Value="12,0,0,0"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="UWP, Android" Value="32" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RoundButtonStyle" BasedOn="{StaticResource BaseButtonStyle}" TargetType="{x:Type telerikInput:RadButton}">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Int32">
+                            <On Platform="UWP, Android" Value="16" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="telerikInput:RadButton" x:Key="ButtonAction">
+                <Setter Property="BackgroundColor" Value="{StaticResource LSecondaryPrimary}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="WidthRequest" Value="45"/>
+                <Setter Property="HeightRequest" Value="45"/>
+                <Setter Property="BorderRadius" Value="60"/>
+            </Style>
+            <Style TargetType="Label" x:Key="Label">
+                <Setter Property="FontSize" Value="Small"/>
+                <Setter Property="TextColor" Value="{StaticResource NavigationPrimary}"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-
     <ContentPage.ToolbarItems>
-        <controls:HideableToolbarItem Name="Edit" Text="Update Status" Clicked="ShowPopup" IsVisible="{Binding Receivable.CollectionProgressStatus, Converter={StaticResource enableUpdateStatusConverter}}"/>
+        <controls:HideableToolbarItem Name="Edit" Icon="task" Command="{Binding TapToDayTasksCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <StackLayout Orientation="Horizontal" Padding="10,0,0,0">
-                    <!--<Label Text="Status" TextColor="Black"/>-->
-                    <Frame CornerRadius="5" WidthRequest="100" Padding="2" VerticalOptions="Center" BorderColor="Black" HorizontalOptions="Center" >
-                        <Label x:Name="CollectionProgressStatus" 
-                               Text="{Binding Receivable.CollectionProgressStatus, Converter={StaticResource receivableStatusConverter}}" 
-                               VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium"
-                               FontAttributes="Bold" TextColor="White">
-                        </Label>
-                        <Frame.Triggers>
-                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Collecting">
-                                <Setter Property="Style" Value="{StaticResource Collecting}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Not Comfirmed">
-                                <Setter Property="Style" Value="{StaticResource NotComfirmed}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Closed">
-                                <Setter Property="Style" Value="{StaticResource Closed}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Cancel">
-                                <Setter Property="Style" Value="{StaticResource Cancel}"/>
-                            </DataTrigger>
-                        </Frame.Triggers>
-                    </Frame>
-                    <Image Source="{Binding Receivable.IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                </StackLayout>
+        <StackLayout>
+            <ScrollView>
+                <StackLayout>
+                    <StackLayout>
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <Label Text="{Binding Receivable.Contacts[0].Name}" FontSize="Large" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                            <Label Text="{Binding Receivable.Contacts[0].Phone}" FontSize="Medium" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                            <Label Text="{Binding Receivable.Contacts[0].Address}" FontSize="Small" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" IsVisible="{Binding Receivable.Contacts[0].HasAddress}"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="45">
+                                <telerikInput:RadButton Style="{StaticResource ButtonAction}"
+                                                                Command="{Binding PhoneCommand}"
+                                                                Image="iconfinder_phone_20"/>
+                                <telerikInput:RadButton Style="{StaticResource ButtonAction}"
+                                                                Command="{Binding MessagingCommand}"
+                                                                Image="iconfinder_message_20"/>
+                                <telerikInput:RadButton Style="{StaticResource ButtonAction}"
+                                                                Command="{Binding DirectionCommand}"
+                                                                IsVisible="{Binding Receivable.Contacts[0].HasAddress}"
+                                                                Image="iconfinder_location_24"/>
+                            </StackLayout>
+                        </StackLayout>
+                        <ContentView Padding="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6*"/>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="5*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="Prepaid Amount:" Style="{StaticResource Label}"/>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Receivable.PrepaidAmount}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="1" Grid.Column="0" Text="Debt Amount:" Style="{StaticResource Label}"/>
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Receivable.DebtAmount}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="2" Grid.Column="0" Text="Customer Name:" Style="{StaticResource Label}"/>
+                                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Receivable.CustomerName}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="3" Grid.Column="0" Text="From To(Expected):" Style="{StaticResource Label}"/>
+                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Receivable.PayableDay, Converter={StaticResource IntToDateValueConverter}}" FontSize="Small" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="3" Grid.Column="2" Text="{Binding Receivable.ExpectationClosedDay, Converter={StaticResource IntToDateValueConverter}}" FontSize="Small" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                <!--<Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Receivable.PayableDay, Converter={StaticResource IntToDateValueConverter}}" FontSize="Small"/>
+                                            <Span Text=" - " FontSize="Small"/>
+                                            <Span Text="{Binding Receivable.ExpectationClosedDay, Converter={StaticResource IntToDateValueConverter}}" FontSize="Small"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>-->
+                                <Label Grid.Row="4" Grid.Column="0" Text="Assign Day:" Style="{StaticResource Label}"/>
+                                <Label Grid.Row="4" Grid.Column="1" Text="{Binding Receivable.AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="5" Grid.Column="0" Text="End Day:" Style="{StaticResource Label}"/>
+                                <Label Grid.Row="5" Grid.Column="1" Text="{Binding Receivable.ClosedDay, Converter={StaticResource IntToDateValueConverter}}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                
+                            </Grid>
+                        </ContentView>
+                    </StackLayout>
+                    <telerikPrimitives:RadExpander HeaderText="Relatives" IsExpanded="False">
+                        <telerikPrimitives:RadExpander.Header>
+                            <telerikPrimitives:ExpanderHeader
+                            IndicatorText="&#x203A;"
+                            IndicatorColor="Blue"
+                            IndicatorFontFamily="Arial"
+                            IndicatorFontSize="16"
+                            IndicatorLocation="End"
+                            IndicatorAnimationDuration="1000"
+                            BorderColor="LightBlue"
+                            BorderThickness="2">
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="iconfinder_group_32" HeightRequest="20"/>
+                                    <Label Text="Relatives" FontSize="Large"/>
+                                </StackLayout>
 
-                <telerikInput:RadDataForm x:Name="dataForm" Source="{Binding Receivable}">
-                </telerikInput:RadDataForm>
-                <StackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
-                    <telerikPrimitives:RadPopup.Popup>
-                        <telerikPrimitives:RadPopup x:Name="popup"
-                                                    IsModal="True"
-                                                    OutsideBackgroundColor="#6F000000"
-                                                    Placement="Center"
-                                                    VerticalOffset="-250"
-                                                    >
-                            <telerikPrimitives:RadBorder CornerRadius="8" 
-                                         BackgroundColor="WhiteSmoke">
-                                <Grid Padding="20">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="5*"/>
-                                        <ColumnDefinition Width="5*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
-                                        <RowDefinition Height="30" />
-                                        <RowDefinition Height="20" />
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Row="0"
-                                           Grid.ColumnSpan="2"
-                                           Text="Update Reivable Status"
-                                           VerticalTextAlignment="Center" />
-                                    <Button Grid.Row="1"
-                                            Padding="2"
-                                            HorizontalOptions="CenterAndExpand" 
-                                            Text="Finish"
-                                            Clicked="FinishPopup"
-                                            BackgroundColor="#2196f3" 
-                                            Command="{Binding UpdateReceivableStatus}" 
-                                            CommandParameter="true"/>
-                                    <Button Grid.Row="1"
-                                            Grid.Column="1"                                        
-                                            Padding="2"
-                                            HorizontalOptions="CenterAndExpand" 
-                                            Text="Stop"
-                                            Clicked="ClosePopup"
-                                            BackgroundColor="#f44336"
-                                            Command="{Binding UpdateReceivableStatus}" 
-                                            CommandParameter="false"/>
-                                    <Button Grid.Row="2"             
-                                            Grid.ColumnSpan="2"
-                                            HorizontalOptions="CenterAndExpand" 
-                                            CornerRadius="5"
-                                            Padding="2"
-                                            Text="Close"
-                                            BackgroundColor="White"
-                                            Clicked="Close"
-                                            />
-                                </Grid>
-                            </telerikPrimitives:RadBorder>
-                        </telerikPrimitives:RadPopup>
-                    </telerikPrimitives:RadPopup.Popup>
-                </StackLayout>
+                            </telerikPrimitives:ExpanderHeader>
+                        </telerikPrimitives:RadExpander.Header>
 
+                        <telerikPrimitives:RadExpander.Content>
+                            <telerikDataControls:RadListView x:Name="contactList"
+                                             BackgroundColor="White"
+                                             SelectionMode="None"
+                                             ItemsSource="{Binding Relatives}"
+                                             AutomationId="listView">
+                                <telerikDataControls:RadListView.ItemStyle>
+                                    <telerikListView:ListViewItemStyle
+                                                       BorderWidth="1"
+                                                       BorderLocation="All"
+                                                       BorderColor="#D2C7C3" />
+                                </telerikDataControls:RadListView.ItemStyle>
+                                <telerikDataControls:RadListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <telerikListView:ListViewTemplateCell>
+                                            <telerikListView:ListViewTemplateCell.View>
+                                                <StackLayout Orientation="Vertical" Padding="10">
+                                                    <Label Text="{Binding Name}" FontSize="Large" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                                    <Label Text="{Binding Phone}" FontSize="Medium" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                                    <Label Text="{Binding Address}" FontSize="Small" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" IsVisible="{Binding HasAddress}"/>
+                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="45">
+                                                        <telerikInput:RadButton Style="{StaticResource ButtonAction}"
+                                                                                Command="{Binding BindingContext.PhoneRelativeCommand, Source={x:Reference this}}"
+                                                                                CommandParameter="{Binding Phone}"
+                                                                Image="iconfinder_phone_20"/>
+                                                        <telerikInput:RadButton Style="{StaticResource ButtonAction}"
+                                                                                Command="{Binding BindingContext.MessagingRelativeCommand, Source={x:Reference this}}"
+                                                                                CommandParameter="{Binding Phone}"
+                                                                Image="iconfinder_message_20"/>
+                                                        <telerikInput:RadButton Style="{StaticResource ButtonAction}"
+                                                                                Command="{Binding BindingContext.DirectionRelativeCommand, Source={x:Reference this}}"
+                                                                                CommandParameter="{Binding Address}"
+                                                                                IsVisible="{Binding HasAddress}"
+                                                                Image="iconfinder_location_24"/>
+                                                    </StackLayout>
+                                                </StackLayout>
+                                                <!--<StackLayout VerticalOptions="Center">
+                                                    <ContentView Padding="5,5,0,0">
+                                                        <Grid Padding="10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="7*"/>
+                                                                <ColumnDefinition Width="1*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid Grid.Column="0" >
+                                                                <StackLayout Padding="5">
+                                                                    <Label Text="{Binding Name}" FontSize="Small" HeightRequest="20"  LineBreakMode="WordWrap"/>
+                                                                    <Label Text="{Binding Phone}" FontSize="Small" HeightRequest="20"  LineBreakMode="WordWrap"/>
+                                                                    <Label Text="{Binding Address}" FontSize="Small" HeightRequest="40"  LineBreakMode="WordWrap" IsVisible="{Binding HasAddress}"/>
+                                                                </StackLayout>
+                                                            </Grid>
+                                                            <Grid Grid.Column="1">
+                                                                <StackLayout>
+                                                                    <telerikInput:RadButton WidthRequest="30"
+                                                                                            HeightRequest="30"
+                                                                                            FontSize="Micro"
+                                                                                            TextColor="White"
+                                                                                            BackgroundColor="#72b239"
+                                                                                            BorderRadius="60"
+                                                                                            Command="{Binding BindingContext.PhoneRelativeCommand, Source={x:Reference this}}"
+                                                                                            CommandParameter="{Binding Phone}"
+                                                                                            Image="iconfinder_phone_20"/>
+                                                                    <telerikInput:RadButton WidthRequest="30"
+                                                                                            HeightRequest="30"
+                                                                                            FontSize="Micro"
+                                                                                            TextColor="White"
+                                                                                            BackgroundColor="#ff9f00"
+                                                                                            BorderRadius="60"
+                                                                                            Command="{Binding BindingContext.MessagingRelativeCommand, Source={x:Reference this}}"
+                                                                                            CommandParameter="{Binding Phone}"
+                                                                                            Image="iconfinder_message_20"/>
+                                                                    <telerikInput:RadButton WidthRequest="30"
+                                                                                            HeightRequest="30"
+                                                                                            FontSize="Micro"
+                                                                                            TextColor="White"
+                                                                                            BackgroundColor="#dd4b3e"
+                                                                                            BorderRadius="60"
+                                                                                            Command="{Binding BindingContext.DirectionRelativeCommand, Source={x:Reference this}}"
+                                                                                            CommandParameter="{Binding Address}"
+                                                                                            IsVisible="{Binding HasAddress}"
+                                                                                            Image="iconfinder_location_24"/>
+                                                                </StackLayout>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </ContentView>
+                                                </StackLayout>-->
+                                            </telerikListView:ListViewTemplateCell.View>
+                                        </telerikListView:ListViewTemplateCell>
+                                    </DataTemplate>
+                                </telerikDataControls:RadListView.ItemTemplate>
+                            </telerikDataControls:RadListView>
+                        </telerikPrimitives:RadExpander.Content>
+                    </telerikPrimitives:RadExpander>
+                </StackLayout>
+            </ScrollView>
+            <StackLayout Orientation="Vertical" Padding="10,0,10,0" VerticalOptions="EndAndExpand">
+                <!--<Label Text="Status" TextColor="Black"/>-->
+                <telerikInput:RadButton
+                    Text="{Binding Receivable.CollectionProgressStatus, Converter={StaticResource receivableStatusConverter}}"
+                    VerticalOptions="EndAndExpand"
+                    x:Name="CollectionProgressStatus"
+                    Clicked="ShowPopup"
+                    CornerRadius="50"
+                    WidthRequest="100" Style="{StaticResource RoundButtonStyle}">
+                    <telerikInput:RadButton.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Collecting">
+                            <Setter Property="Style" Value="{StaticResource Collecting}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Not Comfirmed">
+                            <Setter Property="Style" Value="{StaticResource NotComfirmed}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Closed">
+                            <Setter Property="Style" Value="{StaticResource Closed}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Cancel">
+                            <Setter Property="Style" Value="{StaticResource Cancel}"/>
+                        </DataTrigger>
+                    </telerikInput:RadButton.Triggers>
+                </telerikInput:RadButton>
             </StackLayout>
+        </StackLayout>
 
-        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

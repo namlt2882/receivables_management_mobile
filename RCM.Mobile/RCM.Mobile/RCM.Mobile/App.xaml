@@ -22,7 +22,9 @@
                 </telerikCommon:RadResourceDictionary.MergedDictionaries>
             </telerikCommon:RadResourceDictionary>-->
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <Color x:Key="NavigationPrimary">#3778c2</Color>
+            <Color x:Key="LSecondaryPrimary">#c7e1f7</Color>
+            <Color x:Key="DSecondaryPrimary">#0039cb</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BarTextColor" Value="White" />
@@ -34,7 +36,7 @@
                 <Setter Property="BackgroundColor" Value="#767676" />
             </Style>
             <Style x:Key="Cancel" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="#767676" />
+                <Setter Property="BackgroundColor" Value="#db2828" />
             </Style>
             <Style x:Key="NotComfirmed" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="#db2828" />

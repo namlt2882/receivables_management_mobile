@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Microsoft.CSharp;
 using RCM.Mobile.Models;
 using System.Collections.ObjectModel;
+using Task = System.Threading.Tasks.Task;
+using Prism.Services;
 
 namespace RCM.Mobile.Services
 {
@@ -50,11 +52,13 @@ namespace RCM.Mobile.Services
     public interface IRequestProvider
     {
         Task<TResult> GetAsync<TResult>(string uri, string token = "");
-        Task<ObservableCollection<Receivable>> ReceivableListPostAsync(string uri, List<int> receivableIdList, string token = "");
-
+        Task<List<Receivable>> ReceivableListPostAsync(string uri, List<int> receivableIdList, string token = "");
+        Task<List<Receivable>> ReceivableListPostAsync(string uri, string token = "");
         Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "");
         Task<JObject> PostAsyncStringResultAsync<TResult>(string uri, TResult data, string token = "", string header = "");
         Task<TResult> PutAsync<TResult>(string uri, TResult data, string token = "", string header = "");
+        Task CancelTask(string uri, string token = "", string header = "");
+        Task<bool> UpdateTask(string uri, UpdateTaskModel data, string token = "", string header = "");
         Task<string> PostFirebaseToken(string uri, string firebaseToken, string token = "", string header = "");
         Task PutFirebaseToken(string uri, string firebaseToken, string token = "", string header = "");
         Task DeleteAsync(string uri, string token = "");
@@ -63,9 +67,10 @@ namespace RCM.Mobile.Services
     public class RequestProvider : IRequestProvider
     {
         private readonly JsonSerializerSettings _serializerSettings;
-
-        public RequestProvider()
+        private readonly IPageDialogService _dialogService;
+        public RequestProvider(IPageDialogService dialogService)
         {
+            _dialogService = dialogService;
             _serializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -208,10 +213,11 @@ namespace RCM.Mobile.Services
                 if (response.StatusCode == HttpStatusCode.Forbidden ||
                     response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    throw new ServiceAuthenticationException(content);
+                    await _dialogService.DisplayAlertAsync(response.StatusCode.ToString(), "", "OK");
+                    //throw new ServiceAuthenticationException(content);
                 }
-
-                throw new HttpRequestExceptionEx(response.StatusCode, content);
+                await _dialogService.DisplayAlertAsync(response.StatusCode.ToString(), "", "OK");
+                //throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
         }
 
@@ -234,22 +240,84 @@ namespace RCM.Mobile.Services
             JObject jwtDynamic = JsonConvert.DeserializeObject<dynamic>(result);
             return jwtDynamic;
         }
-
-        public async Task<ObservableCollection<Receivable>> ReceivableListPostAsync(string uri, List<int> receivableIdList, string token = "")
+        public async Task<List<Receivable>> ReceivableListPostAsync(string uri, string token = "")
         {
             HttpClient httpClient = CreateHttpClient(token);
 
+            var content = new StringContent(JsonConvert.SerializeObject(""));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync(uri, content);
+            await HandleResponse(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<Receivable>();
+            }
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            List<Receivable> result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<List<Receivable>>(serialized, _serializerSettings));
+
+            return result;
+        }
+        public async Task<List<Receivable>> ReceivableListPostAsync(string uri, List<int> receivableIdList, string token = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
             var content = new StringContent(JsonConvert.SerializeObject(receivableIdList));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync(uri, content);
 
             await HandleResponse(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<Receivable>();
+            }
             string serialized = await response.Content.ReadAsStringAsync();
 
-            ObservableCollection<Receivable> result = await Task.Run(() =>
-                JsonConvert.DeserializeObject<ObservableCollection<Receivable>>(serialized, _serializerSettings));
+            List<Receivable> result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<List<Receivable>>(serialized, _serializerSettings));
 
             return result;
+        }
+
+        public async Task<bool> UpdateTask(string uri, UpdateTaskModel data, string token = "", string header = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddHeaderParameter(httpClient, header);
+            }
+            #region File
+
+            //var content = new StringContent(JsonConvert.SerializeObject(data));
+            //content.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+            HttpContent file = new StreamContent(data.File.StreamSource);
+            file.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = data.File.FileName };
+            file.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            #endregion
+            var formData = new MultipartFormDataContent();
+            formData.Add(file);
+            formData.Add(new StringContent(data.Id.ToString()), "Id");
+            formData.Add(new StringContent(data.Note != null ? data.Note : ""), "Note");
+            HttpResponseMessage response = await httpClient.PostAsync(uri, formData);
+            await HandleResponse(response);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task CancelTask(string uri, string token = "", string header = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddHeaderParameter(httpClient, header);
+            }
+            HttpResponseMessage response = await httpClient.PutAsync(uri, null);
+            await HandleResponse(response);
         }
     }
 }

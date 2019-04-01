@@ -16,6 +16,8 @@ namespace RCM.Mobile.Helpers
         public const string NOTIFICATION_TYPE_NEW_RECEIVABLE = "New Receivable";
         public const int NOTIFICATION_TYPE_NEW_RECEIVABLE_CODE = 11;
 
+        public const string NOTIFICATION_TYPE_ASSIGN_RECEIVABLE = "Assign Receivable";
+        public const int NOTIFICATION_TYPE_ASSIGN_RECEIVABLE_CODE = 13;
         #endregion
 
         #region Debtor

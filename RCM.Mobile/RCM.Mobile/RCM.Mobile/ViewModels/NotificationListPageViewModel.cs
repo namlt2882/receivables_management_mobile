@@ -70,14 +70,21 @@ namespace RCM.Mobile.ViewModels
                         notification.IsSeen = !notification.IsSeen;
                         await _notificationService.ToggleSeen(item.Id, _settingsService.AuthAccessToken);
                     }
+                    var navigationParams = new NavigationParameters();
+
                     switch (notification.Type)
                     {
                         case Constant.NOTIFICATION_TYPE_NEW_RECEIVABLE_CODE:
                             List<int> receivableIdList = JsonConvert.DeserializeObject<List<int>>(notification.NData);
-                            var navigationParams = new NavigationParameters();
                             navigationParams.Add("receivableIdList", receivableIdList);
-                            await NavigationService.NavigateAsync("ReceivableListPage", navigationParams);
+                            await NavigationService.NavigateAsync("AssignedReceivablesPage", navigationParams);
                             break;
+                        case Constant.NOTIFICATION_TYPE_ASSIGN_RECEIVABLE_CODE:
+                            int receivableId = JsonConvert.DeserializeObject<int>(notification.NData);
+                            navigationParams.Add("receivableIdList", new List<int>() { receivableId });
+                            await NavigationService.NavigateAsync("AssignedReceivablesPage", navigationParams);
+                            break;
+
                     }
                     //await NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
                 });

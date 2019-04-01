@@ -1,7 +1,4 @@
-﻿using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
-using System;
+﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using RCM.Mobile.Views;
@@ -9,16 +6,16 @@ using Prism;
 using Prism.Ioc;
 using RCM.Mobile.ViewModels;
 using RCM.Mobile.Services;
-using Microsoft.AppCenter.Push;
 using Plugin.FirebasePushNotification;
 using Prism.Navigation;
 using Xamarin.Forms.Internals;
 using System.Diagnostics;
+using Prism.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace RCM.Mobile
 {
-    public partial class App
+    public partial class App : IReloadable
     {
 
         /* 
@@ -30,23 +27,23 @@ namespace RCM.Mobile
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
+        public void OnLoaded()
+        {
+
+        }
+
         protected override void OnInitialized()
         {
             Xamarin.Forms.Internals.Log.Listeners.Add(new DelegateLogListener((arg1, arg2) => Debug.WriteLine(arg2)));
 #if DEBUG
             HotReloader.Current.Start(this);
 #endif
-            ////////////////Hockey App
-            //AppCenter.Start("android=1b825fb4-d069-4218-9adf-a7197b4513a3;"
-            //         //+ "uwp={Your UWP App secret here};" +
-            //         // "ios={Your iOS App secret here}"
-            //         ,
-            //         //typeof(Analytics), typeof(Crashes), 
-            //         typeof(Push));
-
+            
             InitializeComponent();
             var settingsService = Container.Resolve<ISettingsService>();
             var firebaseTokenService = Container.Resolve<IFirebaseTokenService>();
+            var navigationService = Container.Resolve<INavigationService>();
+            var pageDialogService = Container.Resolve<IPageDialogService>();
             if (!string.IsNullOrEmpty(settingsService.AuthAccessToken))
             {
                 if (settingsService.TokenIsExpired)
@@ -74,8 +71,22 @@ namespace RCM.Mobile
                         firebaseTokenService.UpdateFirebaseToken(settingsService.AuthAccessToken, CrossFirebasePushNotification.Current.Token);
                     }
                 }
-                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
                 settingsService.FirebaseToken = CrossFirebasePushNotification.Current.Token;
+            };
+            CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
+            {
+                //pageDialogService.DisplayAlertAsync("Open", "", "OK");
+                //NavigationService.NavigateAsync("NavigationPage/ReceivableListPage");
+                
+            };
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+            {
+            };
+            CrossFirebasePushNotification.Current.OnNotificationAction += (s, p) =>
+            {
+                //pageDialogService.DisplayAlertAsync("Action","","OK");
+                //NavigationService.NavigateAsync("NavigationPage/ReceivableListPage");
+                
             };
 #if DEBUG
             CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
@@ -92,6 +103,7 @@ namespace RCM.Mobile
 
             CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
             {
+                NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
                 System.Diagnostics.Debug.WriteLine("Opened");
                 foreach (var data in p.Data)
                 {
@@ -134,15 +146,19 @@ namespace RCM.Mobile
         {
             //Navigation
             containerRegistry.RegisterForNavigation<NavigationPage>("NavigationPage");
-            containerRegistry.RegisterForNavigation<MainPage>("MainPage");
+
+            containerRegistry.RegisterForNavigation<AssignedReceivablesPage>("AssignedReceivablesPage");
             containerRegistry.RegisterForNavigation<LoginPage>("LoginPage");
+            containerRegistry.RegisterForNavigation<MainPage>("MainPage");
             //Notification
             containerRegistry.RegisterForNavigation<NotificationListPage>("NotificationListPage");
             containerRegistry.RegisterForNavigation<NotificationPage>("NotificationPage");
             //Receivable
-            containerRegistry.RegisterForNavigation<ReceivableListPage>("ReceivableListPage");
             containerRegistry.RegisterForNavigation<ReceivableDetailPage>("ReceivableDetailPage");
-
+            containerRegistry.RegisterForNavigation<ReceivableListPage>("ReceivableListPage");
+            containerRegistry.RegisterForNavigation<ReceivableTaskListPage>("ReceivableTaskListPage");
+            containerRegistry.RegisterForNavigation<TaskDetailPage>("TaskDetailPage");
+            containerRegistry.RegisterForNavigation<TaskPage>("TaskPage");
             //Service
             containerRegistry.Register<IAuthService, AuthService>();
             containerRegistry.Register<IFirebaseTokenService, FirebaseTokenService>();
@@ -150,15 +166,22 @@ namespace RCM.Mobile
             containerRegistry.Register<IRequestProvider, RequestProvider>();
             containerRegistry.Register<IReceivableService, ReceivableService>();
             containerRegistry.Register<ISettingsService, SettingsService>();
+            containerRegistry.Register<ITaskService, TaskService>();
+            containerRegistry.Register<IUtilityService, UtilityService>();
             //containerRegistry.Register<IHubConnectionService, HubConnectionService>();
             ///Page
+            containerRegistry.RegisterForNavigation<AssignedReceivablesPage, AssignedReceivablesPageViewModel>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
             containerRegistry.RegisterForNavigation<NotificationListPage, NotificationListPageViewModel>();
             containerRegistry.RegisterForNavigation<NotificationPage, NotificationPageViewModel>();
-            containerRegistry.RegisterForNavigation<ReceivableListPage, ReceivableListPageViewModel>();
+
             containerRegistry.RegisterForNavigation<ReceivableDetailPage, ReceivableDetailPageViewModel>();
-            
+            containerRegistry.RegisterForNavigation<ReceivableListPage, ReceivableListPageViewModel>();
+            containerRegistry.RegisterForNavigation<ReceivableTaskListPage, ReceivableTaskListPageViewModel>();
+            containerRegistry.RegisterForNavigation<TaskDetailPage, TaskDetailPageViewModel>();
+
         }
     }
 

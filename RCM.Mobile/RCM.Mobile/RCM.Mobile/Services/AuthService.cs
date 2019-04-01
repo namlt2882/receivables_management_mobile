@@ -20,15 +20,17 @@ namespace RCM.Mobile.Services
     {
         private const string ApiUrlBase = "/Auth";
         private readonly IRequestProvider _requestProvider;
+        private readonly ISettingsService _settingsService;
 
-        public AuthService(IRequestProvider requestProvider)
+        public AuthService(IRequestProvider requestProvider, ISettingsService settingsService)
         {
             _requestProvider = requestProvider;
+            _settingsService = settingsService;
         }
 
         public async Task<JObject> Login(AuthModel authModel)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase+"/Login");
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase+"/Login");
             return await _requestProvider.PostAsyncStringResultAsync<AuthModel>(uri, authModel);
         }
     }

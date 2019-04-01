@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RCM.Mobile.Views.TaskDetailPage"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             
+             xmlns:converters="clr-namespace:RCM.Mobile.Converters"
+             Title="Update Task"
+             Padding="5">
+    <ContentPage.Content>
+
+        <ScrollView>
+            <StackLayout>
+                <Grid Padding="10" HeightRequest="300">
+                    <Grid.RowDefinitions>
+                        
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="7*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Grid.Column="0"  Source="identification" HeightRequest="50" VerticalOptions="Start"/>
+                    <Label Grid.Row="0" Grid.Column="1"  Text="{Binding Task.Id}"  HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Image Grid.Row="1" Grid.Column="0"  Source="identification" HeightRequest="50" VerticalOptions="Start"/>
+                    <ImageButton Grid.Row="1" Grid.Column="1" Source="upload" HeightRequest="50" WidthRequest="80" VerticalOptions="Start" HorizontalOptions="Start" BackgroundColor="AliceBlue" Command="{Binding TakePhoto}"/>
+                    <Image Grid.Row="2" Grid.Column="0"  Source="identification" HeightRequest="50" VerticalOptions="Start"/>
+                    <Editor Grid.Row="2" Grid.Column="1"  Text="{Binding Task.Note}" Placeholder="Note" HeightRequest="200" VerticalOptions="Center"/>
+                    <ImageButton Grid.Row="3" Grid.ColumnSpan="2" Source="debt1600" HeightRequest="50" WidthRequest="80" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue" Command="{Binding ViewReceivable}" CommandParameter="{Binding Task.ReceivableId}"/>
+                    <!--<ImageButton Grid.Row="3" Grid.ColumnSpan="2" Text="View Receivable Detail" Command="{Binding ViewReceivable}" CommandParameter="{Binding Task.ReceivableId}" Source="debt1600" />-->
+                </Grid>
+
+                <Label Text="{Binding Task.Name}"/>
+                <Button Text="Pick photo" Command="{Binding PickPhoto}"/>
+                <Button Text="Take photo" Command="{Binding TakePhoto}"/>
+                <Image WidthRequest="200" HeightRequest="200" Source="{Binding ImageSource}"/>
+                
+                <Button Text="Update" IsEnabled="{Binding UpdateIsAvailable}" Command="{Binding Update}" VerticalOptions="EndAndExpand"/>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

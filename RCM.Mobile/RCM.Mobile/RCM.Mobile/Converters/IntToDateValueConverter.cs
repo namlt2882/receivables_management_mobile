@@ -16,7 +16,9 @@ namespace RCM.Mobile.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty((string)value)) return "";
+            string result = (string)value;
+            return DateTime.ParseExact(result, "dd/MM/yyyy", CultureInfo.CurrentCulture); ;
         }
     }
 }

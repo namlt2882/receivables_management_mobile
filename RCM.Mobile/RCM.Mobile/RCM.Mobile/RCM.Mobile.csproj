@@ -10,18 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.13.2" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.13.2" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.13.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Plugin.FirebasePushNotification" Version="2.3.5" />
+    <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
+    <PackageReference Include="Plugin.ShareFile" Version="1.0.0" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.1.0.431" />
+    <PackageReference Include="ScanbotSDK.Xamarin.Forms" Version="1.3.0" />
     <PackageReference Include="Telerik.UI.for.Xamarin" Version="2019.1.220.1" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
+    <PackageReference Include="Xam.Plugins.Messaging" Version="5.2.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.5.0.169047" />
-    <PackageReference Include="Xamarin.HotReload" Version="1.2.2" />  
+    <PackageReference Include="Xamarin.HotReload" Version="1.2.4" />  
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +34,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Style\LoginStyle.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\AssignedReceivablesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\LoginPage.xaml">
@@ -52,6 +57,15 @@
     <EmbeddedResource Update="Views\ReceivableListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ReceivableTaskListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TaskDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TaskPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Style\MainPageStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\AssignedReceivablesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Views\LoginPage.xaml">
@@ -76,7 +93,19 @@
     <None Update="Views\NotificationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Views\ReceivableDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Views\ReceivableListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\ReceivableTaskListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\TaskDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\TaskPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

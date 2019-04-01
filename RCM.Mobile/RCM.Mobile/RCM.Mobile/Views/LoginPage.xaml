@@ -34,7 +34,7 @@
 			TextColor="White"
             Command="{Binding Login}"
 			BackgroundColor="#1dabf0" />
-        
+        <Button Text="ChangeIP"  Command="{Binding ChangeIP}" />
     </StackLayout>
 
 

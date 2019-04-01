@@ -17,29 +17,49 @@ namespace RCM.Mobile.ViewModels
     public class MainPageViewModel : BaseAuthenticatedViewModel
     {
         private IFirebaseTokenService _firebaseTokenService;
-        public MainPageViewModel(INavigationService navigationService, ISettingsService settingsService, IPageDialogService dialogService, IFirebaseTokenService firebaseTokenService)
+        private ITaskService _taskService;
+        private INotificationService _notificationService;
+        private IUtilityService _utilityService;
+        public MainPageViewModel(INavigationService navigationService, ISettingsService settingsService, IPageDialogService dialogService, IFirebaseTokenService firebaseTokenService, ITaskService taskService, INotificationService notificationService, IUtilityService utilityService)
             : base(settingsService, dialogService, navigationService)
         {
             _firebaseTokenService = firebaseTokenService;
+            _taskService = taskService;
+            _notificationService = notificationService;
+            _utilityService = utilityService;
             Title = "";
             this.Menus = new ObservableCollection<string>()
             {
                 "Receivable",
-                "Tasks",
-                //"Notification",
+                "Task",
                 "Setting",
                 "Something funny",
                 "Logout",
-
             };
+            
             this.AccountName = settingsService.AuthUserName;
+            
+            Init();
         }
 
-        private string _hasNewNotification;
-        public string HasNewNotification
+        private ObservableCollection<Models.Task> _tasks;
+        public ObservableCollection<Models.Task> Tasks
+        {
+            get { return _tasks; }
+            set { SetProperty(ref _tasks, value); RaisePropertyChanged("Tasks"); }
+        }
+
+        private bool _hasNewNotification;
+        public bool HasNewNotification
         {
             get { return _hasNewNotification; }
-            set { SetProperty(ref _hasNewNotification, value); }
+            set { SetProperty(ref _hasNewNotification, value); RaisePropertyChanged("HasNewNotification"); }
+        }
+        private bool _notHasNewNotification;
+        public bool NotHasNewNotification
+        {
+            get { return _notHasNewNotification; }
+            set { SetProperty(ref _notHasNewNotification, value); RaisePropertyChanged("NotHasNewNotification"); }
         }
 
         private string _accountName;
@@ -70,40 +90,43 @@ namespace RCM.Mobile.ViewModels
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            //if (parameters.ContainsKey("PreviousPage"))
+            //var collection = await _taskService.GetCollectorAssignedTasks(_settingsService.AuthAccessToken);
+            //Tasks = new ObservableCollection<Models.Task>();
+            //foreach (var item in collection)
             //{
-            //    var previousPage = parameters["PreviousPage"] as string;
-            //    if (String.IsNullOrEmpty(previousPage))
-            //        if (previousPage.Equals(Constant.Login))
-            //        {
-            //            var mainPage = Application.Current.MainPage;
-            //            mainPage.Navigation.RemovePage(
-            //                            mainPage.Navigation.NavigationStack[0]);
-            //        }
+            //    Tasks.Add(item);
             //}
-
-            //NavigationPage.SetHasNavigationBar(Application.Current.MainPage, false);
+            Init();
             base.OnNavigatedTo(parameters);
         }
+        private async void Init()
+        {
+            HasNewNotification = await _notificationService.HasNotifications(token: _settingsService.AuthAccessToken);
+            NotHasNewNotification = !HasNewNotification;
+            _settingsService.ServerDay = await _utilityService.GetServerTime(_settingsService.AuthAccessToken);
+            await _firebaseTokenService.UpdateFirebaseToken(_settingsService.AuthAccessToken, CrossFirebasePushNotification.Current.Token);
+        } 
         private async System.Threading.Tasks.Task OnMenuChangedAsync()
         {
             switch (SelectedMenu)
             {
-                //case "Notification":
-                //    await NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
-                //    break;
+                case "Task":
+                    await NavigationService.NavigateAsync("NavigationPage/TaskPage");
+                    break;
+                case "Calendar":
+                    await NavigationService.NavigateAsync("NavigationPage/Calendar");
+                    break;
                 case "Receivable":
                     await NavigationService.NavigateAsync("NavigationPage/ReceivableListPage");
                     break;
                 case "Logout":
-                    //await _firebaseTokenService.DeleteFirebaseToken(_settingsService.AuthAccessToken);
+                    await _firebaseTokenService.DeleteFirebaseToken(_settingsService.AuthAccessToken);
                     _settingsService.AccessTokenExpirationDate = DateTime.UtcNow;
                     _settingsService.AuthAccessToken = "";
                     //CrossFirebasePushNotification.Current.Unsubscribe(_settingsService.AuthUserName);
                     await NavigationService.NavigateAsync("RCM.Mobile:///LoginPage");
                     break;
             }
-
         }
         public Command Notification
         {
@@ -115,15 +138,5 @@ namespace RCM.Mobile.ViewModels
                 });
             }
         }
-        //public Command Receivable
-        //{
-        //    get
-        //    {
-        //        return new Command(async () =>
-        //        {
-        //            await NavigationService.NavigateAsync("ReceivableListPage");
-        //        });
-        //    }
-        //}
     }
 }

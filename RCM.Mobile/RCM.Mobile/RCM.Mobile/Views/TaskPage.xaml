@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="RCM.Mobile.Views.TaskPage"
+    xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+    xmlns:telerikListView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
+    xmlns:telerikCalendarCommands="clr-namespace:Telerik.XamarinForms.Input.Calendar.Commands;assembly=Telerik.XamarinForms.Input"
+    xmlns:telerikDataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+    xmlns:telerikListViewCommands="clr-namespace:Telerik.XamarinForms.DataControls.ListView.Commands;assembly=Telerik.XamarinForms.DataControls"
+    xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:converter="clr-namespace:RCM.Mobile.Converters"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    Title="Task Management">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:TaskHeaderNameLevelConverter x:Key="TaskHeaderNameLevelConverter"/>
+            <converter:LevelToMarginConverter x:Key="LevelToMarginConverter" />
+            <converter:TaskTypeConverter x:Key="TaskTypeConverter"/>
+            <converter:TaskStatusConverter x:Key="TaskStatusConverter"/>
+            <converter:MinMaxDateConverter x:Key="MinMaxDateConverter"/>
+            <DataTemplate x:Key="ListViewItemTemplate">
+                <telerikListView:ListViewTemplateCell>
+
+                    <telerikListView:ListViewTemplateCell.View>
+
+                        <Grid Grid.ColumnSpacing="0" Padding="25, 0, 0, 0"
+                                              Grid.RowSpacing="0">
+                            <!--<Image Source="{Binding Image, Converter={StaticResource ImageSourceConverter}}"
+                                                   Aspect="AspectFill" />-->
+                            <Grid Grid.ColumnSpacing="0"
+                                                  Grid.RowSpacing="0"
+                                                  HeightRequest="60"
+                                                  HorizontalOptions="FillAndExpand"
+                                                  VerticalOptions="End"
+                                                  Opacity="0.5"/>
+                            <Grid Grid.ColumnSpacing="0"
+                                                  Grid.RowSpacing="0"
+                                                  Padding="16,8,0,8">
+                                <StackLayout HorizontalOptions="Start"
+                                                             VerticalOptions="End">
+                                    <Label LineBreakMode="WordWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <!--<Span Text="{Binding Id}"
+                                                           TextColor="Black"
+                                                           FontAttributes="Bold"
+                                                           FontSize="16"/>
+                                                <Span Text="-"/>-->
+                                                <Span Text="{Binding Name}"
+                                                           TextColor="#362F2D"
+                                                           FontAttributes="Italic"
+                                                           FontSize="16"/>
+                                                <!--<Span Text="("
+                                                           TextColor="red" FontAttributes="Italic" FontSize="Small" />
+                                                <Span Text="{Binding Type, Converter={StaticResource TaskTypeConverter}}"
+                                                           TextColor="red" FontAttributes="Italic" FontSize="Small" />
+                                                <Span Text=")"
+                                                           TextColor="red" FontAttributes="Italic" FontSize="Small" />-->
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+                        </Grid>
+                    </telerikListView:ListViewTemplateCell.View>
+                </telerikListView:ListViewTemplateCell>
+            </DataTemplate>
+            <DataTemplate x:Key="ListViewMultiLevelGroupHeaderTemplate">
+                <Grid BackgroundColor="#F1F2F5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="LevelLbl" Text="&#x25B8;" Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}}" 
+                   TextColor="DarkGray" FontSize="Medium">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
+                                <Setter Property="Text" Value="&#x25BE;" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Margin="0, 12, 0, 6" Text="{Binding Converter={StaticResource TaskHeaderNameLevelConverter}}" Grid.Column="1" TextColor="DarkGray" FontSize="Medium" HorizontalOptions="Start" />
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid" Binding="{Binding Level}" Value="1">
+                            <Setter Property="BackgroundColor" Value="AliceBlue"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Grid" Binding="{Binding Level}" Value="2">
+                            <Setter Property="BackgroundColor" Value="White"/>
+                        </DataTrigger>
+                    </Grid.Triggers>
+                </Grid>
+            </DataTemplate>
+            <ControlTemplate x:Key="CurrentHeaderControlTemplate">
+                <Grid BackgroundColor="Transparent">
+                    <BoxView IsVisible="{TemplateBinding IsSelected}"
+                         BackgroundColor="{StaticResource LSecondaryPrimary}"
+                         VerticalOptions="End"
+                         HeightRequest="5"/>
+                    <StackLayout 
+                        Orientation="Horizontal"
+                        Margin="0, 0, 0, 8"
+                        HorizontalOptions="Center">
+                        <Image
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Source="Current_Task"/>
+                        <Label Text="{TemplateBinding Text}"
+                               FontSize="15"
+                               TextColor="{StaticResource LSecondaryPrimary}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                </Grid>
+            </ControlTemplate>
+            <ControlTemplate x:Key="DoneHeaderControlTemplate">
+                <Grid BackgroundColor="Transparent">
+                    <BoxView 
+                        IsVisible="{TemplateBinding IsSelected}"
+                        BackgroundColor="{StaticResource LSecondaryPrimary}"
+                        VerticalOptions="End"
+                        HeightRequest="5"/>
+                    <StackLayout 
+                        Orientation="Horizontal"
+                        Margin="0, 0, 0, 8"
+                        HorizontalOptions="Center">
+                        <Image
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Source="Done_Task"/>
+                        <Label
+                            Text="{TemplateBinding Text}"
+                            FontSize="15"
+                            TextColor="{StaticResource LSecondaryPrimary}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                </Grid>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <telerikInput:RadCalendar x:Name="calendarDone" 
+                                                      SchedulingUiEnabled="True"
+                                                      ViewMode="Week"
+                                                      MinDate="{Binding MinDate, Converter={StaticResource MinMaxDateConverter}}"
+                                                      MaxDate="{Binding MaxDate, Converter={StaticResource MinMaxDateConverter}}"                                      
+                                                      AppointmentsSource="{Binding CurrentAppointments}"
+                                                      HeightRequest="120"
+                                                      Grid.Row="0">
+                <telerikInput:RadCalendar.Commands>
+                    <telerikCalendarCommands:CalendarUserCommand Id="CellTap" Command="{Binding TapDay}"/>
+                </telerikInput:RadCalendar.Commands>
+                <telerikInput:RadCalendar.DayViewSettings>
+                    <telerikInput:DayViewSettings DayStartTime="6:00:00"
+                                      DayEndTime="17:00:00"
+                                      TimelineInterval="1:00" 
+                                                  />
+                </telerikInput:RadCalendar.DayViewSettings>
+                <telerikInput:RadCalendar.DayViewStyle>
+                    <telerikInput:DayViewStyle AllDayAppointmentBackgroundColor="Blue"
+                                       AllDayAppointmentTextColor="White"
+                                       AllDayAppointmentFontSize="12"
+                                       TimelineLabelsTextColor="DarkGray"
+                                       TimelineLabelsFontSize="10"
+                                       AppointmentFontSize="12"                                                           
+                                       AppointmentDetailsFontSize="10"/>
+                </telerikInput:RadCalendar.DayViewStyle>
+            </telerikInput:RadCalendar>
+            <Label Text="Task" Grid.Row="1" FontAttributes="Bold" FontSize="Large"/>
+            <ScrollView Grid.Row="2">
+                <telerikDataControls:RadListView Grid.Row="2"
+                                                         HorizontalOptions="Fill"
+                                                         ItemsSource="{Binding CurrentTasksByDay}"
+                                                         ItemTemplate="{StaticResource ListViewItemTemplate}"
+                                                         GroupHeaderTemplate="{StaticResource ListViewMultiLevelGroupHeaderTemplate}" >
+                    <telerikDataControls:RadListView.Commands>
+                        <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapTask}" />
+                    </telerikDataControls:RadListView.Commands>
+
+                    <telerikDataControls:RadListView.LayoutDefinition>
+                        <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0">
+                            <telerikListView:ListViewLinearLayout.ItemLength>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <On Platform="Android">50</On>
+                                </OnPlatform>
+                            </telerikListView:ListViewLinearLayout.ItemLength>
+                        </telerikListView:ListViewLinearLayout>
+                    </telerikDataControls:RadListView.LayoutDefinition>
+                    <telerikDataControls:RadListView.GroupDescriptors>
+                        <telerikListView:PropertyGroupDescriptor PropertyName="Type"
+                                                             SortOrder="Ascending"/>
+                    </telerikDataControls:RadListView.GroupDescriptors>
+                </telerikDataControls:RadListView>
+            </ScrollView>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

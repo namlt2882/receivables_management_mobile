@@ -59,9 +59,9 @@
                                             <Label Text="{Binding Title}" TextColor="#694A00" FontSize="Medium"/>
                                             <!--<Image Source="{Binding IsSeen, Converter={StaticResource notificationImageConverter}}" Grid.Column="1"/>-->
                                         </Grid>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label TextColor="#806015" FontAttributes="Italic" FontSize="Small"/>
+                                        <StackLayout Orientation="Vertical">
                                             <Label TextColor="#806015" Text="{Binding Body}" FontSize="Small"/>
+                                            <Label TextColor="#806015" Text="{Binding CreatedDate}" FontAttributes="Italic" FontSize="Micro"/>
                                         </StackLayout>
                                     </StackLayout>
                                 </Grid>

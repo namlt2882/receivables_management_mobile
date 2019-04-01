@@ -1,12 +1,15 @@
-﻿using RCM.Mobile.Models;
+﻿using RCM.Mobile.Helpers;
+using RCM.Mobile.Models;
 using RCM.Mobile.Services;
 using RCM.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Telerik.XamarinForms.Input;
+using Telerik.XamarinForms.Input.DataForm;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,8 +22,9 @@ namespace RCM.Mobile.Views
         public ReceivableDetailPage(ISettingsService settingsService)
         {
             _settingsService = settingsService;
-            InitDataForm();
             InitializeComponent();
+            InitDataForm();
+
         }
         void InitDataForm()
         {
@@ -28,6 +32,19 @@ namespace RCM.Mobile.Views
             {
                 Source = new Receivable()
             };
+            //this.dataForm.PropertyDataSourceProvider = new UserPropertyDataSourceProvider();
+            //dataForm.GroupLayoutDefinition = new DataFormGroupGridLayoutDefinition();
+            //var style = new DataFormEditorStyle
+            //{
+            //    FeedbackFontSize = 10,
+            //    PositiveFeedbackBackground = Color.Transparent,
+            //};
+
+            //foreach (var property in typeof(Receivable).GetTypeInfo().DeclaredProperties)
+            //{
+            //    this.dataForm.RegisterEditor(property.Name, EditorType.Custom);
+            //}
+
             //dataForm.RegisterEditor("", EditorType.IntegerEditor);
             dataForm.RegisterEditor("DebtAmount", EditorType.DecimalEditor);
             dataForm.RegisterEditor("PayableDay", EditorType.DateEditor);
@@ -65,8 +82,6 @@ namespace RCM.Mobile.Views
         {
             popup.IsOpen = false;
         }
-
-
         private void ShowPopup(object sender, EventArgs e)
         {
             var context = (ReceivableDetailPageViewModel)this.BindingContext;
@@ -75,6 +90,5 @@ namespace RCM.Mobile.Views
                 popup.IsOpen = true;
             }
         }
-
     }
 }

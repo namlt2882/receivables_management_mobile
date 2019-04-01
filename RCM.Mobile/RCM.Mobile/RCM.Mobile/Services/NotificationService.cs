@@ -15,6 +15,7 @@ namespace RCM.Mobile.Services
         //Task CheckoutAsync(BasketCheckout basketCheckout, string token);
         //Task ClearBasketAsync(string guidUser, string token);
         Task<ObservableCollection<Notification>> GetNotificationsAsync(string token);
+        Task<bool> HasNotifications(string token);
         Task<Notification> GetNotificationByIdAsync(int id, string token);
         Task<bool> ToggleSeen(int id, string token);
         Task<bool> DeleteAsync(int id, string token);
@@ -24,6 +25,7 @@ namespace RCM.Mobile.Services
     {
         private const string ApiUrlBase = "/Notification";
         private readonly IRequestProvider _requestProvider;
+        private readonly ISettingsService _settingsService;
 
         public NotificationService(IRequestProvider requestProvider)
         {
@@ -32,7 +34,7 @@ namespace RCM.Mobile.Services
 
         public async Task<bool> DeleteAsync(int id, string token)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase + $"?id={id}");
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + $"?id={id}");
             try
             {
                 await _requestProvider.DeleteAsync(uri, token);
@@ -48,19 +50,25 @@ namespace RCM.Mobile.Services
 
         public async Task<Notification> GetNotificationByIdAsync(int id, string token)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase + $"/{id}");
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + $"/{id}");
             return await _requestProvider.GetAsync<Notification>(uri, token);
         }
 
         public async Task<ObservableCollection<Notification>> GetNotificationsAsync(string token)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase);
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase);
             return await _requestProvider.GetAsync<ObservableCollection<Notification>>(uri, token);
+        }
+
+        public async Task<bool> HasNotifications(string token)
+        {
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase+ "/HasNotifications");
+            return await _requestProvider.GetAsync<bool>(uri, token);
         }
 
         public async Task<bool> ToggleSeen(int id, string token)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.DefaultEndpoint, ApiUrlBase + $"/ToggleSeen/{id}");
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + $"/ToggleSeen/{id}");
             try
             {
                 await _requestProvider.PutAsync(uri, data: "", token: token);

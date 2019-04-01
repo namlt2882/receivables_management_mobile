@@ -49,7 +49,7 @@ namespace RCM.Mobile.Droid
 
 
             };
-
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this);
 
         }
     }

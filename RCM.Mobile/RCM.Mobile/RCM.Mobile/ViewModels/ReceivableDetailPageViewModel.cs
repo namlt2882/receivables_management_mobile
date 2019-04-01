@@ -3,44 +3,74 @@ using Prism.Services;
 using RCM.Mobile.Helpers;
 using RCM.Mobile.Models;
 using RCM.Mobile.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Forms;
-
 namespace RCM.Mobile.ViewModels
 {
     public class ReceivableDetailPageViewModel : BaseAuthenticatedViewModel
     {
 
         public IReceivableService _receivableService;
+        public ITaskService _taskService;
 
         public ReceivableDetailPageViewModel(
             ISettingsService settingsService,
             IPageDialogService dialogService,
             INavigationService navigationService,
-            IReceivableService receivableService
+            IReceivableService receivableService,
+            ITaskService taskService
             ) : base(settingsService, dialogService, navigationService)
         {
             _receivableService = receivableService;
-            Title = "Receivable";
-
+            _taskService = taskService;
+            Title = "Receivable Detail";
+            HasTask = false;
         }
-        private bool _fromNotification;
 
-        private bool FromNotification
+        private List<Contact> _relatives;
+        public List<Contact> Relatives
         {
-            get { return _fromNotification; }
-            set { SetProperty(ref _fromNotification, value); RaisePropertyChanged("FromNotification"); }
+            get { return _relatives; }
+            set { SetProperty(ref _relatives, value); RaisePropertyChanged("Relatives"); }
         }
+
         private Receivable _receivable;
         public Receivable Receivable
         {
             get { return _receivable; }
             set { SetProperty(ref _receivable, value); RaisePropertyChanged("Receivable"); }
         }
+        private bool _hasTask;
+        public bool HasTask
+        {
+            get { return _hasTask; }
+            set { SetProperty(ref _hasTask, value); RaisePropertyChanged("HasTask"); }
+        }
         //public ObservableCollection<Receivable> Receivables { get; set; }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            var receivableId = parameters.GetValue<int>("receivableId");
-            Receivable = await _receivableService.GetAssignedReceivableAsync(_settingsService.AuthAccessToken, receivableId);
+            HasTask = false;
+            if (parameters.ContainsKey("receivableId"))
+            {
+                var receivableId = parameters.GetValue<int>("receivableId");
+                Receivable = await _receivableService.GetAssignedReceivableAsync(_settingsService.AuthAccessToken, receivableId);
+                _settingsService.ReceivableId = Receivable.Id;
+            }
+            //Default Current Day set is 0
+            var tasks = await _taskService.GetAssignedTaskByReceivableAndDay(_settingsService.AuthAccessToken, 0, _settingsService.ReceivableId);
+            if (tasks.Count > 0)
+            {
+                HasTask = true;
+            }
+            //Get Relatives
+            Relatives = new List<Contact>();
+            Receivable.Contacts.Skip(1).ToList().ForEach(c=>
+            {
+                Relatives.Add(c);
+            });
             base.OnNavigatedTo(parameters);
         }
 
@@ -72,7 +102,71 @@ namespace RCM.Mobile.ViewModels
             }
         }
 
+        public Command PhoneCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    Plugin.Messaging.CrossMessaging.Current.PhoneDialer.MakePhoneCall(Receivable.Contacts[0].Phone, Receivable.Contacts[0].Name);
+                });
+            }
+        }
+        public Command MessagingCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    Plugin.Messaging.CrossMessaging.Current.SmsMessenger.SendSms(Receivable.Contacts[0].Phone, "");
+                });
+            }
+        }
+        public Command DirectionCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    var uri = new Uri($"http://maps.google.com/maps?daddr={Receivable.Contacts[0].Address}&directionsmode=transit");
+                    Device.OpenUri(uri);
 
+                });
+            }
+        }
+
+        public Command<string> PhoneRelativeCommand
+        {
+            get
+            {
+                return new Command<string>((phone) =>
+                {
+                    Plugin.Messaging.CrossMessaging.Current.PhoneDialer.MakePhoneCall(phone, "");
+                });
+            }
+        }
+        public Command<string> MessagingRelativeCommand
+        {
+            get
+            {
+                return new Command<string>((phone) =>
+                {
+                    Plugin.Messaging.CrossMessaging.Current.SmsMessenger.SendSms(phone, "");
+                });
+            }
+        }
+        public Command<string> DirectionRelativeCommand
+        {
+            get
+            {
+                return new Command<string>((address) =>
+                {
+                    var uri = new Uri($"http://maps.google.com/maps?daddr={address}&directionsmode=transit");
+                    Device.OpenUri(uri);
+
+                });
+            }
+        }
         public Command Edit
         {
             get
@@ -106,6 +200,16 @@ namespace RCM.Mobile.ViewModels
                                 break;
                         }
                     }
+                });
+            }
+        }
+        public Command TapToDayTasksCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await NavigationService.NavigateAsync("ReceivableTaskListPage");
                 });
             }
         }
