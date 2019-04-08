@@ -15,7 +15,6 @@ namespace RCM.Mobile.Views
 		public ReceivableListPage ()
 		{
 			InitializeComponent ();
-            tabView.SelectedItem = tabView.Items[1];
         }
     }
 }

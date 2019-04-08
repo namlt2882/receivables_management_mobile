@@ -91,10 +91,15 @@ namespace RCM.Mobile.Models
         public int AssignDate { get; set; }
         public double TimeRate { get; set; }
         public string Stage { get; set; }
-        public string Action { get; set; }
+        public LastAction Action { get; set; }
+        public bool HasAction => !string.IsNullOrEmpty(Action.Name);
     }
 
-
+    public class LastAction
+    {
+        public string Name { get; set; }
+        public DateTime Time { get; set; }
+    }
 
     public class ReceivableCloseModel
     {
