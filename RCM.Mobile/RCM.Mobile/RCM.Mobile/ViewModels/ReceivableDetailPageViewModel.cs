@@ -53,7 +53,7 @@ namespace RCM.Mobile.ViewModels
             get { return _receivable; }
             set { SetProperty(ref _receivable, value); RaisePropertyChanged("Receivable"); }
         }
-      
+
         private bool isBusy;
         public bool IsBusy
         {
@@ -71,30 +71,30 @@ namespace RCM.Mobile.ViewModels
                 Receivable = await _receivableService.GetAssignedReceivableAsync(_settingsService.AuthAccessToken, receivableId);
                 _settingsService.ReceivableId = Receivable.Id;
             }
-            TodayTasks = new ObservableCollection<Task>();
-            foreach (var item in await _taskService.GetAssignedTaskByReceivableAndDay(_settingsService.AuthAccessToken, 0, _settingsService.ReceivableId))
-            {
-                TodayTasks.Add(item);
-            }
-            IsBusy = false;
+            #region Task
+            await InitAsync();
+            #endregion
+            
 
             //Get Relatives
             Relatives = new List<Contact>();
-            Receivable.Contacts.Skip(1).ToList().ForEach(c=>
+            Receivable.Contacts.Skip(1).ToList().ForEach(c =>
             {
                 Relatives.Add(c);
             });
             #endregion
 
-            #region Task
-            await InitAsync();
-            #endregion
+            IsBusy = false;
 
             base.OnNavigatedTo(parameters);
         }
         private async System.Threading.Tasks.Task InitAsync()
         {
-           
+            TodayTasks = new ObservableCollection<Task>();
+            foreach (var item in await _taskService.GetAssignedTaskByReceivableAndDay(_settingsService.AuthAccessToken, 0, _settingsService.ReceivableId))
+            {
+                TodayTasks.Add(item);
+            }
             ToDoTasks = new ObservableCollection<Task>();
             foreach (var task in await _taskService.GetTodoTaskByReceivableId(_settingsService.AuthAccessToken, _settingsService.ReceivableId))
             {
@@ -312,7 +312,7 @@ namespace RCM.Mobile.ViewModels
             get { return _Source; }
             set { SetProperty(ref _Source, value); RaisePropertyChanged("Source"); }
         }
-       
+
         private ObservableCollection<Task> _completedTasks;
         public ObservableCollection<Task> CompletedTasks
         {

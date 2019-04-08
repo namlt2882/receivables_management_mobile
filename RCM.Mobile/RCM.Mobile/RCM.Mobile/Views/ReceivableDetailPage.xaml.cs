@@ -23,36 +23,6 @@ namespace RCM.Mobile.Views
         {
             _settingsService = settingsService;
             InitializeComponent();
-            InitDataForm();
-
-        }
-        void InitDataForm()
-        {
-            var dataForm = new RadDataForm
-            {
-                Source = new Receivable()
-            };
-            //this.dataForm.PropertyDataSourceProvider = new UserPropertyDataSourceProvider();
-            //dataForm.GroupLayoutDefinition = new DataFormGroupGridLayoutDefinition();
-            //var style = new DataFormEditorStyle
-            //{
-            //    FeedbackFontSize = 10,
-            //    PositiveFeedbackBackground = Color.Transparent,
-            //};
-
-            //foreach (var property in typeof(Receivable).GetTypeInfo().DeclaredProperties)
-            //{
-            //    this.dataForm.RegisterEditor(property.Name, EditorType.Custom);
-            //}
-
-            //dataForm.RegisterEditor("", EditorType.IntegerEditor);
-            dataForm.RegisterEditor("DebtAmount", EditorType.DecimalEditor);
-            dataForm.RegisterEditor("PayableDay", EditorType.DateEditor);
-            dataForm.RegisterEditor("PrepaidAmount", EditorType.DecimalEditor);
-            dataForm.RegisterEditor("ClosedDay", EditorType.DateEditor);
-            dataForm.RegisterEditor("CustomerName", EditorType.TextEditor);
-            dataForm.RegisterEditor("DebtorName", EditorType.TextEditor);
-            dataForm.RegisterEditor("AssignDate", EditorType.TextEditor);
         }
         private async void FinishPopup(object sender, EventArgs e)
         {

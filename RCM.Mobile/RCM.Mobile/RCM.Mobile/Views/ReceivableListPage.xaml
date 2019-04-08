@@ -10,8 +10,11 @@
              xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
              xmlns:autoCompleteView="clr-namespace:Telerik.XamarinForms.Input.AutoCompleteView;assembly=Telerik.XamarinForms.Input"
              prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:telerikCommon="clr-namespace:Telerik.XamarinForms.Common;assembly=Telerik.XamarinForms.Common"
+             xmlns:telerikGauges="clr-namespace:Telerik.XamarinForms.DataVisualization.Gauges;assembly=Telerik.XamarinForms.DataVisualization"
              xmlns:converters ="clr-namespace:RCM.Mobile.Converters"
              xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:view="clr-namespace:RCM.Mobile.Views"
              Title="{Binding Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -146,9 +149,9 @@
     <ContentPage.Content>
         <Grid RowSpacing="0" BackgroundColor="White">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="12*"/>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <telerikInput:RadAutoCompleteView x:Name="autocompleteCurrentReceivableSearch" 
                                               Grid.Row="0"
@@ -172,7 +175,7 @@
                     </DataTemplate>
                 </telerikInput:RadAutoCompleteView.NoResultsTemplate>
             </telerikInput:RadAutoCompleteView>
-            <telerikPrimitives:RadTabView Grid.Row="1" x:Name="tabView" HeaderPosition="Top" SelectedItem="1" >
+            <telerikPrimitives:RadTabView Grid.Row="1" x:Name="tabView" HeaderPosition="Top" HeightRequest="640">
                 <telerikPrimitives:RadTabView.Items>
                     <telerikPrimitives:TabViewItem>
                         <telerikPrimitives:TabViewItem.Header>
@@ -240,22 +243,6 @@
                                                                          HeightRequest="80"
                                                                          VerticalOptions="CenterAndExpand"/>
                                                                             <StackLayout Orientation="Vertical" Margin="10">
-                                                                                <!--<StackLayout Orientation="Horizontal">
-                                                                            <Image Source="identification.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                            <Label LineBreakMode="WordWrap">
-                                                                                <Label.FormattedText>
-                                                                                    <FormattedString>
-                                                                                        <Span Text="{Binding Id}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                        <Span Text="{Binding Stage}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                        <Span Text="{Binding Action}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                        <Span Text="{Binding TimeRate}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                    </FormattedString>
-                                                                                </Label.FormattedText>
-                                                                            </Label>
-                                                                            <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                                                                        </StackLayout>-->
-
-
                                                                                 <StackLayout Orientation="Horizontal">
                                                                                     <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
                                                                                     <Label LineBreakMode="WordWrap">
@@ -386,22 +373,6 @@
                                                                          HeightRequest="80"
                                                                          VerticalOptions="CenterAndExpand"/>
                                                                                     <StackLayout Orientation="Vertical" Margin="10">
-                                                                                        <!--<StackLayout Orientation="Horizontal">
-                                                                            <Image Source="identification.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                            <Label LineBreakMode="WordWrap">
-                                                                                <Label.FormattedText>
-                                                                                    <FormattedString>
-                                                                                        <Span Text="{Binding Id}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                        <Span Text="{Binding Stage}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                        <Span Text="{Binding Action}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                        <Span Text="{Binding TimeRate}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                    </FormattedString>
-                                                                                </Label.FormattedText>
-                                                                            </Label>
-                                                                            <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                                                                        </StackLayout>-->
-
-
                                                                                         <StackLayout Orientation="Horizontal">
                                                                                             <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
                                                                                             <Label LineBreakMode="WordWrap">
@@ -457,58 +428,6 @@
 
                                                                         </StackLayout>
                                                                     </telerikPrimitives:RadBorder>
-                                                                    <!--<telerikPrimitives:RadBorder BorderColor="{Binding CollectionProgressStatus, Converter={StaticResource ReceivableStatusColorConverter}}"
-                                                                                                 BorderThickness="5, 0, 0, 0"
-                                                                                                 CornerRadius="5"
-                                                                                                 Margin="2, 0, 0, 0"
-                                                                                                 HeightRequest="110"
-                                                                                                 VerticalOptions="CenterAndExpand"/>
-                                                                    <StackLayout Orientation="Vertical" Margin="10">
-                                                                        <StackLayout Orientation="Horizontal">
-                                                                            <Image Source="identification.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                            <Label LineBreakMode="WordWrap">
-                                                                                <Label.FormattedText>
-                                                                                    <FormattedString>
-                                                                                        <Span Text="{Binding Id}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                    </FormattedString>
-                                                                                </Label.FormattedText>
-                                                                            </Label>
-                                                                            <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                                                                        </StackLayout>
-                                                                        <StackLayout Orientation="Horizontal">
-                                                                            <Image Source="money.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                            <Label LineBreakMode="WordWrap">
-                                                                                <Label.FormattedText>
-                                                                                    <FormattedString>
-                                                                                        <Span Text="{Binding PrepaidAmount, Converter={StaticResource MoneyValueConverter}}" FontAttributes="Bold,Italic" FontSize="Small"/>
-                                                                                        <Span Text="/"/>
-                                                                                        <Span Text="{Binding DebtAmount, Converter={StaticResource MoneyValueConverter}}" TextColor="Red" FontAttributes="Bold,Italic" />
-                                                                                    </FormattedString>
-                                                                                </Label.FormattedText>
-                                                                            </Label>
-                                                                        </StackLayout>
-                                                                        <StackLayout Orientation="Horizontal">
-                                                                            <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                            <Label LineBreakMode="WordWrap">
-                                                                                <Label.FormattedText>
-                                                                                    <FormattedString>
-                                                                                        <Span Text="{Binding DebtorName}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                    </FormattedString>
-                                                                                </Label.FormattedText>
-                                                                            </Label>
-                                                                        </StackLayout>
-                                                                        <StackLayout Orientation="Horizontal">
-                                                                            <Image Source="calendar.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                            <Label LineBreakMode="WordWrap">
-                                                                                <Label.FormattedText>
-                                                                                    <FormattedString>
-                                                                                        <Span Text="{Binding AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Small"/>
-                                                                                    </FormattedString>
-                                                                                </Label.FormattedText>
-                                                                            </Label>
-                                                                        </StackLayout>
-                                                                    </StackLayout>-->
-
                                                                 </StackLayout>
                                                             </telerikPrimitives:RadBorder>
                                                         </telerikListView:ListViewTemplateCell.View>
@@ -525,7 +444,7 @@
                     </telerikPrimitives:TabViewItem>
                 </telerikPrimitives:RadTabView.Items>
             </telerikPrimitives:RadTabView>
-            <StackLayout Grid.Row="2" 
+            <StackLayout Grid.Row="2"
                              VerticalOptions="EndAndExpand" 
                              Spacing="0"
                              Margin="0, 0, 0, 6"
@@ -546,11 +465,12 @@
                                                                  BorderThickness="0, 0, 0, 1">
                                         <StackLayout Orientation="Horizontal">
                                             <telerikPrimitives:RadBorder BorderColor="{Binding Color}"
-                                                                         BorderThickness="1, 0, 1, 0"
+                                                                         BorderThickness="4, 4, 0, 0"
                                                                          Margin="2, 0, 0, 0"
                                                                          HeightRequest="20"
-                                                                         VerticalOptions="CenterAndExpand"/>
-                                            <Label Text="{Binding Name}" VerticalTextAlignment="Center"/>
+                                                                         VerticalOptions="CenterAndExpand"
+                                                                         CornerRadius="5"/>
+                                            <Label Text="{Binding Name}" VerticalTextAlignment="Center" TextColor="{Binding Color}" FontAttributes="Bold"/>
                                         </StackLayout>
                                     </telerikPrimitives:RadBorder>
                                 </telerikListView:ListViewTemplateCell.View>
@@ -558,7 +478,7 @@
                         </DataTemplate>
                     </telerikDataControls:RadListView.ItemTemplate>
                     <telerikDataControls:RadListView.LayoutDefinition>
-                        <telerikListView:ListViewGridLayout SpanCount="2" 
+                        <telerikListView:ListViewGridLayout SpanCount="4" 
                                                      Orientation="Vertical" 
                                                      ItemLength="30" 
                                                      VerticalItemSpacing="0"/>
@@ -569,375 +489,6 @@
                     </telerikDataControls:RadListView.ItemStyle>
                 </telerikDataControls:RadListView>
             </StackLayout>
-            <!--<telerikPrimitives:RadTabView x:Name="tabView" HeaderPosition="Top" >
-            <telerikPrimitives:RadTabView.Items>
-                <telerikPrimitives:TabViewItem>
-                    <telerikPrimitives:TabViewItem.Header>
-                        <telerikPrimitives:TabViewHeaderItem Text="Current" ControlTemplate="{StaticResource CurrentHeaderControlTemplate}" MinimumHeightRequest="50"/>
-                    </telerikPrimitives:TabViewItem.Header>
-                    <telerikPrimitives:TabViewItem.Content>
-                        <Grid Grid.ColumnSpacing="0"
-                              Grid.RowSpacing="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SearchBar Placeholder="Search by something fun..."/>
-                            <Grid>
-                                <Grid.Resources>
-                                    <ResourceDictionary>
-                                        <converters:MoneyValueConverter x:Key="MoneyValueConverter"/>
-                                        <converters:ReceivableStatusConverter x:Key="receivableStatusConverter"/>
-                                        <converters:IntToDateValueConverter x:Key="IntToDateValueConverter"/>
-                                        <converters:ConfirmImageConverter x:Key="confirmImageConverter"/>
-                                    </ResourceDictionary>
-                                </Grid.Resources>
-                                <telerikDataControls:RadListView x:Name="receivableList"
-                                             BackgroundColor="White"
-                                             SelectionMode="None"
-                                             ItemsSource="{Binding Receivables}"
-                                             AutomationId="listView" 
-                                                                 >
-                                    <telerikDataControls:RadListView.Commands>
-                                        <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapReceivable}" />
-                                    </telerikDataControls:RadListView.Commands>
-                                    <telerikDataControls:RadListView.GroupDescriptors>
-                                        <telerikListView:PropertyGroupDescriptor PropertyName="CustomerName"
-                                                             SortOrder="Descending" />
-                                    </telerikDataControls:RadListView.GroupDescriptors>
-                                    <telerikDataControls:RadListView.ItemStyle>
-                                        <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                    </telerikDataControls:RadListView.ItemStyle>
-                                    <telerikDataControls:RadListView.SelectedItemStyle>
-                                        <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                    </telerikDataControls:RadListView.SelectedItemStyle>
-                                    <telerikDataControls:RadListView.PressedItemStyle>
-                                        <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                    </telerikDataControls:RadListView.PressedItemStyle>
-                                    <telerikDataControls:RadListView.LayoutDefinition>
-                                        <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
-                                                          GroupHeaderLength="35">
-                                            <telerikListView:ListViewLinearLayout.ItemLength>
-                                                <OnPlatform x:TypeArguments="x:Double">
-                                                    -->
-            <!--<On Platform="iOS">190</On>-->
-            <!--
-                                                    <On Platform="Android">120</On>
-                                                </OnPlatform>
-                                            </telerikListView:ListViewLinearLayout.ItemLength>
-                                        </telerikListView:ListViewLinearLayout>
-                                    </telerikDataControls:RadListView.LayoutDefinition>
-                                    <telerikDataControls:RadListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <telerikListView:ListViewTemplateCell>
-                                                <telerikListView:ListViewTemplateCell.View>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="2*"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <StackLayout Grid.Column="0"
-                                        StackLayout.Spacing="14"
-                                        BackgroundColor="Transparent">
-                                                            <StackLayout.Padding>
-                                                                <OnPlatform x:TypeArguments="Thickness">
-                                                                    -->
-            <!--<On Platform="iOS">16, 20, 20, 20</On>-->
-            <!--
-                                                                    <On Platform="Android">16, 10, 16, 0</On>
-                                                                </OnPlatform>
-                                                            </StackLayout.Padding>
-                                                            <StackLayout Orientation="Vertical">
-                                                                <StackLayout.HeightRequest>
-                                                                    <OnPlatform x:TypeArguments="x:Double">
-                                                                        -->
-            <!--<On Platform="iOS">14</On>-->
-            <!--
-                                                                        <On Platform="Android">20</On>
-                                                                    </OnPlatform>
-                                                                </StackLayout.HeightRequest>
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="identification.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding Id}" FontAttributes="Italic" FontSize="Small"/>
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                    <Frame CornerRadius="5" WidthRequest="100" Padding="0" BorderColor="Black" HorizontalOptions="Center" >
-                                                                        <Label x:Name="CollectionProgressStatus" 
-                               Text="{Binding CollectionProgressStatus, Converter={StaticResource receivableStatusConverter}}" 
-                               VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium"
-                               FontAttributes="Bold" TextColor="White">
-                                                                        </Label>
-                                                                        <Frame.Triggers>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Collecting">
-                                                                                <Setter Property="Style" Value="{StaticResource Collecting}"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Not Comfirmed">
-                                                                                <Setter Property="Style" Value="{StaticResource NotComfirmed}"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Closed">
-                                                                                <Setter Property="Style" Value="{StaticResource Closed}"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Cancel">
-                                                                                <Setter Property="Style" Value="{StaticResource Cancel}"/>
-                                                                            </DataTrigger>
-                                                                        </Frame.Triggers>
-                                                                    </Frame>
-                                                                    <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                                                                </StackLayout>
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="money.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding PrepaidAmount, Converter={StaticResource MoneyValueConverter}}" FontAttributes="Bold,Italic" FontSize="Small"/>
-                                                                                <Span Text="/"/>
-                                                                                <Span Text="{Binding DebtAmount, Converter={StaticResource MoneyValueConverter}}" TextColor="Red" FontAttributes="Bold,Italic" />
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                </StackLayout>
-
-                                                                -->
-            <!--<Label LineBreakMode="WordWrap">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="Customer: "/>
-                                                    <Span Text="{Binding CustomerName}" FontAttributes="Italic" FontSize="Small"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>-->
-            <!--
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding DebtorName}" FontAttributes="Italic" FontSize="Small"/>
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                </StackLayout>
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="calendar.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Small"/>
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                </StackLayout>
-                                                            </StackLayout>
-                                                        </StackLayout>
-                                                    </Grid>
-
-                                                </telerikListView:ListViewTemplateCell.View>
-                                            </telerikListView:ListViewTemplateCell>
-                                        </DataTemplate>
-                                    </telerikDataControls:RadListView.ItemTemplate>
-                                </telerikDataControls:RadListView>
-                            </Grid>
-                        </Grid>
-                    </telerikPrimitives:TabViewItem.Content>
-                </telerikPrimitives:TabViewItem>
-                <telerikPrimitives:TabViewItem>
-                    <telerikPrimitives:TabViewItem.Header>
-                        <telerikPrimitives:TabViewHeaderItem Text="History" ControlTemplate="{StaticResource DoneHeaderControlTemplate}" MinimumHeightRequest="50"/>
-                    </telerikPrimitives:TabViewItem.Header>
-                    <telerikPrimitives:TabViewItem.Content>
-                        <Grid Grid.ColumnSpacing="0"
-                              Grid.RowSpacing="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SearchBar Placeholder="Search by something fun..."/>
-                            <Grid>
-                                <Grid.Resources>
-                                    <ResourceDictionary>
-                                        <converters:MoneyValueConverter x:Key="MoneyValueConverter"/>
-                                        <converters:ReceivableStatusConverter x:Key="receivableStatusConverter"/>
-                                        <converters:IntToDateValueConverter x:Key="IntToDateValueConverter"/>
-                                        <converters:ConfirmImageConverter x:Key="confirmImageConverter"/>
-                                    </ResourceDictionary>
-                                </Grid.Resources>
-                                <telerikDataControls:RadListView x:Name="receivableHistorylist"
-                                                                 BackgroundColor="White"
-                                                                 SelectionMode="None"
-                                                                 ItemsSource="{Binding ReceivableHistories}"
-                                                                 AutomationId="listView"
-                                                                 >
-                                    <telerikDataControls:RadListView.Commands>
-                                        <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapReceivable}" />
-                                    </telerikDataControls:RadListView.Commands>
-                                    <telerikDataControls:RadListView.GroupDescriptors>
-                                        <telerikListView:PropertyGroupDescriptor PropertyName="CustomerName"
-                                                             SortOrder="Descending" />
-                                    </telerikDataControls:RadListView.GroupDescriptors>
-                                    <telerikDataControls:RadListView.ItemStyle>
-                                        <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                    </telerikDataControls:RadListView.ItemStyle>
-                                    <telerikDataControls:RadListView.SelectedItemStyle>
-                                        <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                    </telerikDataControls:RadListView.SelectedItemStyle>
-                                    <telerikDataControls:RadListView.PressedItemStyle>
-                                        <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                    </telerikDataControls:RadListView.PressedItemStyle>
-                                    <telerikDataControls:RadListView.LayoutDefinition>
-                                        <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
-                                                          GroupHeaderLength="35">
-                                            <telerikListView:ListViewLinearLayout.ItemLength>
-                                                <OnPlatform x:TypeArguments="x:Double">
-                                                    -->
-            <!--<On Platform="iOS">190</On>-->
-            <!--
-                                                    <On Platform="Android">120</On>
-                                                </OnPlatform>
-                                            </telerikListView:ListViewLinearLayout.ItemLength>
-                                        </telerikListView:ListViewLinearLayout>
-                                    </telerikDataControls:RadListView.LayoutDefinition>
-                                    <telerikDataControls:RadListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <telerikListView:ListViewTemplateCell>
-                                                <telerikListView:ListViewTemplateCell.View>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="2*"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <StackLayout Grid.Column="0"
-                                        StackLayout.Spacing="14"
-                                        BackgroundColor="Transparent">
-                                                            <StackLayout.Padding>
-                                                                <OnPlatform x:TypeArguments="Thickness">
-                                                                    -->
-            <!--<On Platform="iOS">16, 20, 20, 20</On>-->
-            <!--
-                                                                    <On Platform="Android">16, 10, 16, 0</On>
-                                                                </OnPlatform>
-                                                            </StackLayout.Padding>
-                                                            <StackLayout Orientation="Vertical">
-                                                                <StackLayout.HeightRequest>
-                                                                    <OnPlatform x:TypeArguments="x:Double">
-                                                                        -->
-            <!--<On Platform="iOS">14</On>-->
-            <!--
-                                                                        <On Platform="Android">20</On>
-                                                                    </OnPlatform>
-                                                                </StackLayout.HeightRequest>
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="identification.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding Id}" FontAttributes="Italic" FontSize="Small"/>
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                    <Frame CornerRadius="5" WidthRequest="100" Padding="0" BorderColor="Black" HorizontalOptions="Center" >
-                                                                        <Label x:Name="CollectionProgressStatus" 
-                               Text="{Binding CollectionProgressStatus, Converter={StaticResource receivableStatusConverter}}" 
-                               VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium"
-                               FontAttributes="Bold" TextColor="White">
-                                                                        </Label>
-                                                                        <Frame.Triggers>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Collecting">
-                                                                                <Setter Property="Style" Value="{StaticResource Collecting}"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Not Comfirmed">
-                                                                                <Setter Property="Style" Value="{StaticResource NotComfirmed}"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Closed">
-                                                                                <Setter Property="Style" Value="{StaticResource Closed}"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference CollectionProgressStatus},Path=Text}" Value="Cancel">
-                                                                                <Setter Property="Style" Value="{StaticResource Cancel}"/>
-                                                                            </DataTrigger>
-                                                                        </Frame.Triggers>
-                                                                    </Frame>
-                                                                    <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                                                                </StackLayout>
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="money.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding PrepaidAmount, Converter={StaticResource MoneyValueConverter}}" FontAttributes="Bold,Italic" FontSize="Small"/>
-                                                                                <Span Text="/"/>
-                                                                                <Span Text="{Binding DebtAmount, Converter={StaticResource MoneyValueConverter}}" TextColor="Red" FontAttributes="Bold,Italic" />
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                </StackLayout>
-
-                                                                -->
-            <!--<Label LineBreakMode="WordWrap">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="Customer: "/>
-                                                    <Span Text="{Binding CustomerName}" FontAttributes="Italic" FontSize="Small"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>-->
-            <!--
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding DebtorName}" FontAttributes="Italic" FontSize="Small"/>
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                </StackLayout>
-                                                                <StackLayout Orientation="Horizontal">
-                                                                    <Image Source="calendar.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
-                                                                    <Label LineBreakMode="WordWrap">
-                                                                        <Label.FormattedText>
-                                                                            <FormattedString>
-                                                                                <Span Text="{Binding AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Small"/>
-                                                                            </FormattedString>
-                                                                        </Label.FormattedText>
-                                                                    </Label>
-                                                                </StackLayout>
-                                                            </StackLayout>
-                                                        </StackLayout>
-                                                    </Grid>
-
-                                                </telerikListView:ListViewTemplateCell.View>
-                                            </telerikListView:ListViewTemplateCell>
-                                        </DataTemplate>
-                                    </telerikDataControls:RadListView.ItemTemplate>
-                                </telerikDataControls:RadListView>
-                            </Grid>
-                        </Grid>
-                    </telerikPrimitives:TabViewItem.Content>
-                </telerikPrimitives:TabViewItem>
-            </telerikPrimitives:RadTabView.Items>
-        </telerikPrimitives:RadTabView>-->
-
         </Grid>
     </ContentPage.Content>
 
