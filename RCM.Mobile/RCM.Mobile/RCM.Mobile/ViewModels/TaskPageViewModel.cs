@@ -59,6 +59,12 @@ namespace RCM.Mobile.ViewModels
 
         #endregion
 
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); RaisePropertyChanged("IsBusy"); }
+        }
         public TaskPageViewModel(ISettingsService settingsService, IPageDialogService dialogService, INavigationService navigationService, ITaskService taskService) : base(settingsService, dialogService, navigationService)
         {
             _taskService = taskService;
@@ -71,6 +77,8 @@ namespace RCM.Mobile.ViewModels
         }
         private async System.Threading.Tasks.Task Init()
         {
+            IsBusy = true;
+
             CurrentAppointments = new ObservableCollection<Appointment>();
             var appointments = await _taskService.GetCollectorCalendarTasks(_settingsService.AuthAccessToken);
             appointments.ForEach(appointment =>
@@ -87,6 +95,7 @@ namespace RCM.Mobile.ViewModels
             SetMinMaxDay(appointments);
             //
             await SetCurrentTaskByDay(null);
+            IsBusy = false;
         }
 
         private void SetMinMaxDay(List<DateTime> appointments)
@@ -113,6 +122,7 @@ namespace RCM.Mobile.ViewModels
         }
         private async Task SetCurrentTaskByDay(DateTime? date)
         {
+            IsBusy = true;
             SelectedDate = date;
             var currentDay = Utility.ConvertDatimeToInt(date);
             var currentTasksByDay = await _taskService.GetAssignedTaskByDay(_settingsService.AuthAccessToken, currentDay);
@@ -121,6 +131,8 @@ namespace RCM.Mobile.ViewModels
             {
                 CurrentTasksByDay.Add(item);
             }
+            IsBusy = false;
+
         }
         public Command TapTask
         {

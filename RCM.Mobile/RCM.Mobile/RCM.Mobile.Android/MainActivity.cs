@@ -66,6 +66,7 @@ namespace RCM.Mobile.Droid
             SBSDKInitializer.Initialize(this.Application, licenseKey,
                 new SBSDKConfiguration { EnableLogging = true, StorageBaseDirectory = GetStorageBaseDirectory() });
             #endregion
+
         }
 
         string GetStorageBaseDirectory()

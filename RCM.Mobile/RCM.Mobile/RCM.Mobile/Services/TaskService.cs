@@ -36,7 +36,7 @@ namespace RCM.Mobile.Services
         }
         public async System.Threading.Tasks.Task<bool> Update(string token, UpdateTaskModel updateTaskModel)
         {
-            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + "/Done");
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + "/UpdateTask");
             return await _requestProvider.UpdateTask(uri, updateTaskModel, token);
         }
 
@@ -46,12 +46,16 @@ namespace RCM.Mobile.Services
             return await _requestProvider.GetAsync<List<Models.Task>>(uri, token);
         }
 
-        public async Task<List<Models.Task>> GetTaskByReceivableId(string token, int receivableId)
+        public async Task<List<Models.Task>> GetCompletedTaskByReceivableId(string token, int receivableId)
         {
-            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + $"/GetTaskByReceivableId/{receivableId}");
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + $"/GetCompletedTaskByReceivableId/{receivableId}");
             return await _requestProvider.GetAsync<List<Models.Task>>(uri, token);
         }
-
+        public async Task<List<Models.Task>> GetTodoTaskByReceivableId(string token, int receivableId)
+        {
+            var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + $"/GetTodoTaskByReceivableId/{receivableId}");
+            return await _requestProvider.GetAsync<List<Models.Task>>(uri, token);
+        }
         public async System.Threading.Tasks.Task Cancel(string token, int id)
         {
             var uri = UriHelper.CombineUri(_settingsService.EndPoint(), ApiUrlBase + "/Cancel/"+id);
@@ -63,7 +67,8 @@ namespace RCM.Mobile.Services
         Task<List<Models.Task>> GetCollectorAssignedTasks(string token);
         Task<List<Models.Task>> GetAssignedTaskByDay(string token, int day);
         Task<List<Models.Task>> GetAssignedTaskByReceivableAndDay(string token, int day, int receivableId);
-        Task<List<Models.Task>> GetTaskByReceivableId(string token, int receivableId);
+        Task<List<Models.Task>> GetCompletedTaskByReceivableId(string token, int receivableId);
+        Task<List<Models.Task>> GetTodoTaskByReceivableId(string token, int receivableId);
         Task<List<DateTime>> GetCollectorCalendarTasks(string token);
         System.Threading.Tasks.Task<bool> Update(string token, UpdateTaskModel updateTaskModel);
         System.Threading.Tasks.Task Cancel(string token, int id);

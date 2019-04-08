@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace RCM.Mobile.Helpers
 {
@@ -70,7 +71,27 @@ namespace RCM.Mobile.Helpers
         //Collection progress is closed, debt has been recovered.
         public const string COLLECTION_STATUS_CLOSED = "Closed";
         public const int COLLECTION_STATUS_CLOSED_CODE = 5;
+
+        public static List<Status> STATUSES = new List<Status>()
+        {
+            new Status(Color.FromHex("#21ba45"), COLLECTION_STATUS_COLLECTION),
+            new Status(Color.FromHex("#db2828"), COLLECTION_STATUS_CANCEL),
+            new Status(Color.FromHex("#767676"), COLLECTION_STATUS_CLOSED),
+            new Status(Color.FromHex("#2185d0"), COLLECTION_STATUS_DONE),
+        };
         #endregion
+
+    }
+    public class Status
+    {
+        public Status(Color color, string name)
+        {
+            this.Color = color;
+            this.Name = name;
+        }
+
+        public Color Color { get; set; }
+        public string Name { get; set; }
 
     }
 }

@@ -103,7 +103,7 @@ namespace RCM.Mobile
 
             CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
             {
-                NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
+                //NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
                 System.Diagnostics.Debug.WriteLine("Opened");
                 foreach (var data in p.Data)
                 {
@@ -152,7 +152,6 @@ namespace RCM.Mobile
             containerRegistry.RegisterForNavigation<MainPage>("MainPage");
             //Notification
             containerRegistry.RegisterForNavigation<NotificationListPage>("NotificationListPage");
-            containerRegistry.RegisterForNavigation<NotificationPage>("NotificationPage");
             //Receivable
             containerRegistry.RegisterForNavigation<ReceivableDetailPage>("ReceivableDetailPage");
             containerRegistry.RegisterForNavigation<ReceivableListPage>("ReceivableListPage");
@@ -175,7 +174,6 @@ namespace RCM.Mobile
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 
             containerRegistry.RegisterForNavigation<NotificationListPage, NotificationListPageViewModel>();
-            containerRegistry.RegisterForNavigation<NotificationPage, NotificationPageViewModel>();
 
             containerRegistry.RegisterForNavigation<ReceivableDetailPage, ReceivableDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<ReceivableListPage, ReceivableListPageViewModel>();

@@ -1,5 +1,6 @@
 ﻿using Prism.Navigation;
 using Prism.Services;
+using RCM.Mobile.Helpers;
 using RCM.Mobile.Models;
 using RCM.Mobile.Services;
 using System;
@@ -25,6 +26,12 @@ namespace RCM.Mobile.ViewModels
             _receivableService = receivableService;
             Title = "Assigned Receivables";
 
+        }
+        private List<Status> _status;
+        public List<Status> Status
+        {
+            get { return _status; }
+            set { SetProperty(ref _status, value); RaisePropertyChanged("Status"); }
         }
         private List<int> _receivableIdList;
         public List<int> ReceivableIdList
@@ -52,6 +59,7 @@ namespace RCM.Mobile.ViewModels
             {
                 Receivables.Add(item);
             }
+            Status = Constant.STATUSES;
             base.OnNavigatedTo(parameters);
         }
         public Command TapReceivable

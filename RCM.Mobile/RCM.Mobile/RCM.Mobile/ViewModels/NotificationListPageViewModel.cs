@@ -36,6 +36,12 @@ namespace RCM.Mobile.ViewModels
             get { return _notifications; }
             set { SetProperty(ref _notifications, value); RaisePropertyChanged("Notifications"); }
         }
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); RaisePropertyChanged("IsBusy"); }
+        }
         //public ObservableCollection<Notification> Notifications { get; set; }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -107,6 +113,8 @@ namespace RCM.Mobile.ViewModels
         }
         private async System.Threading.Tasks.Task InitAsync()
         {
+            IsBusy = true;
+
             //Task.FromResult(await _notificationService.GetNotificationsAsync(_settingsService.AuthAccessToken));
             var collection = await _notificationService.GetNotificationsAsync(_settingsService.AuthAccessToken);
             Notifications = new ObservableCollection<Notification>();
@@ -114,6 +122,7 @@ namespace RCM.Mobile.ViewModels
             {
                 Notifications.Add(item);
             }
+            IsBusy = false;
         }
 
     }

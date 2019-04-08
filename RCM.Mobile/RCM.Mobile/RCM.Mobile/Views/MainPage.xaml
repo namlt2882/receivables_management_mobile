@@ -79,7 +79,6 @@
                                     </OnPlatform>
                                 </Label.FontSize>
                             </Label>
-
                             <Grid Grid.Column="4" Grid.ColumnSpacing="0"
                               Grid.RowSpacing="0"
                               HeightRequest="48"

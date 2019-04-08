@@ -11,12 +11,13 @@ namespace RCM.Mobile.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null ? Utility.ConvertIntToDateStringForView((int)value) : "";
+            if(value==null) return "N/A";
+            return Utility.ConvertIntToDateStringForView((int)value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (string.IsNullOrEmpty((string)value)) return "";
+            if (string.IsNullOrEmpty((string)value)) return "N/A";
             string result = (string)value;
             return DateTime.ParseExact(result, "dd/MM/yyyy", CultureInfo.CurrentCulture); ;
         }

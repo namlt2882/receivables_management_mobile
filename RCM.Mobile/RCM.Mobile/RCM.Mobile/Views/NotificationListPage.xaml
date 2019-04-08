@@ -9,6 +9,7 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:converter ="clr-namespace:RCM.Mobile.Converters"
+             xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              Title="{Binding Title}"
              xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              xmlns:telerikListViewCommands="clr-namespace:Telerik.XamarinForms.DataControls.ListView.Commands;assembly=Telerik.XamarinForms.DataControls">
@@ -23,62 +24,71 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <telerikDataControls:RadListView x:Name="list"
+            <StackLayout>
+                <telerikPrimitives:RadBusyIndicator x:Name="BusyIndicator" 
+                                                        HeightRequest="30" 
+                                                        WidthRequest="30"
+                                                        IsBusy="{Binding IsBusy}"
+                                                        VerticalOptions="Start"
+                                                        AnimationContentColor="{StaticResource NavigationPrimary}"
+                                                        AnimationType="Animation9"
+                                                    IsVisible="{Binding IsBusy}"/>
+                <telerikDataControls:RadListView x:Name="list"
                                              ItemsSource="{Binding Notifications}"
                                              Grid.Row="1"
                                              SwipeOffset="80, 0"
                                              SwipeThreshold="10"
                                              IsItemSwipeEnabled="True"
                                              IsItemsReorderEnabled="True">
-                <telerikDataControls:RadListView.Commands>
-                    <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapNotification}" />
-                </telerikDataControls:RadListView.Commands>
+                    <telerikDataControls:RadListView.Commands>
+                        <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapNotification}" />
+                    </telerikDataControls:RadListView.Commands>
 
-                <telerikDataControls:RadListView.LayoutDefinition>
-                
-                    <telerikListView:ListViewLinearLayout Orientation="Vertical"
+                    <telerikDataControls:RadListView.LayoutDefinition>
+
+                        <telerikListView:ListViewLinearLayout Orientation="Vertical"
                                                           HorizontalItemSpacing="0"/>
-                </telerikDataControls:RadListView.LayoutDefinition>
-                <telerikDataControls:RadListView.ItemTemplate>
-                    
-                    <DataTemplate>
-                        <telerikListView:ListViewTemplateCell>
-                            
-                            <telerikListView:ListViewTemplateCell.View>
-                                <Grid Padding="5">
-                                    <Grid.ColumnDefinitions>
-                                        <!--<ColumnDefinition Width="90"/>-->
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <!--<Image Source="{Binding AlbumArt}"/>-->
-                                    <StackLayout>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Text="{Binding Title}" TextColor="#694A00" FontSize="Medium"/>
-                                            <!--<Image Source="{Binding IsSeen, Converter={StaticResource notificationImageConverter}}" Grid.Column="1"/>-->
-                                        </Grid>
-                                        <StackLayout Orientation="Vertical">
-                                            <Label TextColor="#806015" Text="{Binding Body}" FontSize="Small"/>
-                                            <Label TextColor="#806015" Text="{Binding CreatedDate}" FontAttributes="Italic" FontSize="Micro"/>
+                    </telerikDataControls:RadListView.LayoutDefinition>
+                    <telerikDataControls:RadListView.ItemTemplate>
+
+                        <DataTemplate>
+                            <telerikListView:ListViewTemplateCell>
+
+                                <telerikListView:ListViewTemplateCell.View>
+                                    <Grid Padding="5">
+                                        <Grid.ColumnDefinitions>
+                                            <!--<ColumnDefinition Width="90"/>-->
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Image Source="{Binding AlbumArt}"/>-->
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Text="{Binding Title}" TextColor="#694A00" FontSize="Medium"/>
+                                                <!--<Image Source="{Binding IsSeen, Converter={StaticResource notificationImageConverter}}" Grid.Column="1"/>-->
+                                            </Grid>
+                                            <StackLayout Orientation="Vertical">
+                                                <Label TextColor="#806015" Text="{Binding Body}" FontSize="Small"/>
+                                                <Label TextColor="#806015" Text="{Binding CreatedDate}" FontAttributes="Italic" FontSize="Micro"/>
+                                            </StackLayout>
                                         </StackLayout>
-                                    </StackLayout>
-                                </Grid>
-                            </telerikListView:ListViewTemplateCell.View>
-                        </telerikListView:ListViewTemplateCell>
-                    </DataTemplate>
-                </telerikDataControls:RadListView.ItemTemplate>
-                <telerikDataControls:RadListView.ItemSwipeContentTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="70"/>
-                            </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </telerikListView:ListViewTemplateCell.View>
+                            </telerikListView:ListViewTemplateCell>
+                        </DataTemplate>
+                    </telerikDataControls:RadListView.ItemTemplate>
+                    <telerikDataControls:RadListView.ItemSwipeContentTemplate>
+                        <DataTemplate>
                             <Grid>
-                                <Button BackgroundColor="#FFA200"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Button BackgroundColor="#FFA200"
                                         BorderRadius="5"
                                         HorizontalOptions="FillAndExpand"
                                         VerticalOptions="FillAndExpand"
@@ -86,21 +96,21 @@
                                         CommandParameter="{Binding}"
                                         Clicked="OnButtonClicked"
                                         AutomationId="DoneButton">
-                                </Button>
-                                <Image Aspect="AspectFit"
+                                    </Button>
+                                    <Image Aspect="AspectFit"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
                                        InputTransparent="True">
-                                    <Image.Source>
-                                        <OnPlatform x:TypeArguments="ImageSource">
-                                            <On Platform="iOS,Android">ToggleNotification</On>
-                                            <!--<On Platform="UWP">Assets\ListView_Reorder_Done.png</On>-->
-                                        </OnPlatform>
-                                    </Image.Source>
-                                </Image>
-                            </Grid>
-                            <Grid Grid.Column="2">
-                                <Button BackgroundColor="#E5503A"
+                                        <Image.Source>
+                                            <OnPlatform x:TypeArguments="ImageSource">
+                                                <On Platform="iOS,Android">ToggleNotification</On>
+                                                <!--<On Platform="UWP">Assets\ListView_Reorder_Done.png</On>-->
+                                            </OnPlatform>
+                                        </Image.Source>
+                                    </Image>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Button BackgroundColor="#E5503A"
                                         BorderRadius="5"
                                         HorizontalOptions="FillAndExpand"
                                         VerticalOptions="FillAndExpand"
@@ -108,22 +118,24 @@
                                         CommandParameter="{Binding}"
                                         Clicked="OnButtonClicked"
                                         AutomationId="DeleteButton"/>
-                                <Image Aspect="AspectFit"
+                                    <Image Aspect="AspectFit"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
                                        InputTransparent="True">
-                                    <Image.Source>
-                                        <OnPlatform x:TypeArguments="ImageSource">
-                                            <On Platform="iOS,Android">DeleteNotification</On>
-                                            <!--<On Platform="UWP">Assets\ListView_Reorder_Delete.png</On>-->
-                                        </OnPlatform>
-                                    </Image.Source>
-                                </Image>
+                                        <Image.Source>
+                                            <OnPlatform x:TypeArguments="ImageSource">
+                                                <On Platform="iOS,Android">DeleteNotification</On>
+                                                <!--<On Platform="UWP">Assets\ListView_Reorder_Delete.png</On>-->
+                                            </OnPlatform>
+                                        </Image.Source>
+                                    </Image>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </telerikDataControls:RadListView.ItemSwipeContentTemplate>
-            </telerikDataControls:RadListView>
+                        </DataTemplate>
+                    </telerikDataControls:RadListView.ItemSwipeContentTemplate>
+                </telerikDataControls:RadListView>
+            </StackLayout>
+            
         </Grid>
     </Grid>
 </ContentPage>

@@ -175,31 +175,41 @@
                 </telerikInput:RadCalendar.DayViewStyle>
             </telerikInput:RadCalendar>
             <Label Text="Task" Grid.Row="1" FontAttributes="Bold" FontSize="Large"/>
-            <ScrollView Grid.Row="2">
-                <telerikDataControls:RadListView Grid.Row="2"
+            <!--<ScrollView HeightRequest="{Binding Source={x:Reference taskList},Path=Height}">-->
+                <StackLayout Grid.Row="2"  x:Name="taskList" >
+                    <telerikDataControls:RadListView Grid.Row="2"
                                                          HorizontalOptions="Fill"
                                                          ItemsSource="{Binding CurrentTasksByDay}"
                                                          ItemTemplate="{StaticResource ListViewItemTemplate}"
-                                                         GroupHeaderTemplate="{StaticResource ListViewMultiLevelGroupHeaderTemplate}" >
-                    <telerikDataControls:RadListView.Commands>
-                        <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapTask}" />
-                    </telerikDataControls:RadListView.Commands>
+                                                         GroupHeaderTemplate="{StaticResource ListViewMultiLevelGroupHeaderTemplate}">
+                        <telerikDataControls:RadListView.Commands>
+                            <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding TapTask}" />
+                        </telerikDataControls:RadListView.Commands>
 
-                    <telerikDataControls:RadListView.LayoutDefinition>
-                        <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0">
-                            <telerikListView:ListViewLinearLayout.ItemLength>
-                                <OnPlatform x:TypeArguments="x:Double">
-                                    <On Platform="Android">50</On>
-                                </OnPlatform>
-                            </telerikListView:ListViewLinearLayout.ItemLength>
-                        </telerikListView:ListViewLinearLayout>
-                    </telerikDataControls:RadListView.LayoutDefinition>
-                    <telerikDataControls:RadListView.GroupDescriptors>
-                        <telerikListView:PropertyGroupDescriptor PropertyName="Type"
+                        <telerikDataControls:RadListView.LayoutDefinition>
+                            <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0">
+                                <telerikListView:ListViewLinearLayout.ItemLength>
+                                    <OnPlatform x:TypeArguments="x:Double">
+                                        <On Platform="Android">50</On>
+                                    </OnPlatform>
+                                </telerikListView:ListViewLinearLayout.ItemLength>
+                            </telerikListView:ListViewLinearLayout>
+                        </telerikDataControls:RadListView.LayoutDefinition>
+                        <telerikDataControls:RadListView.GroupDescriptors>
+                            <telerikListView:PropertyGroupDescriptor PropertyName="Type"
                                                              SortOrder="Ascending"/>
-                    </telerikDataControls:RadListView.GroupDescriptors>
-                </telerikDataControls:RadListView>
-            </ScrollView>
+                        </telerikDataControls:RadListView.GroupDescriptors>
+                    </telerikDataControls:RadListView>
+                    <telerikPrimitives:RadBusyIndicator x:Name="BusyIndicator" 
+                                                        HeightRequest="24" 
+                                                        WidthRequest="24"
+                                                        IsBusy="{Binding IsBusy}"
+                                                        VerticalOptions="Start"
+                                                        AnimationContentColor="{StaticResource NavigationPrimary}"
+                                                        AnimationType="Animation9"/>
+                </StackLayout>
+                
+            <!--</ScrollView>-->
 
         </Grid>
     </ContentPage.Content>

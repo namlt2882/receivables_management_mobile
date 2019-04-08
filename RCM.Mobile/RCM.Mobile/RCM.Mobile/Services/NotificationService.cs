@@ -27,9 +27,10 @@ namespace RCM.Mobile.Services
         private readonly IRequestProvider _requestProvider;
         private readonly ISettingsService _settingsService;
 
-        public NotificationService(IRequestProvider requestProvider)
+        public NotificationService(IRequestProvider requestProvider, ISettingsService settingsService)
         {
             _requestProvider = requestProvider;
+            _settingsService = settingsService;
         }
 
         public async Task<bool> DeleteAsync(int id, string token)

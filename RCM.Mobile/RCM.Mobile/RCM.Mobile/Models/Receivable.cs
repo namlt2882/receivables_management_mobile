@@ -36,11 +36,16 @@ namespace RCM.Mobile.Models
             set { SetProperty(ref _collectionProgressStatus, value); }
         }
 
-        [DisplayOptions(Position = 0, ColumnSpan = 2, Header = "Start Day", Group = "Receivable")]
-        [Converter(typeof(IntToDateConverter))]
-        [ReadOnly]
-        public int? PayableDay { get; set; }
-
+        
+        private int? _payableDay;
+        public int? PayableDay
+        {
+            get
+            {
+                return this._payableDay;
+            }
+            set { SetProperty(ref _payableDay, value); }
+        }
         private int? _closedDay;
         [DisplayOptions(Position = 1, ColumnSpan = 2, Header = "End Day", Group = "Receivable")]
         [Converter(typeof(IntToDateConverter))]
@@ -54,8 +59,15 @@ namespace RCM.Mobile.Models
             set { SetProperty(ref _closedDay, value); }
         }
         public bool HasCloseDay => ClosedDay.HasValue;
-
-        public int ExpectationClosedDay { get; set; }
+        private int _expectationClosedDay;
+        public int ExpectationClosedDay
+        {
+            get
+            {
+                return this._expectationClosedDay;
+            }
+            set { SetProperty(ref _expectationClosedDay, value); }
+        }
         [DisplayOptions(Position = 2, ColumnSpan = 2, Header = "Customer Name", Group = "Debtor")]
         [ReadOnly]
         public string CustomerName { get; set; }
@@ -77,7 +89,9 @@ namespace RCM.Mobile.Models
         [DisplayOptions(Position = 4, ColumnSpan = 2, Header = "Assign Date", Group = "Receivable")]
         [Converter(typeof(IntToDateConverter))]
         public int AssignDate { get; set; }
-
+        public double TimeRate { get; set; }
+        public string Stage { get; set; }
+        public string Action { get; set; }
     }
 
 

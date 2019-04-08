@@ -185,8 +185,8 @@
                     <Button Text="Upload Evidence" VerticalOptions="Start" HorizontalOptions="Start" Command="{Binding ScanPhoto}"/>
                     <Image IsVisible="{Binding IsImageAvailable}" WidthRequest="400" HeightRequest="400" Source="{Binding ImageSource}"/>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="20">
-                        <Button Text="Update" Command="{Binding Update}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="{StaticResource NavigationPrimary}"/>
-                        <Button Text="Cancel" Command="{Binding Cancel}" BackgroundColor="Red"/>
+                        <Button Text="Update" Command="{Binding Update}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="{StaticResource NavigationPrimary}" TextColor="White"/>
+                        <Button Text="Cancel" Command="{Binding Cancel}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="Red" TextColor="White"/>
                         <Button Text="Close" Command="{Binding ClosePopup}" BackgroundColor="White"/>
                     </StackLayout>
                 </StackLayout>
@@ -198,7 +198,7 @@
         <ContentView>
             <ScrollView>
                 <StackLayout>
-                    
+
                     <telerikPrimitives:RadTabView x:Name="tabView" HeaderPosition="Top" >
                         <telerikPrimitives:RadTabView.Items>
                             <telerikPrimitives:TabViewItem>
@@ -231,6 +231,14 @@
                                                 </telerikListView:ListViewLinearLayout>
                                             </telerikDataControls:RadListView.LayoutDefinition>
                                         </telerikDataControls:RadListView>
+                                        <Label Text="No result" IsVisible="{Binding HasToDayTasks}" />
+                                        <telerikPrimitives:RadBusyIndicator x:Name="BusyIndicator" 
+                                                        HeightRequest="24" 
+                                                        WidthRequest="24"
+                                                        IsBusy="{Binding IsBusy}"
+                                                        VerticalOptions="Start"
+                                                        AnimationContentColor="{StaticResource NavigationPrimary}"
+                                                        AnimationType="Animation9"/>
                                     </StackLayout>
                                 </telerikPrimitives:TabViewItem.Content>
                             </telerikPrimitives:TabViewItem>
@@ -239,28 +247,33 @@
                                     <telerikPrimitives:TabViewHeaderItem Text="To do" ControlTemplate="{StaticResource ToDoHeaderControlTemplate}" MinimumHeightRequest="30"/>
                                 </telerikPrimitives:TabViewItem.Header>
                                 <telerikPrimitives:TabViewItem.Content>
-                                    <telerikDataControls:RadListView 
+                                    <StackLayout>
+                                        <telerikDataControls:RadListView 
                                                                      SelectionMode="None"
                                                                      ItemsSource="{Binding ToDoTasks}"
                                                                      AutomationId="listView"
                                                                      ItemTemplate="{StaticResource ToDoListViewTemplate}">
-                                        <telerikDataControls:RadListView.ItemStyle>
-                                            <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
+                                            <telerikDataControls:RadListView.ItemStyle>
+                                                <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
                                                        BorderWidth="1"
                                                        BorderLocation="All"
                                                        BorderColor="#D2C7C3" />
-                                        </telerikDataControls:RadListView.ItemStyle>
-                                        <telerikDataControls:RadListView.LayoutDefinition>
-                                            <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
+                                            </telerikDataControls:RadListView.ItemStyle>
+                                            <telerikDataControls:RadListView.LayoutDefinition>
+                                                <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
                                                           GroupHeaderLength="35">
-                                                <telerikListView:ListViewLinearLayout.ItemLength>
-                                                    <OnPlatform x:TypeArguments="x:Double">
-                                                        <On Platform="Android">40</On>
-                                                    </OnPlatform>
-                                                </telerikListView:ListViewLinearLayout.ItemLength>
-                                            </telerikListView:ListViewLinearLayout>
-                                        </telerikDataControls:RadListView.LayoutDefinition>
-                                    </telerikDataControls:RadListView>
+                                                    <telerikListView:ListViewLinearLayout.ItemLength>
+                                                        <OnPlatform x:TypeArguments="x:Double">
+                                                            <On Platform="Android">40</On>
+                                                        </OnPlatform>
+                                                    </telerikListView:ListViewLinearLayout.ItemLength>
+                                                </telerikListView:ListViewLinearLayout>
+                                            </telerikDataControls:RadListView.LayoutDefinition>
+                                        </telerikDataControls:RadListView>
+                                        <Label Text="No result" IsVisible="{Binding HasToDoTasks}" />
+
+                                    </StackLayout>
+
                                 </telerikPrimitives:TabViewItem.Content>
                             </telerikPrimitives:TabViewItem>
 
@@ -269,7 +282,8 @@
                                     <telerikPrimitives:TabViewHeaderItem Text="Completed" ControlTemplate="{StaticResource CompletedHeaderControlTemplate}"/>
                                 </telerikPrimitives:TabViewItem.Header>
                                 <telerikPrimitives:TabViewItem.Content>
-                                    <telerikDataControls:RadListView 
+                                    <StackLayout>
+                                         <telerikDataControls:RadListView 
                                                                      SelectionMode="None"
                                                                      ItemsSource="{Binding CompletedTasks}"
                                                                      AutomationId="listView"
@@ -294,6 +308,9 @@
                                             </telerikListView:ListViewLinearLayout>
                                         </telerikDataControls:RadListView.LayoutDefinition>
                                     </telerikDataControls:RadListView>
+                                        <Label Text="No result" IsVisible="{Binding HasCompletedTasks}" />
+                                    </StackLayout>
+                                   
                                 </telerikPrimitives:TabViewItem.Content>
                             </telerikPrimitives:TabViewItem>
                         </telerikPrimitives:RadTabView.Items>

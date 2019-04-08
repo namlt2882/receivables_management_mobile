@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RCM.Mobile.Views.ProgressBarView">
+  <ContentView.Content>
+        <StackLayout HeightRequest="100">
+            <Grid x:Name="Container" HeightRequest="30" HorizontalOptions="Fill" VerticalOptions="Fill" ColumnSpacing="0" BackgroundColor="SkyBlue">
+
+            </Grid>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="a"/>
+                <Label Text="a"/>
+                <Label Text="a"/>
+                <Label Text="a"/>
+            </StackLayout>
+        </StackLayout>
+      
+    </ContentView.Content>
+</ContentView>

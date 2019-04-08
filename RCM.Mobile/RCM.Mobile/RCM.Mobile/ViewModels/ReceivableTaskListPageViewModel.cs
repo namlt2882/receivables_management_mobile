@@ -25,7 +25,9 @@ namespace RCM.Mobile.ViewModels
         public ReceivableTaskListPageViewModel(ISettingsService settingsService, IPageDialogService dialogService, INavigationService navigationService, ITaskService taskService) : base(settingsService, dialogService, navigationService)
         {
             _taskService = taskService;
-            InitAsync();
+            HasToDoTasks = false;
+            HasToDayTasks = false;
+            HasToDoTasks = false;
         }
         private ImageSource _imageSource;
         public ImageSource ImageSource
@@ -77,25 +79,35 @@ namespace RCM.Mobile.ViewModels
             set { SetProperty(ref _todayTasks, value); RaisePropertyChanged("TodayTasks"); }
         }
 
+        private bool _hasToDayTasks;
+        public bool HasToDayTasks
+        {
+            get { return _hasToDayTasks; }
+            set { SetProperty(ref _hasToDayTasks, value); RaisePropertyChanged("HasToDayTasks"); }
+        }
         private ObservableCollection<SourceItem> _Source;
         public ObservableCollection<SourceItem> Source
         {
             get { return _Source; }
             set { SetProperty(ref _Source, value); RaisePropertyChanged("Source"); }
         }
-        private ObservableCollection<SourceItem> _Source2;
-        public ObservableCollection<SourceItem> Source2
+        private bool isBusy;
+        public bool IsBusy
         {
-            get { return _Source2; }
-            set { SetProperty(ref _Source2, value); RaisePropertyChanged("Source2"); }
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); RaisePropertyChanged("IsBusy"); }
         }
-        //public ObservableCollection<SourceItem> Source { get; set; }
-        //public ObservableCollection<SourceItem> Source2 { get; set; }
         private ObservableCollection<Task> _completedTasks;
         public ObservableCollection<Task> CompletedTasks
         {
             get { return _completedTasks; }
             set { SetProperty(ref _completedTasks, value); RaisePropertyChanged("CompletedTasks"); }
+        }
+        private bool _hasCompletedTasks;
+        public bool HasCompletedTasks
+        {
+            get { return _hasCompletedTasks; }
+            set { SetProperty(ref _hasCompletedTasks, value); RaisePropertyChanged("HasCompletedTasks"); }
         }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -109,20 +121,61 @@ namespace RCM.Mobile.ViewModels
             get { return _toDoTasks; }
             set { SetProperty(ref _toDoTasks, value); RaisePropertyChanged("ToDoTasks"); }
         }
+        private bool _hasToDoTasks;
+        public bool HasToDoTasks
+        {
+            get { return _hasToDoTasks; }
+            set { SetProperty(ref _hasToDoTasks, value); RaisePropertyChanged("HasToDoTasks"); }
+        }
+
+
         private async System.Threading.Tasks.Task InitAsync()
         {
+            IsBusy = true;
             TodayTasks = new ObservableCollection<Task>();
             foreach (var item in await _taskService.GetAssignedTaskByReceivableAndDay(_settingsService.AuthAccessToken, 0, _settingsService.ReceivableId))
             {
                 TodayTasks.Add(item);
             }
             ToDoTasks = new ObservableCollection<Task>();
-            CompletedTasks = new ObservableCollection<Task>();
-            foreach (var task in await _taskService.GetTaskByReceivableId(_settingsService.AuthAccessToken, _settingsService.ReceivableId))
+            foreach (var task in await _taskService.GetTodoTaskByReceivableId(_settingsService.AuthAccessToken, _settingsService.ReceivableId))
             {
-                if (task.Status == Constant.COLLECTION_STATUS_DONE_CODE || task.Status == Constant.COLLECTION_STATUS_CANCEL_CODE)
-                    CompletedTasks.Add(task);
-                else ToDoTasks.Add(task);
+                ToDoTasks.Add(task);
+            }
+            CompletedTasks = new ObservableCollection<Task>();
+            foreach (var task in await _taskService.GetCompletedTaskByReceivableId(_settingsService.AuthAccessToken, _settingsService.ReceivableId))
+            {
+                CompletedTasks.Add(task);
+            }
+            SetTaskAvailable();
+            IsBusy = false;
+        }
+        private void SetTaskAvailable()
+        {
+            if (TodayTasks.Count > 0)
+            {
+                HasToDayTasks = false;
+            }
+            else
+            {
+                HasToDayTasks = true;
+            }
+            if (ToDoTasks.Count > 0)
+            {
+                HasToDoTasks = false;
+            }
+            else
+            {
+                HasToDoTasks = true;
+            }
+            if (CompletedTasks.Count > 0)
+            {
+                HasCompletedTasks = false;
+            }
+            else
+            {
+                HasCompletedTasks = true;
+
             }
         }
         public Command ClosePopup
@@ -200,9 +253,11 @@ namespace RCM.Mobile.ViewModels
                             var fileUri = await SBSDK.Operations.CreatePdfAsync(DocumentSources, ScanbotSDK.Xamarin.PDFPageSize.Auto);
                             //Move file to device
                             CrossShareFile.Current.ShareLocalFile(fileUri.AbsolutePath);
-                            File = new Models.File();
-                            File.FileName = Path.GetFileName(fileUri.LocalPath);
-                            File.StreamSource = System.IO.File.OpenRead(fileUri.AbsolutePath);
+                            File = new Models.File
+                            {
+                                FileName = Path.GetFileName(fileUri.LocalPath),
+                                StreamSource = System.IO.File.OpenRead(fileUri.AbsolutePath)
+                            };
                             ImageSource = result.Pages[0].Document;
                             IsImageAvailable = true;
                         }
@@ -222,7 +277,8 @@ namespace RCM.Mobile.ViewModels
                         {
                             Id = SelectedTask.Id,
                             Note = SelectedTask.Note,
-                            File = File
+                            File = File,
+                            Status = Constant.COLLECTION_STATUS_DONE_CODE
                         }))
                         {
                             await _dialogService.DisplayAlertAsync("Mesage", "Update Success", "Ok");
@@ -249,13 +305,26 @@ namespace RCM.Mobile.ViewModels
                 {
                     if (await _dialogService.DisplayAlertAsync("Mesage", "Are you sure to cancel this task?", "OK", "Cancel"))
                     {
-                        await _taskService.Cancel(_settingsService.AuthAccessToken, SelectedTask.Id);
-                        await _dialogService.DisplayAlertAsync("Mesage", "Cancel Success", "OK");
-                        TodayTasks.Remove(SelectedTask);
-                        IsImageAvailable = false;
-                        ImageSource = null;
-                        await InitAsync();
-                        IsOpened = false;
+
+
+                        if (await _taskService.Update(_settingsService.AuthAccessToken, new UpdateTaskModel()
+                        {
+                            Id = SelectedTask.Id,
+                            Note = SelectedTask.Note,
+                            File = File,
+                            Status = Constant.COLLECTION_STATUS_CANCEL_CODE
+                        }))
+                        {
+                            await _dialogService.DisplayAlertAsync("Mesage", "Cancel Success", "Ok");
+                            TodayTasks.Remove(SelectedTask);
+                            IsImageAvailable = false;
+                            ImageSource = null;
+                            await InitAsync();
+                        }
+                        else
+                        {
+                            await _dialogService.DisplayAlertAsync("Mesage", "Fail", "Ok");
+                        }
                     }
                 });
             }

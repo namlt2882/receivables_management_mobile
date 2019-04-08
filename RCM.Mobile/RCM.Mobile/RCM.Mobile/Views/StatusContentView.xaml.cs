@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RCM.Mobile.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace RCM.Mobile.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class NotificationPage : ContentPage
+	public partial class StatusContentView : ContentView
 	{
-		public NotificationPage ()
+		public StatusContentView()
 		{
 			InitializeComponent ();
-		}
+            statusList.ItemsSource = Constant.STATUSES;
+        }
 	}
 }

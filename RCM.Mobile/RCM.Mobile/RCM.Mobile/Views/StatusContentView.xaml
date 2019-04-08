@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RCM.Mobile.Views.StatusContentView"
+             xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:telerikDataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:telerikListView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:telerikInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:context="clr-namespace:RCM.Mobile.ViewModels.ContentViews"
+             prism:ViewModelLocator.AutowireViewModel="True">
+    
+  <ContentView.Content>
+        <StackLayout Grid.Row="2"
+                             VerticalOptions="EndAndExpand" 
+                             Spacing="0"
+                             Margin="0, 0, 0, 6"
+                             Padding="10,0,10,0">
+            <Label Text="Status"
+                           TextColor="#4B4C4C"
+                           Font="Bold,15" 
+                           Margin="0, 0, 0, 2"
+                           FontAttributes="Bold"
+                           FontSize="17"/>
+            <telerikPrimitives:RadBorder BorderColor="#DBDBDB" BorderThickness="0, 0, 0, 1"/>
+            <telerikDataControls:RadListView x:Name="statusList" SelectionMode="None">
+                <telerikDataControls:RadListView.ItemTemplate>
+                    <DataTemplate>
+                        <telerikListView:ListViewTemplateCell>
+                            <telerikListView:ListViewTemplateCell.View>
+                                <telerikPrimitives:RadBorder BorderColor="#DBDBDB"
+                                                                 BorderThickness="0, 0, 0, 1">
+                                    <StackLayout Orientation="Horizontal">
+                                        <telerikPrimitives:RadBorder BorderColor="{Binding Color}"
+                                                                         BorderThickness="1, 0, 1, 0"
+                                                                         Margin="2, 0, 0, 0"
+                                                                         HeightRequest="20"
+                                                                         VerticalOptions="CenterAndExpand"/>
+                                        <Label Text="{Binding Name}" VerticalTextAlignment="Center"/>
+                                    </StackLayout>
+                                </telerikPrimitives:RadBorder>
+                            </telerikListView:ListViewTemplateCell.View>
+                        </telerikListView:ListViewTemplateCell>
+                    </DataTemplate>
+                </telerikDataControls:RadListView.ItemTemplate>
+                <telerikDataControls:RadListView.LayoutDefinition>
+                    <telerikListView:ListViewGridLayout SpanCount="2" 
+                                                     Orientation="Vertical" 
+                                                     ItemLength="30" 
+                                                     VerticalItemSpacing="0"/>
+                </telerikDataControls:RadListView.LayoutDefinition>
+                <telerikDataControls:RadListView.ItemStyle>
+                    <telerikListView:ListViewItemStyle BorderLocation="None" 
+                                                    BackgroundColor="Transparent"/>
+                </telerikDataControls:RadListView.ItemStyle>
+            </telerikDataControls:RadListView>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

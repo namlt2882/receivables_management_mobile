@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using Prism.Navigation;
+﻿using Prism.Navigation;
 using Plugin.Connectivity;
 
 using Prism.Services;

@@ -295,10 +295,13 @@ namespace RCM.Mobile.Services
             file.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = data.File.FileName };
             file.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
             #endregion
-            var formData = new MultipartFormDataContent();
-            formData.Add(file);
-            formData.Add(new StringContent(data.Id.ToString()), "Id");
-            formData.Add(new StringContent(data.Note != null ? data.Note : ""), "Note");
+            var formData = new MultipartFormDataContent
+            {
+                file,
+                { new StringContent(data.Id.ToString()), "Id" },
+                { new StringContent(data.Note ??""), "Note" },
+                { new StringContent(data.Status.ToString()), "Status" }
+            };
             HttpResponseMessage response = await httpClient.PostAsync(uri, formData);
             await HandleResponse(response);
             if (response.StatusCode == HttpStatusCode.OK)

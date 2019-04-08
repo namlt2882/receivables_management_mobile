@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Plugin.FirebasePushNotification" Version="2.3.5" />
@@ -30,40 +29,19 @@
     <Compile Update="Style\MainPageStyle.xaml.cs">
       <DependentUpon>MainPageStyle.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\StatusContentView.xaml.cs">
+      <DependentUpon>StatusContentView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Style\LoginStyle.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AssignedReceivablesPage.xaml">
+    <EmbeddedResource Update="Views\ProgressBarView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\LoginPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\MainPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\NotificationListPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\NotificationPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ReceivableDetailPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ReceivableListPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ReceivableTaskListPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\TaskDetailPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\TaskPage.xaml">
+    <EmbeddedResource Update="Views\StatusContentView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -78,35 +56,9 @@
     <None Update="Style\MainPageStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Views\AssignedReceivablesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\LoginPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\NotificationListPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\NotificationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ReceivableDetailPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ReceivableListPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ReceivableTaskListPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\TaskDetailPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\TaskPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\DataForms\" />
   </ItemGroup>
 </Project>
