@@ -58,8 +58,22 @@ namespace RCM.Mobile.ViewModels
         public bool IsBusy
         {
             get { return isBusy; }
-            set { SetProperty(ref isBusy, value); RaisePropertyChanged("IsBusy"); }
+            set { SetProperty(ref isBusy, value);}
         }
+
+        private int _numberOfStages;
+        public int NumberOfStages
+        {
+            get { return _numberOfStages; }
+            set { SetProperty(ref _numberOfStages, value);}
+        }
+        private int _stage;
+        public int Stage
+        {
+            get { return _stage; }
+            set { SetProperty(ref _stage, value);}
+        }
+        
         //public ObservableCollection<Receivable> Receivables { get; set; }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -69,12 +83,19 @@ namespace RCM.Mobile.ViewModels
             {
                 var receivableId = parameters.GetValue<int>("receivableId");
                 Receivable = await _receivableService.GetAssignedReceivableAsync(_settingsService.AuthAccessToken, receivableId);
+                NumberOfStages = Receivable.ProgressStage.Actions.Count();
+                Stage = Receivable.ProgressStage.CurrentStageIndex + 1;
                 _settingsService.ReceivableId = Receivable.Id;
             }
+            if (Receivable.CollectionProgressStatus == Constant.COLLECTION_STATUS_COLLECTION_CODE)
+            {
+                IsCollecting = true;
+            }
+
             #region Task
             await InitAsync();
             #endregion
-            
+
 
             //Get Relatives
             Relatives = new List<Contact>();
@@ -338,7 +359,12 @@ namespace RCM.Mobile.ViewModels
             get { return _hasToDoTasks; }
             set { SetProperty(ref _hasToDoTasks, value); RaisePropertyChanged("HasToDoTasks"); }
         }
-
+        private bool _isCollecting;
+        public bool IsCollecting
+        {
+            get { return _isCollecting; }
+            set { SetProperty(ref _isCollecting, value); RaisePropertyChanged("IsCollecting"); }
+        }
 
         private void SetTaskAvailable()
         {
@@ -476,6 +502,7 @@ namespace RCM.Mobile.ViewModels
                             IsImageAvailable = false;
                             ImageSource = null;
                             await InitAsync();
+                            IsCollecting = false;
                         }
                         else
                         {
@@ -509,6 +536,7 @@ namespace RCM.Mobile.ViewModels
                             TodayTasks.Remove(SelectedTask);
                             IsImageAvailable = false;
                             ImageSource = null;
+                            IsCollecting = false;
                             await InitAsync();
                         }
                         else

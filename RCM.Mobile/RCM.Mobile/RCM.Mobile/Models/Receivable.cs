@@ -92,12 +92,24 @@ namespace RCM.Mobile.Models
         public double TimeRate { get; set; }
         public string Stage { get; set; }
         public LastAction Action { get; set; }
-        public bool HasAction => !string.IsNullOrEmpty(Action.Name);
+        //public bool HasAction => !string.IsNullOrEmpty(Action.Type);
+        public ProgressStage ProgressStage { get; set; }
+    }
+    public class ProgressStage : BindableBase
+    {
+        public string CurrentStageName { get; set; }
+        public int CurrentStageIndex { get; set; }
+        public IEnumerable<ProgressStageAction> Actions;
+    }
+
+    public class ProgressStageAction
+    {
+        public string Name { get; set; }
     }
 
     public class LastAction
     {
-        public string Name { get; set; }
+        public int Type { get; set; }
         public DateTime Time { get; set; }
     }
 

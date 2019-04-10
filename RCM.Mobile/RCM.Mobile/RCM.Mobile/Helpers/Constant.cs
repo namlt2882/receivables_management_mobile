@@ -32,12 +32,20 @@ namespace RCM.Mobile.Helpers
 
         #region Action
 
+        public const string ACTION_SMS = "SMS";
+        public const int ACTION_SMS_CODE = 0;
+
+        public const string ACTION_PHONECALL = "PhoneCall";
+        public const int ACTION_PHONECALL_CODE = 1;
+
         public const string ACTION_NOTIFICATION = "Notification";
         public const int ACTION_NOTIFICATION_CODE = 2;
-        public const string ACTION_REPORT = "Report";
-        public const int ACTION_REPORT_CODE = 3;
+
         public const string ACTION_VISIT = "Visit";
         public const int ACTION_VISIT_CODE = 4;
+
+        public const string ACTION_REPORT = "Report";
+        public const int ACTION_REPORT_CODE = 3;
 
         #endregion
 
