@@ -19,7 +19,8 @@ namespace RCM.Mobile.Models
         public string Evidence { get; set; }
         public string Note { get; set; }
         public int ReceivableId { get; set; }
-        public string UserId { get; set; }
+        public string Partner { get; set; }
+        public string Debtor { get; set; }
 
     }
 

@@ -1,4 +1,5 @@
-﻿using RCM.Mobile.Helpers;
+﻿using Prism.Services;
+using RCM.Mobile.Helpers;
 using RCM.Mobile.Models;
 using RCM.Mobile.Services;
 using RCM.Mobile.ViewModels;
@@ -19,9 +20,11 @@ namespace RCM.Mobile.Views
     public partial class ReceivableDetailPage : ContentPage
     {
         ISettingsService _settingsService;
-        public ReceivableDetailPage(ISettingsService settingsService)
+        IPageDialogService _pageDialogService;
+        public ReceivableDetailPage(ISettingsService settingsService , IPageDialogService pageDialogService)
         {
             _settingsService = settingsService;
+            _pageDialogService = pageDialogService;
             InitializeComponent();
         }
         private async void FinishPopup(object sender, EventArgs e)
@@ -55,6 +58,11 @@ namespace RCM.Mobile.Views
         private void ShowPopup(object sender, EventArgs e)
         {
             var context = (ReceivableDetailPageViewModel)this.BindingContext;
+            if (context.HasToDayTasks)
+            {
+                _pageDialogService.DisplayAlertAsync("Message", "Today tasks must be finish", "OK");
+                return;
+            }
             if (context.Receivable.CollectionProgressStatus == 1)
             {
                 popup.IsOpen = true;

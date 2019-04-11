@@ -16,7 +16,7 @@
             </ResourceDictionary>
         </StackLayout.Resources>
         <Label 
-			Text="Ứng dụng quản lý thu hồi nợ"
+			Text="Receivable Management"
 			TextColor="White"
 			FontSize="Medium" 
 			FontAttributes="Bold"  
@@ -34,7 +34,10 @@
 			TextColor="White"
             Command="{Binding Login}"
 			BackgroundColor="#1dabf0" />
-        <Button Text="ChangeIP"  Command="{Binding ChangeIP}" />
+        <StackLayout Orientation="Vertical">
+            <Entry Placeholder="IP" Text="{Binding IP}"/>
+            <Button Text="Change IP" Command="{Binding ChangeIP}"/>
+        </StackLayout>
     </StackLayout>
 
 

@@ -21,6 +21,7 @@ namespace RCM.Mobile.Converters
                 {
                     case Constant.ACTION_REPORT_CODE: return Constant.ACTION_REPORT;
                     case Constant.ACTION_VISIT_CODE: return Constant.ACTION_VISIT;
+                    case Constant.ACTION_NOTIFICATION_CODE: return Constant.ACTION_NOTIFICATION;
                 }
             }
             else if (header.Level == 2)

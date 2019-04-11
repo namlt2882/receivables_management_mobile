@@ -327,6 +327,12 @@ namespace RCM.Mobile.ViewModels
             get { return _hasToDayTasks; }
             set { SetProperty(ref _hasToDayTasks, value); RaisePropertyChanged("HasToDayTasks"); }
         }
+        private bool _notHasToDayTasks;
+        public bool NotHasToDayTasks
+        {
+            get { return _notHasToDayTasks; }
+            set { SetProperty(ref _notHasToDayTasks, value); RaisePropertyChanged("NotHasToDayTasks"); }
+        }
         private ObservableCollection<SourceItem> _Source;
         public ObservableCollection<SourceItem> Source
         {
@@ -347,6 +353,13 @@ namespace RCM.Mobile.ViewModels
             set { SetProperty(ref _hasCompletedTasks, value); RaisePropertyChanged("HasCompletedTasks"); }
         }
 
+        private bool _notHasCompletedTasks;
+        public bool NotHasCompletedTasks
+        {
+            get { return _notHasCompletedTasks; }
+            set { SetProperty(ref _notHasCompletedTasks, value); RaisePropertyChanged("NotHasCompletedTasks"); }
+        }
+
         private ObservableCollection<Task> _toDoTasks;
         public ObservableCollection<Task> ToDoTasks
         {
@@ -358,6 +371,12 @@ namespace RCM.Mobile.ViewModels
         {
             get { return _hasToDoTasks; }
             set { SetProperty(ref _hasToDoTasks, value); RaisePropertyChanged("HasToDoTasks"); }
+        }
+        private bool _notHasToDoTasks;
+        public bool NotHasToDoTasks
+        {
+            get { return _notHasToDoTasks; }
+            set { SetProperty(ref _notHasToDoTasks, value); RaisePropertyChanged("NotHasToDoTasks"); }
         }
         private bool _isCollecting;
         public bool IsCollecting
@@ -371,26 +390,33 @@ namespace RCM.Mobile.ViewModels
             if (TodayTasks.Count > 0)
             {
                 HasToDayTasks = true;
+                NotHasToDayTasks = false;
             }
             else
             {
                 HasToDayTasks = false;
+                NotHasToDayTasks = true;
             }
             if (ToDoTasks.Count > 0)
             {
                 HasToDoTasks = true;
+                NotHasToDoTasks = false;
             }
             else
             {
                 HasToDoTasks = false;
+                NotHasToDoTasks = true;
             }
             if (CompletedTasks.Count > 0)
             {
                 HasCompletedTasks = true;
+                NotHasCompletedTasks = false;
             }
             else
             {
                 HasCompletedTasks = false;
+                NotHasCompletedTasks = true;
+
 
             }
         }

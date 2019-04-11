@@ -92,10 +92,19 @@ namespace RCM.Mobile.ViewModels
                     Detail = "",
                 });
             });
-            SetMinMaxDay(appointments);
-            //
-            await SetCurrentTaskByDay(null);
-            IsBusy = false;
+            if (appointments.Count == 0)
+            {
+                await _dialogService.DisplayAlertAsync("Message", "All task are done!", "OK");
+                await NavigationService.NavigateAsync("RCM.Mobile:///MainPage");
+            }
+            else
+            {
+                SetMinMaxDay(appointments);
+                //
+                await SetCurrentTaskByDay(MinDate);
+                IsBusy = false;
+            }
+            
         }
 
         private void SetMinMaxDay(List<DateTime> appointments)
@@ -106,7 +115,7 @@ namespace RCM.Mobile.ViewModels
                 MaxDate = appointments[appointments.Count - 1];
                 MinDate = appointments[0];
             }
-            
+
         }
 
         public Command TapDay
@@ -115,8 +124,14 @@ namespace RCM.Mobile.ViewModels
             {
                 return new Command<CalendarDateCell>(async (calendarDate) =>
                 {
-                    if (calendarDate.Date.CompareTo(MinDate) >= 0 || calendarDate.Date.CompareTo(MaxDate) <= 0) { }
+                    if (calendarDate.Date.CompareTo(MinDate) >= 0 || calendarDate.Date.CompareTo(MaxDate) <= 0)
+                    {
                         await SetCurrentTaskByDay(calendarDate.Date);
+                    }
+                    else
+                    {
+                        await _dialogService.DisplayAlertAsync("Message", "Please select marked day", "OK");
+                    }
                 });
             }
         }
@@ -141,7 +156,7 @@ namespace RCM.Mobile.ViewModels
                 return new Command<ItemTapCommandContext>(async (_) =>
                {
                    var task = _.Item as Models.Task;
-                   await NavigationService.NavigateAsync("ReceivableDetailPage", new NavigationParameters() { { "receivableId", task.ReceivableId} });
+                   await NavigationService.NavigateAsync("ReceivableDetailPage", new NavigationParameters() { { "receivableId", task.ReceivableId } });
                });
             }
         }

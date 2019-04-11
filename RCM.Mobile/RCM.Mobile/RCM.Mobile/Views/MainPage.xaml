@@ -10,16 +10,80 @@
     prism:ViewModelLocator.AutowireViewModel="True"
     xmlns:converter="clr-namespace:RCM.Mobile.Converters"
     Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
-            <Grid.Resources>
-                <ResourceDictionary>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="/Style/LoginStyle.xaml" />
-                    </ResourceDictionary.MergedDictionaries>
-                </ResourceDictionary>
-            </Grid.Resources>
-            <telerikPrimitives:RadSideDrawer x:Name="drawer"
+        <StackLayout VerticalOptions="CenterAndExpand">
+            <Label Text="Receivable Management" FontSize="30" HorizontalTextAlignment="Center" TextColor="{StaticResource NavigationPrimary}" FontAttributes="Bold" HeightRequest="60" VerticalOptions="Center"/>
+            <Grid BackgroundColor="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0">
+                    <telerikPrimitives:RadBorder BackgroundColor="White"
+                                             WidthRequest="350"
+                                             BorderColor="LightGray"
+                                             BorderThickness="0,4,0,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <StackLayout>
+                                <Button Text="&#xf09d;" BackgroundColor="Transparent"  TextColor="{StaticResource NavigationPrimary}" FontSize="110" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular" Command="{Binding Receivable}"/>
+                                <Label Text="Receivable" FontAttributes="Bold" TextColor="{StaticResource NavigationPrimary}" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Center" />
+                            </StackLayout>
+                        </StackLayout>
+                    </telerikPrimitives:RadBorder>
+                </StackLayout>
+                <StackLayout Grid.Row="1">
+                    <telerikPrimitives:RadBorder BackgroundColor="White"
+                                             WidthRequest="350"
+                                             BorderColor="{StaticResource NavigationPrimary}"
+                                             BorderThickness="0,2,0,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <StackLayout>
+                                <Button Text="&#xf073;" BackgroundColor="Transparent"  TextColor="{StaticResource NavigationPrimary}" FontSize="110" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular" Command="{Binding Task}"/>
+                                <Label Text="Task" FontAttributes="Bold" TextColor="{StaticResource NavigationPrimary}" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Center" />
+                            </StackLayout>
+                        </StackLayout>
+                    </telerikPrimitives:RadBorder>
+
+                </StackLayout>
+
+                <StackLayout Grid.Row="2" >
+                    <telerikPrimitives:RadBorder BackgroundColor="White"
+                                             WidthRequest="350"
+                                             BorderColor="{StaticResource NavigationPrimary}"
+                                             BorderThickness="0,2,0,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <StackLayout>
+                                <Button Text="&#xf0f3;" BackgroundColor="Transparent"  TextColor="{StaticResource NavigationPrimary}" FontSize="110" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular" Command="{Binding Notification}"/>
+                                <Label Text="Notification" FontAttributes="Bold" TextColor="{StaticResource NavigationPrimary}" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Center" />
+                            </StackLayout>
+                        </StackLayout>
+                    </telerikPrimitives:RadBorder>
+                </StackLayout>
+                <StackLayout Grid.Row="3" >
+                    <telerikPrimitives:RadBorder BackgroundColor="White"
+                                             WidthRequest="350"
+                                             BorderColor="{StaticResource NavigationPrimary}"
+                                             BorderThickness="0,2,0,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <StackLayout>
+                                <Button Text="&#xf007;" BackgroundColor="Transparent"  TextColor="{StaticResource NavigationPrimary}" FontSize="110" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular" Command="{Binding Account}"/>
+                                <Label Text="Account" FontAttributes="Bold" TextColor="{StaticResource NavigationPrimary}" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Center" />
+                            </StackLayout>
+                        </StackLayout>
+                    </telerikPrimitives:RadBorder>
+                </StackLayout>
+                <!--<StackLayout Grid.Row="4" VerticalOptions="EndAndExpand">
+                    <Button Text="Change IP" CornerRadius="10" HeightRequest="40" WidthRequest="200"/>
+                    <Button Text="Log out" CornerRadius="10" HeightRequest="40" WidthRequest="200" Command="{Binding Logout}"/>
+                </StackLayout>-->
+                <!--<telerikPrimitives:RadSideDrawer x:Name="drawer"
                                          DrawerLength="300"
                                          DrawerTransitionType="SlideInOnTop">
                 <telerikPrimitives:RadSideDrawer.MainContent>
@@ -29,7 +93,6 @@
                             <RowDefinition >
                                 <RowDefinition.Height>
                                     <OnPlatform x:TypeArguments="GridLength">
-                                        <!--<On Platform="iOS">44</On>-->
                                         <On Platform="Android">56</On>
                                     </OnPlatform>
                                 </RowDefinition.Height>
@@ -50,7 +113,6 @@
                               WidthRequest="48">
                                 <Grid.Padding>
                                     <OnPlatform x:TypeArguments="Thickness">
-                                        <!--<On Platform="iOS">16, 0, 8, 0</On>-->
                                         <On Platform="Android">16, 0, 16, 0</On>
                                     </OnPlatform>
                                 </Grid.Padding>
@@ -191,7 +253,9 @@
                         </Grid>
                     </Grid>
                 </telerikPrimitives:RadSideDrawer.DrawerContent>
-            </telerikPrimitives:RadSideDrawer>
-        </Grid>
+            </telerikPrimitives:RadSideDrawer>-->
+            </Grid>
+        </StackLayout>
+
     </ContentPage.Content>
 </ContentPage>

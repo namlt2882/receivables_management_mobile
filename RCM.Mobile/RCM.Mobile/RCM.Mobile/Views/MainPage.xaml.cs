@@ -34,10 +34,10 @@ namespace RCM.Mobile.Views
             //NavigationPage.SetHasNavigationBar(this, false);
             
         }
-        private void OnMenuTapped(object sender, EventArgs eventArgs)
-        {
-            this.drawer.IsOpen = !this.drawer.IsOpen;
-        }
+        //private void OnMenuTapped(object sender, EventArgs eventArgs)
+        //{
+        //    this.drawer.IsOpen = !this.drawer.IsOpen;
+        //}
 
     }
 }

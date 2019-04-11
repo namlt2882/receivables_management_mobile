@@ -21662,26 +21662,26 @@ namespace RCM.Mobile.Droid
 			// aapt resource value: 0x7f020057
 			public const int avd_hide_password = 2130837591;
 			
-			// aapt resource value: 0x7f02019f
-			public const int avd_hide_password_1 = 2130837919;
+			// aapt resource value: 0x7f0201a2
+			public const int avd_hide_password_1 = 2130837922;
 			
-			// aapt resource value: 0x7f0201a0
-			public const int avd_hide_password_2 = 2130837920;
+			// aapt resource value: 0x7f0201a3
+			public const int avd_hide_password_2 = 2130837923;
 			
-			// aapt resource value: 0x7f0201a1
-			public const int avd_hide_password_3 = 2130837921;
+			// aapt resource value: 0x7f0201a4
+			public const int avd_hide_password_3 = 2130837924;
 			
 			// aapt resource value: 0x7f020058
 			public const int avd_show_password = 2130837592;
 			
-			// aapt resource value: 0x7f0201a2
-			public const int avd_show_password_1 = 2130837922;
+			// aapt resource value: 0x7f0201a5
+			public const int avd_show_password_1 = 2130837925;
 			
-			// aapt resource value: 0x7f0201a3
-			public const int avd_show_password_2 = 2130837923;
+			// aapt resource value: 0x7f0201a6
+			public const int avd_show_password_2 = 2130837926;
 			
-			// aapt resource value: 0x7f0201a4
-			public const int avd_show_password_3 = 2130837924;
+			// aapt resource value: 0x7f0201a7
+			public const int avd_show_password_3 = 2130837927;
 			
 			// aapt resource value: 0x7f020059
 			public const int calendar = 2130837593;
@@ -22535,11 +22535,11 @@ namespace RCM.Mobile.Droid
 			// aapt resource value: 0x7f020174
 			public const int notification_icon_background = 2130837876;
 			
-			// aapt resource value: 0x7f02019d
-			public const int notification_template_icon_bg = 2130837917;
+			// aapt resource value: 0x7f0201a0
+			public const int notification_template_icon_bg = 2130837920;
 			
-			// aapt resource value: 0x7f02019e
-			public const int notification_template_icon_low_bg = 2130837918;
+			// aapt resource value: 0x7f0201a1
+			public const int notification_template_icon_low_bg = 2130837921;
 			
 			// aapt resource value: 0x7f020175
 			public const int notification_tile_bg = 2130837877;
@@ -22554,112 +22554,121 @@ namespace RCM.Mobile.Droid
 			public const int phone_32 = 2130837880;
 			
 			// aapt resource value: 0x7f020179
-			public const int pressable_item_background = 2130837881;
+			public const int Planning_icon = 2130837881;
 			
 			// aapt resource value: 0x7f02017a
-			public const int selectable_item_background = 2130837882;
+			public const int pressable_item_background = 2130837882;
 			
 			// aapt resource value: 0x7f02017b
-			public const int shade_bottom = 2130837883;
+			public const int receivable = 2130837883;
 			
 			// aapt resource value: 0x7f02017c
-			public const int shade_corner = 2130837884;
+			public const int receivable_icon = 2130837884;
 			
 			// aapt resource value: 0x7f02017d
-			public const int shade_right = 2130837885;
+			public const int selectable_item_background = 2130837885;
 			
 			// aapt resource value: 0x7f02017e
-			public const int SideDrawer_Menu = 2130837886;
+			public const int shade_bottom = 2130837886;
 			
 			// aapt resource value: 0x7f02017f
-			public const int SideDrawer_NavDrawer_Background = 2130837887;
+			public const int shade_corner = 2130837887;
 			
 			// aapt resource value: 0x7f020180
-			public const int SideDrawer_NavDrawer_User = 2130837888;
+			public const int shade_right = 2130837888;
 			
 			// aapt resource value: 0x7f020181
-			public const int tab_view_popup_background = 2130837889;
+			public const int SideDrawer_Menu = 2130837889;
 			
 			// aapt resource value: 0x7f020182
-			public const int take_picture_bg = 2130837890;
+			public const int SideDrawer_NavDrawer_Background = 2130837890;
 			
 			// aapt resource value: 0x7f020183
-			public const int task = 2130837891;
+			public const int SideDrawer_NavDrawer_User = 2130837891;
 			
 			// aapt resource value: 0x7f020184
-			public const int TelerikChatAuthor = 2130837892;
+			public const int tab_view_popup_background = 2130837892;
 			
 			// aapt resource value: 0x7f020185
-			public const int TelerikSendMessage = 2130837893;
+			public const int take_picture_bg = 2130837893;
 			
 			// aapt resource value: 0x7f020186
-			public const int TelerikTypingAuthors = 2130837894;
+			public const int task = 2130837894;
 			
 			// aapt resource value: 0x7f020187
-			public const int ToggleNotification = 2130837895;
+			public const int TelerikChatAuthor = 2130837895;
 			
 			// aapt resource value: 0x7f020188
-			public const int tooltip_frame_dark = 2130837896;
+			public const int TelerikSendMessage = 2130837896;
 			
 			// aapt resource value: 0x7f020189
-			public const int tooltip_frame_light = 2130837897;
+			public const int TelerikTypingAuthors = 2130837897;
 			
 			// aapt resource value: 0x7f02018a
-			public const int Transparency500 = 2130837898;
+			public const int ToggleNotification = 2130837898;
 			
 			// aapt resource value: 0x7f02018b
-			public const int ui_crop_handle_corner = 2130837899;
+			public const int tooltip_frame_dark = 2130837899;
 			
 			// aapt resource value: 0x7f02018c
-			public const int ui_crop_handle_horizontal = 2130837900;
+			public const int tooltip_frame_light = 2130837900;
 			
 			// aapt resource value: 0x7f02018d
-			public const int ui_crop_handle_vertical = 2130837901;
+			public const int Transparency500 = 2130837901;
 			
 			// aapt resource value: 0x7f02018e
-			public const int ui_crop_magnifier = 2130837902;
+			public const int ui_crop_handle_corner = 2130837902;
 			
 			// aapt resource value: 0x7f02018f
-			public const int ui_scan_ico_arrow = 2130837903;
+			public const int ui_crop_handle_horizontal = 2130837903;
 			
 			// aapt resource value: 0x7f020190
-			public const int ui_scan_ico_multipage_off = 2130837904;
+			public const int ui_crop_handle_vertical = 2130837904;
 			
 			// aapt resource value: 0x7f020191
-			public const int ui_scan_ico_multipage_on = 2130837905;
+			public const int ui_crop_magnifier = 2130837905;
 			
 			// aapt resource value: 0x7f020192
-			public const int ui_scan_ico_progress_inner = 2130837906;
+			public const int ui_scan_ico_arrow = 2130837906;
 			
 			// aapt resource value: 0x7f020193
-			public const int ui_scan_ico_progress_outer = 2130837907;
+			public const int ui_scan_ico_multipage_off = 2130837907;
 			
 			// aapt resource value: 0x7f020194
-			public const int ui_scanning_automatic_off = 2130837908;
+			public const int ui_scan_ico_multipage_on = 2130837908;
 			
 			// aapt resource value: 0x7f020195
-			public const int ui_scanning_automatic_on = 2130837909;
+			public const int ui_scan_ico_progress_inner = 2130837909;
 			
 			// aapt resource value: 0x7f020196
-			public const int ui_scanning_camera_permission = 2130837910;
+			public const int ui_scan_ico_progress_outer = 2130837910;
 			
 			// aapt resource value: 0x7f020197
-			public const int ui_scanning_flash_off = 2130837911;
+			public const int ui_scanning_automatic_off = 2130837911;
 			
 			// aapt resource value: 0x7f020198
-			public const int ui_scanning_flash_on = 2130837912;
+			public const int ui_scanning_automatic_on = 2130837912;
 			
 			// aapt resource value: 0x7f020199
-			public const int ui_scanning_manual = 2130837913;
+			public const int ui_scanning_camera_permission = 2130837913;
 			
 			// aapt resource value: 0x7f02019a
-			public const int ui_scanning_no_permission = 2130837914;
+			public const int ui_scanning_flash_off = 2130837914;
 			
 			// aapt resource value: 0x7f02019b
-			public const int upload = 2130837915;
+			public const int ui_scanning_flash_on = 2130837915;
 			
 			// aapt resource value: 0x7f02019c
-			public const int xamarin_logo = 2130837916;
+			public const int ui_scanning_manual = 2130837916;
+			
+			// aapt resource value: 0x7f02019d
+			public const int ui_scanning_no_permission = 2130837917;
+			
+			// aapt resource value: 0x7f02019e
+			public const int upload = 2130837918;
+			
+			// aapt resource value: 0x7f02019f
+			public const int xamarin_logo = 2130837919;
 			
 			static Drawable()
 			{

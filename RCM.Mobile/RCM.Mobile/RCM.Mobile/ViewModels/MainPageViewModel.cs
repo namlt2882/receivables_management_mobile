@@ -36,9 +36,9 @@ namespace RCM.Mobile.ViewModels
                 "Something funny",
                 "Logout",
             };
-            
+
             this.AccountName = settingsService.AuthUserName;
-            
+
             Init();
         }
 
@@ -87,6 +87,12 @@ namespace RCM.Mobile.ViewModels
                 }
             }
         }
+        private string _ip;
+        public string IP
+        {
+            get { return _ip; }
+            set { SetProperty(ref _ip, value); }
+        }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -101,11 +107,15 @@ namespace RCM.Mobile.ViewModels
         }
         private async void Init()
         {
-            HasNewNotification = await _notificationService.HasNotifications(token: _settingsService.AuthAccessToken);
-            NotHasNewNotification = !HasNewNotification;
-            _settingsService.ServerDay = await _utilityService.GetServerTime(_settingsService.AuthAccessToken);
-            await _firebaseTokenService.UpdateFirebaseToken(_settingsService.AuthAccessToken, CrossFirebasePushNotification.Current.Token);
-        } 
+            if (NetworkConntection)
+            {
+                _settingsService.IPAddress = "202.78.227.91:6868";
+                //HasNewNotification = await _notificationService.HasNotifications(token: _settingsService.AuthAccessToken);
+                //NotHasNewNotification = !HasNewNotification;
+                _settingsService.ServerDay = await _utilityService.GetServerTime(_settingsService.AuthAccessToken);
+                await _firebaseTokenService.UpdateFirebaseToken(_settingsService.AuthAccessToken, CrossFirebasePushNotification.Current.Token);
+            }
+        }
         private async System.Threading.Tasks.Task OnMenuChangedAsync()
         {
             switch (SelectedMenu)
@@ -128,13 +138,76 @@ namespace RCM.Mobile.ViewModels
                     break;
             }
         }
+        public Command ChangeIP
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (NetworkConntection)
+                        if (await _dialogService.DisplayAlertAsync("Message", "Your want to change IP?", "Ok", "Cancel"))
+                            _settingsService.IPAddress = IP;
+                });
+            }
+        }
+        public Command Logout
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (NetworkConntection)
+                    {
+                        await _firebaseTokenService.DeleteFirebaseToken(_settingsService.AuthAccessToken);
+                        _settingsService.AccessTokenExpirationDate = DateTime.UtcNow;
+                        _settingsService.AuthAccessToken = "";
+                        //CrossFirebasePushNotification.Current.Unsubscribe(_settingsService.AuthUserName);
+                        await NavigationService.NavigateAsync("RCM.Mobile:///LoginPage");
+                    }
+                });
+            }
+        }
         public Command Notification
         {
             get
             {
                 return new Command(async () =>
                 {
-                    await NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
+                    if (NetworkConntection)
+                        await NavigationService.NavigateAsync("NavigationPage/NotificationListPage");
+                });
+            }
+        }
+        public Command Task
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (NetworkConntection)
+                        await NavigationService.NavigateAsync("NavigationPage/TaskPage");
+                });
+            }
+        }
+        public Command Receivable
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (NetworkConntection)
+                        await NavigationService.NavigateAsync("NavigationPage/ReceivableListPage");
+                });
+            }
+        }
+        public Command Account
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (NetworkConntection)
+                        await NavigationService.NavigateAsync("NavigationPage/AccountPage");
                 });
             }
         }

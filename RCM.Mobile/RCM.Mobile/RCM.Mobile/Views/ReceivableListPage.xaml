@@ -213,6 +213,7 @@
                                                        BorderLocation="All"
                                                        BorderColor="#D2C7C3" />
                                             </telerikDataControls:RadListView.ItemStyle>
+                                            
                                             <telerikDataControls:RadListView.LayoutDefinition>
                                                 <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
                                                           GroupHeaderLength="30">
@@ -227,7 +228,6 @@
                                                 <DataTemplate>
                                                     <telerikListView:ListViewTemplateCell>
                                                         <telerikListView:ListViewTemplateCell.View>
-
                                                             <telerikPrimitives:RadBorder BorderColor="#DBDBDB"
                                                                  BorderThickness="0, 0, 0, 1">
                                                                 <StackLayout Orientation="Horizontal" BackgroundColor="{Binding CollectionProgressStatus, Converter={StaticResource ReceivableListBGConverter}}">

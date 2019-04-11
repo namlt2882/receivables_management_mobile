@@ -171,35 +171,13 @@
             </DataTemplate>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <telerikPrimitives:RadPopup.Popup>
-        <telerikPrimitives:RadPopup x:Name="popup"
-                                    IsModal="True"
-                                    OutsideBackgroundColor="#6F000000"
-                                    Placement="Center" 
-                                    VerticalOffset="-250"
-                                    IsOpen="{Binding IsOpened}">
-            <telerikPrimitives:RadBorder CornerRadius="8" 
-                                         BackgroundColor="WhiteSmoke" WidthRequest="350">
-                <StackLayout Orientation="Vertical" Padding="10">
-                    <Editor Text="{Binding SelectedTask.Note}" Placeholder="Note" HeightRequest="200" VerticalOptions="Center"/>
-                    <Button Text="Upload Evidence" VerticalOptions="Start" HorizontalOptions="Start" Command="{Binding ScanPhoto}"/>
-                    <Image IsVisible="{Binding IsImageAvailable}" WidthRequest="400" HeightRequest="400" Source="{Binding ImageSource}"/>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="20">
-                        <Button Text="Update" Command="{Binding Update}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="{StaticResource NavigationPrimary}" TextColor="White"/>
-                        <Button Text="Cancel" Command="{Binding Cancel}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="Red" TextColor="White"/>
-                        <Button Text="Close" Command="{Binding ClosePopup}" BackgroundColor="White"/>
-                    </StackLayout>
-                </StackLayout>
-            </telerikPrimitives:RadBorder>
-        </telerikPrimitives:RadPopup>
-    </telerikPrimitives:RadPopup.Popup>
+
 
     <ContentPage.Content>
         <ContentView>
             <ScrollView>
                 <StackLayout>
-
-                    <telerikPrimitives:RadTabView x:Name="tabView" HeaderPosition="Top" >
+                    <telerikPrimitives:RadTabView HeaderPosition="Top">
                         <telerikPrimitives:RadTabView.Items>
                             <telerikPrimitives:TabViewItem>
                                 <telerikPrimitives:TabViewItem.Header>
@@ -232,7 +210,7 @@
                                             </telerikDataControls:RadListView.LayoutDefinition>
                                         </telerikDataControls:RadListView>
                                         <Label Text="No result" IsVisible="{Binding HasToDayTasks}" />
-                                        <telerikPrimitives:RadBusyIndicator x:Name="BusyIndicator" 
+                                        <telerikPrimitives:RadBusyIndicator
                                                         HeightRequest="24" 
                                                         WidthRequest="24"
                                                         IsBusy="{Binding IsBusy}"
@@ -248,16 +226,15 @@
                                 </telerikPrimitives:TabViewItem.Header>
                                 <telerikPrimitives:TabViewItem.Content>
                                     <StackLayout>
-                                        <telerikDataControls:RadListView 
-                                                                     SelectionMode="None"
-                                                                     ItemsSource="{Binding ToDoTasks}"
-                                                                     AutomationId="listView"
-                                                                     ItemTemplate="{StaticResource ToDoListViewTemplate}">
+                                        <telerikDataControls:RadListView SelectionMode="None"
+                                                                         ItemsSource="{Binding ToDoTasks}"
+                                                                         AutomationId="listView"
+                                                                         ItemTemplate="{StaticResource ToDoListViewTemplate}">
                                             <telerikDataControls:RadListView.ItemStyle>
-                                                <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
+                                                <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue" 
+                                                                                   BorderWidth="1"
+                                                                                   BorderLocation="All"
+                                                                                   BorderColor="#D2C7C3" />
                                             </telerikDataControls:RadListView.ItemStyle>
                                             <telerikDataControls:RadListView.LayoutDefinition>
                                                 <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
@@ -271,124 +248,85 @@
                                             </telerikDataControls:RadListView.LayoutDefinition>
                                         </telerikDataControls:RadListView>
                                         <Label Text="No result" IsVisible="{Binding HasToDoTasks}" />
-
+                                        <telerikPrimitives:RadPopup.Popup>
+                                            <telerikPrimitives:RadPopup IsModal="True"
+                                                                        OutsideBackgroundColor="#6F000000"
+                                                                        Placement="Center" 
+                                                                        VerticalOffset="-250"
+                                                                        IsOpen="{Binding IsOpened}">
+                                                <telerikPrimitives:RadBorder CornerRadius="8" 
+                                                                             BackgroundColor="WhiteSmoke" 
+                                                                             WidthRequest="350">
+                                                    <StackLayout Orientation="Vertical" Padding="10">
+                                                        <Editor Text="{Binding SelectedTask.Note}" Placeholder="Note" HeightRequest="200" VerticalOptions="Center"/>
+                                                        <Button Text="Upload Evidence" VerticalOptions="Start" HorizontalOptions="Start" Command="{Binding ScanPhoto}"/>
+                                                        <Image IsVisible="{Binding IsImageAvailable}" WidthRequest="400" HeightRequest="400" Source="{Binding ImageSource}"/>
+                                                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="20">
+                                                            <Button Text="Update" Command="{Binding Update}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="{StaticResource NavigationPrimary}" TextColor="White"/>
+                                                            <Button Text="Cancel" Command="{Binding Cancel}" IsEnabled="{Binding IsImageAvailable}" BackgroundColor="Red" TextColor="White"/>
+                                                            <Button Text="Close" Command="{Binding ClosePopup}" BackgroundColor="White"/>
+                                                        </StackLayout>
+                                                    </StackLayout>
+                                                </telerikPrimitives:RadBorder>
+                                            </telerikPrimitives:RadPopup>
+                                        </telerikPrimitives:RadPopup.Popup>
                                     </StackLayout>
-
                                 </telerikPrimitives:TabViewItem.Content>
                             </telerikPrimitives:TabViewItem>
-
                             <telerikPrimitives:TabViewItem>
                                 <telerikPrimitives:TabViewItem.Header>
                                     <telerikPrimitives:TabViewHeaderItem Text="Completed" ControlTemplate="{StaticResource CompletedHeaderControlTemplate}"/>
                                 </telerikPrimitives:TabViewItem.Header>
                                 <telerikPrimitives:TabViewItem.Content>
                                     <StackLayout>
-                                         <telerikDataControls:RadListView 
-                                                                     SelectionMode="None"
-                                                                     ItemsSource="{Binding CompletedTasks}"
-                                                                     AutomationId="listView"
-                                                                     ItemTemplate="{StaticResource CompletedListViewTemplate}">
-                                        <telerikDataControls:RadListView.Commands>
-                                            <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding OpenCompletedTaskPopup}" />
-                                        </telerikDataControls:RadListView.Commands>
-                                        <telerikDataControls:RadListView.ItemStyle>
-                                            <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
-                                                       BorderWidth="1"
-                                                       BorderLocation="All"
-                                                       BorderColor="#D2C7C3" />
-                                        </telerikDataControls:RadListView.ItemStyle>
-                                        <telerikDataControls:RadListView.LayoutDefinition>
-                                            <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
-                                                          GroupHeaderLength="35">
-                                                <telerikListView:ListViewLinearLayout.ItemLength>
-                                                    <OnPlatform x:TypeArguments="x:Double">
-                                                        <On Platform="Android">40</On>
-                                                    </OnPlatform>
-                                                </telerikListView:ListViewLinearLayout.ItemLength>
-                                            </telerikListView:ListViewLinearLayout>
-                                        </telerikDataControls:RadListView.LayoutDefinition>
-                                    </telerikDataControls:RadListView>
+                                        <telerikDataControls:RadListView SelectionMode="None"
+                                                                         ItemsSource="{Binding CompletedTasks}"
+                                                                         AutomationId="listView"
+                                                                         ItemTemplate="{StaticResource CompletedListViewTemplate}">
+                                            <telerikDataControls:RadListView.Commands>
+                                                <telerikListViewCommands:ListViewUserCommand Id="ItemTap" Command="{Binding OpenCompletedTaskPopup}" />
+                                            </telerikDataControls:RadListView.Commands>
+                                            <telerikDataControls:RadListView.ItemStyle>
+                                                <telerikListView:ListViewItemStyle BackgroundColor="AliceBlue"
+                                                                                   BorderWidth="1"
+                                                                                   BorderLocation="All"
+                                                                                   BorderColor="#D2C7C3" />
+                                            </telerikDataControls:RadListView.ItemStyle>
+                                            <telerikDataControls:RadListView.LayoutDefinition>
+                                                <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
+                                                                                      GroupHeaderLength="35">
+                                                    <telerikListView:ListViewLinearLayout.ItemLength>
+                                                        <OnPlatform x:TypeArguments="x:Double">
+                                                            <On Platform="Android">40</On>
+                                                        </OnPlatform>
+                                                    </telerikListView:ListViewLinearLayout.ItemLength>
+                                                </telerikListView:ListViewLinearLayout>
+                                            </telerikDataControls:RadListView.LayoutDefinition>
+                                        </telerikDataControls:RadListView>
                                         <Label Text="No result" IsVisible="{Binding HasCompletedTasks}" />
+                                        <telerikPrimitives:RadPopup.Popup>
+                                            <telerikPrimitives:RadPopup IsModal="True"
+                                                                        OutsideBackgroundColor="#6F000000"
+                                                                        Placement="Center" 
+                                                                        VerticalOffset="-250"
+                                                                        IsOpen="{Binding IsCompletedOpened}">
+                                                <telerikPrimitives:RadBorder CornerRadius="8" BackgroundColor="WhiteSmoke" WidthRequest="350">
+                                                    <StackLayout Orientation="Vertical" Padding="10">
+                                                        <Editor Text="{Binding SelectedTask.Note}" Placeholder="Note" HeightRequest="200" VerticalOptions="Center" IsEnabled="False"/>
+                                                        <!--<Image WidthRequest="400" HeightRequest="400" Source="{Binding CompletedTaskImageSource}"/>-->
+                                                        <Button Text="View Evidence" Command="{Binding ViewEvidence}"/>
+                                                        <Button Text="Close" Command="{Binding ClosePopup}" BackgroundColor="{StaticResource LSecondaryPrimary}"/>
+                                                    </StackLayout>
+                                                </telerikPrimitives:RadBorder>
+                                            </telerikPrimitives:RadPopup>
+                                        </telerikPrimitives:RadPopup.Popup>
                                     </StackLayout>
-                                   
                                 </telerikPrimitives:TabViewItem.Content>
                             </telerikPrimitives:TabViewItem>
                         </telerikPrimitives:RadTabView.Items>
                     </telerikPrimitives:RadTabView>
-                    <!--<telerikPrimitives:RadTabView x:Name="tabView">
-                        <telerikPrimitives:RadTabView.Items>
-                            <telerikPrimitives:TabViewItem HeaderText="Home">
-                                <telerikPrimitives:TabViewItem.Content>
-
-                                    <telerikDataControls:RadListView x:Name="PeopleListView"
-                                                             ItemsSource="{Binding Source}"
-                                                             IsItemSwipeEnabled="True"
-                                                             SwipeOffset="150, 0, 0, 0"
-                                                             SwipeThreshold="10">
-                                        <telerikDataControls:RadListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <telerikListView:ListViewTemplateCell>
-                                                    <telerikListView:ListViewTemplateCell.View>
-                                                        <Grid>
-                                                            <Label Margin="10" Text="{Binding Name}" />
-                                                        </Grid>
-                                                    </telerikListView:ListViewTemplateCell.View>
-                                                </telerikListView:ListViewTemplateCell>
-                                            </DataTemplate>
-                                        </telerikDataControls:RadListView.ItemTemplate>
-                                    </telerikDataControls:RadListView>
-
-                                </telerikPrimitives:TabViewItem.Content>
-                            </telerikPrimitives:TabViewItem>
-                            <telerikPrimitives:TabViewItem HeaderText="Folder">
-                                <telerikPrimitives:TabViewItem.Content>
-                                    <telerikDataControls:RadListView x:Name="PeopleListView2"
-                                                             ItemsSource="{Binding Source2}"
-                                                             IsItemSwipeEnabled="True"
-                                                             SwipeOffset="150, 0, 0, 0"
-                                                             SwipeThreshold="10">
-                                        <telerikDataControls:RadListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <telerikListView:ListViewTemplateCell>
-                                                    <telerikListView:ListViewTemplateCell.View>
-                                                        <Grid>
-                                                            <Label Margin="10" Text="{Binding Name}" />
-                                                        </Grid>
-                                                    </telerikListView:ListViewTemplateCell.View>
-                                                </telerikListView:ListViewTemplateCell>
-                                            </DataTemplate>
-                                        </telerikDataControls:RadListView.ItemTemplate>
-                                    </telerikDataControls:RadListView>
-                                </telerikPrimitives:TabViewItem.Content>
-                            </telerikPrimitives:TabViewItem>
-                            <telerikPrimitives:TabViewItem HeaderText="View">
-                                <telerikPrimitives:TabViewItem.Content>
-                                    <Label Margin="10" Text="This is the content of the View tab" />
-                                </telerikPrimitives:TabViewItem.Content>
-                            </telerikPrimitives:TabViewItem>
-                        </telerikPrimitives:RadTabView.Items>
-                    </telerikPrimitives:RadTabView>-->
-                    <telerikPrimitives:RadPopup.Popup>
-                        <telerikPrimitives:RadPopup
-                                    IsModal="True"
-                                    OutsideBackgroundColor="#6F000000"
-                                    Placement="Center" 
-                                    VerticalOffset="-250"
-                                    IsOpen="{Binding IsCompletedOpened}">
-                            <telerikPrimitives:RadBorder CornerRadius="8" 
-                                         BackgroundColor="WhiteSmoke" WidthRequest="350">
-                                <StackLayout Orientation="Vertical" Padding="10">
-                                    <Editor Text="{Binding SelectedTask.Note}" Placeholder="Note" HeightRequest="200" VerticalOptions="Center" IsEnabled="False"/>
-                                    <!--<Image WidthRequest="400" HeightRequest="400" Source="{Binding CompletedTaskImageSource}"/>-->
-                                    <Button Text="View Evidence" Command="{Binding ViewEvidence}"/>
-                                    <Button Text="Close" Command="{Binding ClosePopup}" BackgroundColor="{StaticResource LSecondaryPrimary}"/>
-                                </StackLayout>
-                            </telerikPrimitives:RadBorder>
-                        </telerikPrimitives:RadPopup>
-                    </telerikPrimitives:RadPopup.Popup>
                 </StackLayout>
             </ScrollView>
-
         </ContentView>
     </ContentPage.Content>
 </ContentPage>

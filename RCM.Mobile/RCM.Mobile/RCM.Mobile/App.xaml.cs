@@ -146,10 +146,11 @@ namespace RCM.Mobile
         {
             //Navigation
             containerRegistry.RegisterForNavigation<NavigationPage>("NavigationPage");
-
             containerRegistry.RegisterForNavigation<AssignedReceivablesPage>("AssignedReceivablesPage");
             containerRegistry.RegisterForNavigation<LoginPage>("LoginPage");
             containerRegistry.RegisterForNavigation<MainPage>("MainPage");
+            containerRegistry.RegisterForNavigation<AccountPage>("AccountPage");
+
             //Notification
             containerRegistry.RegisterForNavigation<NotificationListPage>("NotificationListPage");
             //Receivable
@@ -170,6 +171,7 @@ namespace RCM.Mobile
             //containerRegistry.Register<IHubConnectionService, HubConnectionService>();
             ///Page
             containerRegistry.RegisterForNavigation<AssignedReceivablesPage, AssignedReceivablesPageViewModel>();
+            containerRegistry.RegisterForNavigation<AccountPage, AccountPageViewModel>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 

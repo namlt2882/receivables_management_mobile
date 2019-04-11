@@ -22,26 +22,31 @@ namespace RCM.Mobile.ViewModels
             get { return _networkConntection; }
             set { SetProperty(ref _networkConntection, value); }
         }
-        //private void CheckWifiOnStart()
-        //{
-        //    NetworkConntection = CrossConnectivity.Current.IsConnected;
-        //    if (!NetworkConntection)
-        //    {
 
-        //    }
-        //}
+        private void CheckWifiOnStart()
+        {
+            NetworkConntection = CrossConnectivity.Current.IsConnected;
+            if (!NetworkConntection)
+            {
+            }
+        }
 
-        //private void CheckWifiContinously()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private void CheckWifiContinously()
+        {
+            CrossConnectivity.Current.ConnectivityChanged += Current_ConnectivityChanged;
+        }
+
+        private void Current_ConnectivityChanged(object sender, Plugin.Connectivity.Abstractions.ConnectivityChangedEventArgs e)
+        {
+            NetworkConntection = e.IsConnected;
+        }
 
         public BaseAuthenticatedViewModel(ISettingsService settingsService, IPageDialogService dialogService, INavigationService navigationService) : base(navigationService)
         {
             _settingsService = settingsService;
             _dialogService = dialogService;
-            //CheckWifiOnStart();
-            //CheckWifiContinously();
+            CheckWifiOnStart();
+            CheckWifiContinously();
             //_connection = new HubConnectionBuilder()
             //.WithUrl(GlobalSetting.DefaultUri + "/centerHub?access_token=" + _settingsService.AuthAccessToken)
             //.Build();
