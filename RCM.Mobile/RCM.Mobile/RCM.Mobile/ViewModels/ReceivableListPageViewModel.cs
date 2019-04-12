@@ -17,15 +17,17 @@ namespace RCM.Mobile.ViewModels
     public class ReceivableListPageViewModel : BaseAuthenticatedViewModel
     {
         private IReceivableService _receivableService;
-
+        private IContactService _contactService;
         public ReceivableListPageViewModel(
             ISettingsService settingsService,
             IPageDialogService dialogService,
             INavigationService navigationService,
+            IContactService contactService,
             IReceivableService receivableService
             ) : base(settingsService, dialogService, navigationService)
         {
             _receivableService = receivableService;
+            _contactService = contactService;
             Title = "Receivable List";
         }
 
@@ -41,12 +43,11 @@ namespace RCM.Mobile.ViewModels
             get { return _receivables; }
             set { SetProperty(ref _receivables, value); RaisePropertyChanged("Receivables"); }
         }
-
-        private string _searchValue;
-        public string SearchValue
+        private ObservableCollection<Contact> _debtors;
+        public ObservableCollection<Contact> Debtors
         {
-            get { return _searchValue; }
-            set { SetProperty(ref _searchValue, value); RaisePropertyChanged("SearchValue"); }
+            get { return _debtors; }
+            set { SetProperty(ref _debtors, value); }
         }
 
         private List<Status> _status;
@@ -68,12 +69,12 @@ namespace RCM.Mobile.ViewModels
             IsBusy = true;
             Status = Constant.STATUSES;
             Receivables = new ObservableCollection<Receivable>();
-            foreach (var item in await _receivableService.GetAssignedReceivablesAsync(_settingsService.AuthAccessToken,  false))
+            foreach (var item in await _receivableService.GetAssignedReceivablesAsync(_settingsService.AuthAccessToken, false))
             {
                 Receivables.Add(item);
             }
             ReceivableHistories = new ObservableCollection<Receivable>();
-            foreach (var item in await _receivableService.GetAssignedReceivablesAsync(_settingsService.AuthAccessToken,  true))
+            foreach (var item in await _receivableService.GetAssignedReceivablesAsync(_settingsService.AuthAccessToken, true))
             {
                 ReceivableHistories.Add(item);
             }
@@ -81,6 +82,19 @@ namespace RCM.Mobile.ViewModels
             base.OnNavigatedTo(parameters);
         }
 
+        public async System.Threading.Tasks.Task InitDebtorsAsync(string name)
+        {
+            Debtors = new ObservableCollection<Contact>();
+
+            List<Contact> contacts = await _contactService.GetDebtors(_settingsService.AuthAccessToken, name);
+            if (contacts.Count > 0)
+            {
+                foreach (var item in contacts)
+                {
+                    Debtors.Add(item);
+                }
+            }
+        }
         public Command TapReceivable
         {
             get

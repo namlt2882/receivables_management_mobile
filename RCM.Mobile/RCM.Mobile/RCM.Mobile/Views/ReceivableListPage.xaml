@@ -96,21 +96,21 @@
                                                         AnimationType="Animation9"/>
                 </StackLayout>
             </DataTemplate>
-            <DataTemplate x:Key="SuggestionCurrentReceivablesTemplate">
+            <DataTemplate x:Key="SuggestionReceivablesTemplate">
                 <ViewCell>
                     <telerikPrimitives:RadBorder BorderColor="#DBDBDB">
                         <telerikPrimitives:RadBorder.BorderThickness>
                             <OnPlatform x:TypeArguments="Thickness" Default="0"/>
                         </telerikPrimitives:RadBorder.BorderThickness>
                         <StackLayout Orientation="Horizontal" Margin="0, 10, 0, 8">
-                            <telerikPrimitives:RadBorder BorderColor="{Binding CollectionProgressStatus, Converter={StaticResource ReceivableStatusColorConverter}}"
+                            <telerikPrimitives:RadBorder BorderColor="#DBDBDB"
                                                          BorderThickness="1.5, 0, 1.5, 0">
                                 <telerikPrimitives:RadBorder.Margin>
                                     <OnPlatform x:TypeArguments="Thickness" Default="0"/>
                                 </telerikPrimitives:RadBorder.Margin>
                             </telerikPrimitives:RadBorder>
                             <autoCompleteView:SuggestionItemLabel TextColor="#000000" FontSize="14" VerticalTextAlignment="Center"
-                                                                  HorizontalOptions="Center" UnformattedText="{Binding Title}"
+                                                                  HorizontalOptions="Center" UnformattedText="{Binding Name}"
                                                                   HighlightText="{Binding Source={x:Reference autocompleteCurrentReceivableSearch}, Path=Text}"
                                                                   HighlightTextColor="{Binding Source={x:Reference autocompleteCurrentReceivableSearch}, Path=SuggestionItemTextColor}"/>
                         </StackLayout>
@@ -154,16 +154,34 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <telerikInput:RadAutoCompleteView x:Name="autocompleteCurrentReceivableSearch" 
+            <telerikInput:RadAutoCompleteView x:Name="autocompleteCurrentReceivableSearch"
                                               Grid.Row="0"
-                                         Watermark="Search by Debtor Name" 
-                                         WatermarkTextColor="#8E8E93" 
-                                         FontSize="15" 
-                                         CompletionMode="Contains"
-                                         Margin="0, 10, 0, 0"
-                                         SuggestionViewHeight="200"
-                                         TextSearchPath="Title"
-                                         SuggestionViewBackgroundColor="#FFFFFF">
+                                              Watermark="Search by Debtor Name"
+                                              WatermarkTextColor="{StaticResource NavigationPrimary}"
+                                              FontSize="16"
+                                              Margin="0, 10, 0, 0"
+                                              TextChanged="OnTextChanged"
+                                              SuggestionViewHeight="200"
+                                              TextSearchPath="Name"
+                                              ShowSuggestionView="True"
+                                              SuggestionViewBackgroundColor="#FFFFFF">
+                <telerikInput:RadAutoCompleteView.LoadingTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Margin="0, 20, 0, 20">
+                            <Label Text="Searching... " FontSize="16" TextColor="#8E8E93"/>
+                            <telerikPrimitives:RadBusyIndicator
+                                                    HeightRequest="24" 
+                                                    WidthRequest="24"
+                                                    IsBusy="True"
+                                                    VerticalOptions="Start"
+                                                    AnimationContentColor="Accent"
+                                                    AnimationType="Animation9"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </telerikInput:RadAutoCompleteView.LoadingTemplate>
+
                 <telerikInput:RadAutoCompleteView.Behaviors>
                     <!--<behaviors:EventToCommandBehavior EventName="OnTextChanged" 
                                                           Command="{Binding OnTextChanged}"
@@ -213,7 +231,7 @@
                                                        BorderLocation="All"
                                                        BorderColor="#D2C7C3" />
                                             </telerikDataControls:RadListView.ItemStyle>
-                                            
+
                                             <telerikDataControls:RadListView.LayoutDefinition>
                                                 <telerikListView:ListViewLinearLayout HorizontalItemSpacing="0"
                                                           GroupHeaderLength="30">
@@ -355,57 +373,57 @@
                                                             <telerikPrimitives:RadBorder BorderColor="#DBDBDB"
                                                                  BorderThickness="0, 0, 0, 1">
                                                                 <StackLayout Orientation="Horizontal" BackgroundColor="{Binding CollectionProgressStatus, Converter={StaticResource ReceivableListBGConverter}}">
-                                                                        <StackLayout Orientation="Horizontal">
-                                                                            <Grid>
-                                                                                <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="250"/>
-                                                                                    <ColumnDefinition Width="Auto"/>
-                                                                                </Grid.ColumnDefinitions>
-                                                                                <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalOptions="Center" Padding="5">
-                                                                                    <StackLayout Orientation="Vertical" Margin="5">
-                                                                                        <StackLayout Orientation="Horizontal">
-                                                                                            <Label Text="&#xf09d;" HeightRequest="20" BackgroundColor="Transparent" TextColor="Black" FontSize="Large" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular"/>
-                                                                                            <Label LineBreakMode="WordWrap">
-                                                                                                <Label.FormattedText>
-                                                                                                    <FormattedString>
-                                                                                                        <Span Text="{Binding DebtorName}" FontAttributes="Italic" FontSize="Medium"/>
-                                                                                                    </FormattedString>
-                                                                                                </Label.FormattedText>
-                                                                                            </Label>
-                                                                                            <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
-                                                                                        </StackLayout>
-                                                                                        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                                                                                            <Label Text="&#xf3d1;" HeightRequest="20" BackgroundColor="Transparent" TextColor="Black" FontSize="Medium" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular"/>
-                                                                                            <Label LineBreakMode="WordWrap">
-                                                                                                <Label.FormattedText>
-                                                                                                    <FormattedString>
-                                                                                                        <Span Text="{Binding PrepaidAmount, Converter={StaticResource MoneyValueConverter}}" FontAttributes="Bold,Italic" FontSize="Small"/>
-                                                                                                        <Span Text="/"/>
-                                                                                                        <Span Text="{Binding DebtAmount, Converter={StaticResource MoneyValueConverter}}"  FontAttributes="Bold,Italic" />
-                                                                                                    </FormattedString>
-                                                                                                </Label.FormattedText>
-                                                                                            </Label>
-                                                                                        </StackLayout>
-                                                                                        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                                                                                            <Label Text="&#xf271;" HeightRequest="20" BackgroundColor="Transparent" TextColor="Black" FontSize="Micro" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular"/>
+                                                                    <StackLayout Orientation="Horizontal">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="250"/>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalOptions="Center" Padding="5">
+                                                                                <StackLayout Orientation="Vertical" Margin="5">
+                                                                                    <StackLayout Orientation="Horizontal">
+                                                                                        <Label Text="&#xf09d;" HeightRequest="20" BackgroundColor="Transparent" TextColor="Black" FontSize="Large" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular"/>
+                                                                                        <Label LineBreakMode="WordWrap">
+                                                                                            <Label.FormattedText>
+                                                                                                <FormattedString>
+                                                                                                    <Span Text="{Binding DebtorName}" FontAttributes="Italic" FontSize="Medium"/>
+                                                                                                </FormattedString>
+                                                                                            </Label.FormattedText>
+                                                                                        </Label>
+                                                                                        <Image Source="{Binding IsConfirmed, Converter={StaticResource confirmImageConverter}}" HorizontalOptions="Start" HeightRequest="20"/>
+                                                                                    </StackLayout>
+                                                                                    <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                                                                        <Label Text="&#xf3d1;" HeightRequest="20" BackgroundColor="Transparent" TextColor="Black" FontSize="Medium" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular"/>
+                                                                                        <Label LineBreakMode="WordWrap">
+                                                                                            <Label.FormattedText>
+                                                                                                <FormattedString>
+                                                                                                    <Span Text="{Binding PrepaidAmount, Converter={StaticResource MoneyValueConverter}}" FontAttributes="Bold,Italic" FontSize="Small"/>
+                                                                                                    <Span Text="/"/>
+                                                                                                    <Span Text="{Binding DebtAmount, Converter={StaticResource MoneyValueConverter}}"  FontAttributes="Bold,Italic" />
+                                                                                                </FormattedString>
+                                                                                            </Label.FormattedText>
+                                                                                        </Label>
+                                                                                    </StackLayout>
+                                                                                    <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                                                                        <Label Text="&#xf271;" HeightRequest="20" BackgroundColor="Transparent" TextColor="Black" FontSize="Micro" FontFamily="fa-regular-400.ttf#Font Awesome 5 Free Regular"/>
 
-                                                                                            <Label LineBreakMode="WordWrap">
-                                                                                                <Label.FormattedText>
-                                                                                                    <FormattedString>
-                                                                                                        <Span Text="{Binding AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Micro"/>
-                                                                                                        <Span Text=" - " FontAttributes="Italic" FontSize="Micro"/>
-                                                                                                        <Span Text="{Binding ClosedDay, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Micro"/>
-                                                                                                    </FormattedString>
-                                                                                                </Label.FormattedText>
-                                                                                            </Label>
-                                                                                        </StackLayout>
+                                                                                        <Label LineBreakMode="WordWrap">
+                                                                                            <Label.FormattedText>
+                                                                                                <FormattedString>
+                                                                                                    <Span Text="{Binding AssignDate, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Micro"/>
+                                                                                                    <Span Text=" - " FontAttributes="Italic" FontSize="Micro"/>
+                                                                                                    <Span Text="{Binding ClosedDay, Converter={StaticResource IntToDateValueConverter}}" FontAttributes="Italic" FontSize="Micro"/>
+                                                                                                </FormattedString>
+                                                                                            </Label.FormattedText>
+                                                                                        </Label>
                                                                                     </StackLayout>
                                                                                 </StackLayout>
-                                                                                <StackLayout Grid.Column="1" Grid.Row="0" VerticalOptions ="Center" HorizontalOptions="Center">
-                                                                                    <Frame Padding="2" WidthRequest="100" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="{Binding CollectionProgressStatus, Converter={StaticResource ReceivableStatusColorConverter}}" >
+                                                                            </StackLayout>
+                                                                            <StackLayout Grid.Column="1" Grid.Row="0" VerticalOptions ="Center" HorizontalOptions="Center">
+                                                                                <Frame Padding="2" WidthRequest="100" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="{Binding CollectionProgressStatus, Converter={StaticResource ReceivableStatusColorConverter}}" >
                                                                                     <Label Text="{Binding ProgressStage.CurrentStageName}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="White"/>
-                                                                                    </Frame>
-                                                                                    <!--<Label Text="{Binding Action.Type}" FontSize="Small" HeightRequest="20"/>
+                                                                                </Frame>
+                                                                                <!--<Label Text="{Binding Action.Type}" FontSize="Small" HeightRequest="20"/>
                                                                             <Label LineBreakMode="WordWrap">
                                                                                 <Label.FormattedText>
                                                                                     <FormattedString>
@@ -415,8 +433,8 @@
                                                                                     </FormattedString>
                                                                                 </Label.FormattedText>
                                                                             </Label>-->
-                                                                                </StackLayout>
-                                                                                <!--<StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalOptions="Center">
+                                                                            </StackLayout>
+                                                                            <!--<StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalOptions="Center">
                                                                                     <StackLayout Orientation="Vertical" Margin="10">
                                                                                         <StackLayout Orientation="Horizontal">
                                                                                             <Image Source="debt1600.png" WidthRequest="20" HeightRequest="20" IsVisible="True"></Image>
@@ -470,10 +488,10 @@
                                                                                         </Label.FormattedText>
                                                                                     </Label>
                                                                                 </StackLayout>-->
-                                                                            </Grid>
+                                                                        </Grid>
 
 
-                                                                        </StackLayout>
+                                                                    </StackLayout>
                                                                 </StackLayout>
                                                             </telerikPrimitives:RadBorder>
                                                         </telerikListView:ListViewTemplateCell.View>

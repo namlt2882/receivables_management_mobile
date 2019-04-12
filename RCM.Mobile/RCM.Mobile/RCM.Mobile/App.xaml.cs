@@ -161,6 +161,7 @@ namespace RCM.Mobile
             containerRegistry.RegisterForNavigation<TaskPage>("TaskPage");
             //Service
             containerRegistry.Register<IAuthService, AuthService>();
+            containerRegistry.Register<IContactService, ContactService>();
             containerRegistry.Register<IFirebaseTokenService, FirebaseTokenService>();
             containerRegistry.Register<INotificationService, NotificationService>();
             containerRegistry.Register<IRequestProvider, RequestProvider>();

@@ -18,7 +18,7 @@ namespace RCM.Mobile.Converters
             {
                 case Constant.ACTION_VISIT_CODE: return "house_visiting";
                 case Constant.ACTION_REPORT_CODE: return "iconfinder_27_Report_24";
-                case Constant.ACTION_NOTIFICATION_CODE: return "house_visiting";
+                case Constant.ACTION_NOTIFICATION_CODE: return "iconfinder_27_Report_24";
             }
             return "Transparency500";
         }

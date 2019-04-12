@@ -59,11 +59,14 @@ namespace RCM.Mobile.ViewModels
             {
                 return new Command(async () =>
                 {
-                    await _firebaseTokenService.DeleteFirebaseToken(_settingsService.AuthAccessToken);
-                    _settingsService.AccessTokenExpirationDate = DateTime.UtcNow;
-                    _settingsService.AuthAccessToken = "";
-                    //CrossFirebasePushNotification.Current.Unsubscribe(_settingsService.AuthUserName);
-                    await NavigationService.NavigateAsync("RCM.Mobile:///LoginPage");
+                    if (await _dialogService.DisplayAlertAsync("Message", "Your want to log out?", "Yes", "No"))
+                    {
+                        await _firebaseTokenService.DeleteFirebaseToken(_settingsService.AuthAccessToken);
+                        _settingsService.AccessTokenExpirationDate = DateTime.UtcNow;
+                        _settingsService.AuthAccessToken = "";
+                        //CrossFirebasePushNotification.Current.Unsubscribe(_settingsService.AuthUserName);
+                        await NavigationService.NavigateAsync("RCM.Mobile:///LoginPage");
+                    }
                 });
             }
         }
